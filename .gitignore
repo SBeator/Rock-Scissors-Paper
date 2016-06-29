@@ -1,6 +1,7 @@
-# idea
-*.idea
-*.iml
+# mongodb
+
+mongodb/db
+mongodb/log
 
 # mac
 .DS_Store
