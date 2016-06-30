@@ -5,6 +5,12 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "comma-dangle": 0
+        "comma-dangle": 0,
+        "no-unused-vars": [
+            "error",
+            {
+                "vars": "all",
+                "args": "none"
+            }]
     }
 };

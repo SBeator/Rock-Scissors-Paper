@@ -20600,4 +20600,4 @@ module.exports = validateDOMNesting;
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":144}]},{},[5]);
+},{"./lib/React":144}]},{},[1,5,2,3,4]);

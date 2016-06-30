@@ -4,10 +4,10 @@
   "description": "A game for rock-scissors-paper",
   "main": "index.js",
   "scripts": {
-    "client_build": "grunt",
-    "server_run": "nodemon ./server.js",
+    "client": "grunt",
+    "server": "nodemon ./server.js",
     "mongodb": "mongod -config ./mongodb/mongodb.conf",
-    "dev": "concurrent --kill-others \"npm run server_run\" \"npm run client_build\" \"mongod -config ./mongodb/mongodb.conf\"",
+    "dev": "concurrent --kill-others \"npm run server\" \"npm run client\" \"mongod -config ./mongodb/mongodb.conf\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -44,6 +44,8 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^18.1.0",
+    "jquery": "^3.0.0",
+    "mongodb": "^2.1.18",
     "nodemon": "^1.9.2",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
