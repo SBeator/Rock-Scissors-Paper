@@ -1,0 +1,15 @@
+.game {
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  background-color: #5191fd;
+
+  .game__panel {
+    position: relative;
+    width: 100%;
+    height: 100%; 
+    background-color: #fff; 
+    border-radius: 10px;
+    box-shadow: 10 10 10 #8db7fe
+  }
+}

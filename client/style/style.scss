@@ -1,3 +1,5 @@
-body {
-  background-color: #bbb;
-}
+@import "base.scss";
+
+@import "components/game.scss";
+@import "components/result.scss";
+@import "components/choose.scss";

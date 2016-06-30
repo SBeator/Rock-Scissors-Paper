@@ -1,3 +1,49 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #bbb;
+  margin: 0;
+}
+
+.game {
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  background-color: #5191fd;
+}
+.game .game__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 10 10 10 #8db7fe;
+}
+
+.result {
+  display: none;
+  padding: 20px;
+  text-align: center;
+}
+.result--display {
+  display: block;
+}
+
+.choose {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+.choose label,
+.choose input[type="radio"] {
+  cursor: pointer;
+}
+.choose .choose__radio:not(:last-of-type) {
+  margin-right: 20px;
+}
+.choose .choose__submit {
+  display: block;
+  margin: 30px auto;
 }
