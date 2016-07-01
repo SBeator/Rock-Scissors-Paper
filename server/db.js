@@ -22,15 +22,15 @@ function insert(db, data, callback) {
         collection.insertOne(data, (err, result) => {
           console.log('Inserted data into the collection.');
           callback(err);
-          db.close();
         });
       }
     }
   });
 }
 
-function list(db, callback) {
-  const cursor = db.collection(dbCollectionName).find();
+function find(db, dataToFind, callback) {
+  const cursor = db.collection(dbCollectionName).find(dataToFind);
+  console.log('dataToFind', dataToFind);
 
   const data = [];
 
@@ -39,10 +39,15 @@ function list(db, callback) {
       console.dir(doc);
       data.push(doc);
     } else {
+      console.log('cursor err', err);
+
       callback(err, data);
-      db.close();
     }
   });
+}
+
+function list(db, callback) {
+  find(db, {}, callback);
 }
 
 function connectData(callback) {
@@ -55,24 +60,64 @@ function connectData(callback) {
   });
 }
 
+function closeDbInCallback(db, callback) {
+  return (...args) => {
+    db.close();
+    callback(...args);
+  };
+}
+
 function insertData(data, callback) {
   connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
     if (!err) {
-      insert(db, data, callback);
+      insert(db, data, dbCallback);
     } else {
-      callback(err);
+      dbCallback(err);
     }
   });
 }
 
 function listData(callback) {
   connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
     if (!err) {
-      list(db, callback);
+      list(db, dbCallback);
     } else {
-      callback(err);
+      dbCallback(err);
     }
   });
 }
 
-export { insertData, listData };
+function createroom(data, callback) {
+  connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
+    if (err) {
+      dbCallback(err);
+      return;
+    }
+
+    console.log('createroom', data);
+
+    find(db, data, (findError, existData) => {
+      console.log('existData', existData);
+      if (findError || existData.length) {
+        console.log('existData[0]', existData[0]);
+        dbCallback(findError, existData[0]);
+      } else {
+        const user = data.user || Date.now().toString();
+        const room = data.room || Date.now().toString();
+
+        const newData = { user, room };
+        insert(db, newData, (inserError) => {
+          dbCallback(inserError, newData);
+        });
+      }
+    });
+  });
+}
+
+export { insertData, listData, createroom };
