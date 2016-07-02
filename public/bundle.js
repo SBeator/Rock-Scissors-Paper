@@ -313,34 +313,59 @@ var GameControl = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(GameControl).call(this, props));
 
     var user = _this.getUser();
-    // let room;
+    var room = _this.getRoom();
 
-    $.getJSON('/api/createroom', { user: user }, function (data) {
-      console.log(data);
-    }).catch(function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
+    $.getJSON('/api/createroom', { user: user, room: room }, function (data) {
+      user = data.user;
+      room = data.room;
+
+      if (user && room) {
+        _this.user = user;
+        _this.room = room;
+      } else {
+        _this.dbLoadError();
       }
-
-      console.log(args);
+    }).catch(function () {
+      _this.dbLoadError();
     });
     return _this;
   }
 
   (0, _createClass3.default)(GameControl, [{
+    key: 'getInfoFromCookie',
+    value: function getInfoFromCookie(name) {
+      if (!this[name]) {
+        this[name] = _Cookie2.default.getCookie(name);
+      }
+
+      if (!this[name]) {
+        this[name] = Date.now();
+        _Cookie2.default.getCookie(name, this[name]);
+      }
+
+      return this[name];
+    }
+  }, {
     key: 'getUser',
     value: function getUser() {
-      if (!this.user) {
-        this.user = _Cookie2.default.getCookie('user');
-      }
-
-      if (!this.user) {
-        this.user = Date.now();
-        _Cookie2.default.getCookie('user', this.user);
-      }
-
-      return this.user;
+      return this.getInfoFromCookie('user');
     }
+  }, {
+    key: 'getRoom',
+    value: function getRoom() {
+      return this.getInfoFromCookie('room');
+    }
+  }, {
+    key: 'dbLoadError',
+    value: function dbLoadError() {
+      this.setSinglePlayerGame();
+    }
+  }, {
+    key: 'singlePlayerGame',
+    value: function singlePlayerGame() {}
+  }, {
+    key: 'multiPlayersGame',
+    value: function multiPlayersGame() {}
   }, {
     key: 'render',
     value: function render() {

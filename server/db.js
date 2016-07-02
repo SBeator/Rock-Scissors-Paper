@@ -3,6 +3,14 @@ import { MongoClient } from 'mongodb';
 const mongodbUrl = 'mongodb://localhost:27017/rock-scissors-paper';
 const dbCollectionName = 'users';
 
+function newUser() {
+  return Date.now().toString();
+}
+
+function newRoom() {
+  return Date.now().toString();
+}
+
 function insert(db, data, callback) {
   const collection = db.collection(dbCollectionName);
   const cursor = collection.find(data);
@@ -91,7 +99,7 @@ function listData(callback) {
   });
 }
 
-function createroom(data, callback) {
+function createRoom(data, callback) {
   connectData((err, db) => {
     const dbCallback = closeDbInCallback(db, callback);
 
@@ -100,7 +108,7 @@ function createroom(data, callback) {
       return;
     }
 
-    console.log('createroom', data);
+    console.log('createRoom', data);
 
     find(db, data, (findError, existData) => {
       console.log('existData', existData);
@@ -108,8 +116,8 @@ function createroom(data, callback) {
         console.log('existData[0]', existData[0]);
         dbCallback(findError, existData[0]);
       } else {
-        const user = data.user || Date.now().toString();
-        const room = data.room || Date.now().toString();
+        const user = data.user || newUser();
+        const room = data.room || newRoom();
 
         const newData = { user, room };
         insert(db, newData, (inserError) => {
@@ -120,4 +128,29 @@ function createroom(data, callback) {
   });
 }
 
-export { insertData, listData, createroom };
+function joinRoom(data, callback) {
+  connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
+    if (err) {
+      dbCallback(err);
+      return;
+    }
+
+    find(db, data, (findError, existData) => {
+      if (findError || existData.length) {
+        dbCallback(findError, existData[0]);
+      } else {
+        const user = data.user || newUser();
+        const room = data.room || newRoom();
+
+        const newData = { user, room };
+        insert(db, newData, (inserError) => {
+          dbCallback(inserError, newData);
+        });
+      }
+    });
+  });
+}
+
+export { insertData, listData, createRoom, joinRoom };

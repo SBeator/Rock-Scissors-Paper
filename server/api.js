@@ -1,8 +1,27 @@
 import express from 'express';
 
-import { insertData, listData, createroom } from './db.js';
+import { insertData, listData, createRoom, joinRoom } from './db.js';
 
 const router = express.Router();
+
+function getUserAndRoomData(req) {
+  const query = req.query;
+
+  const user = query.user;
+  const room = query.room;
+
+  const userRoomData = {};
+
+  if (user) {
+    userRoomData.user = user;
+  }
+
+  if (room) {
+    userRoomData.room = room;
+  }
+
+  return userRoomData;
+}
 
 router.get('/add', (req, res, next) => {
   const query = req.query;
@@ -34,29 +53,29 @@ router.get('/list', (req, res, next) => {
 });
 
 router.get('/createroom', (req, res, next) => {
-  const query = req.query;
+  const userRoomData = getUserAndRoomData(req);
 
-  const user = query.user;
-  const room = query.room;
-
-  const searchData = {};
-
-  if (user) {
-    searchData.user = user;
-  }
-
-  if (room) {
-    searchData.room = room;
-  }
-
-  console.log(searchData);
-  createroom(searchData, (err, data) => {
-    console.log('searchData', data);
-    console.log('err', err);
+  createRoom(userRoomData, (err, data) => {
     if (err) {
       next(err);
     } else {
-      console.log('send', data);
+      res.send(data);
+    }
+  });
+});
+
+router.get('/joinroom', (req, res, next) => {
+  const userRoomData = getUserAndRoomData(req);
+
+  if (!userRoomData.room) {
+    res.send({});
+    return;
+  }
+
+  joinRoom(userRoomData, (err, data) => {
+    if (err) {
+      next(err);
+    } else {
       res.send(data);
     }
   });

@@ -10,27 +10,53 @@ class GameControl extends Component {
   constructor(props) {
     super(props);
 
-    const user = this.getUser();
-    // let room;
+    let user = this.getUser();
+    let room = this.getRoom();
 
-    $.getJSON('/api/createroom', { user }, (data) => {
-      console.log(data);
+    $.getJSON('/api/createroom', { user, room }, (data) => {
+      user = data.user;
+      room = data.room;
+
+      if (user && room) {
+        this.user = user;
+        this.room = room;
+      } else {
+        this.dbLoadError();
+      }
     }).catch((...args) => {
-      console.log(args);
+      this.dbLoadError();
     });
   }
 
+  getInfoFromCookie(name) {
+    if (!this[name]) {
+      this[name] = Cookie.getCookie(name);
+    }
+
+    if (!this[name]) {
+      this[name] = Date.now();
+      Cookie.getCookie(name, this[name]);
+    }
+
+    return this[name];
+  }
+
   getUser() {
-    if (!this.user) {
-      this.user = Cookie.getCookie('user');
-    }
+    return this.getInfoFromCookie('user');
+  }
 
-    if (!this.user) {
-      this.user = Date.now();
-      Cookie.getCookie('user', this.user);
-    }
+  getRoom() {
+    return this.getInfoFromCookie('room');
+  }
 
-    return this.user;
+  dbLoadError() {
+    this.setSinglePlayerGame();
+  }
+
+  singlePlayerGame() {
+  }
+
+  multiPlayersGame() {
   }
 
   render() {
