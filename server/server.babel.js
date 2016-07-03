@@ -10,16 +10,8 @@ app.use('/', express.static('./public'));
 app.use('/api', apiRouters);
 
 app.use((err, req, res, next) => {
+  res.status(err.status || 500);
   res.send(err);
 });
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.render({
-    message: err.message,
-    error: err
-  });
-});
-
 
 app.listen(process.env.PORT || 3000);

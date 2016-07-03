@@ -44,10 +44,11 @@ function find(db, dataToFind, callback) {
 
   cursor.each((err, doc) => {
     if (doc != null) {
+      console.log('Found data:');
       console.dir(doc);
       data.push(doc);
     } else {
-      console.log('cursor err', err);
+      console.log('Find cursor err:', err);
 
       callback(err, data);
     }
@@ -56,6 +57,19 @@ function find(db, dataToFind, callback) {
 
 function list(db, callback) {
   find(db, {}, callback);
+}
+
+function update(db, dataToFind, newData, callback) {
+  const collection = db.collection(dbCollectionName);
+  console.log('update: dataToFind:', dataToFind);
+  console.log('newData:', newData);
+  console.log('$set:', { $set: newData });
+
+  collection.updateOne(
+    dataToFind,
+    { $set: newData },
+    callback
+  );
 }
 
 function connectData(callback) {
@@ -108,23 +122,32 @@ function createRoom(data, callback) {
       return;
     }
 
-    console.log('createRoom', data);
-
-    find(db, data, (findError, existData) => {
-      console.log('existData', existData);
-      if (findError || existData.length) {
-        console.log('existData[0]', existData[0]);
-        dbCallback(findError, existData[0]);
-      } else {
-        const user = data.user || newUser();
-        const room = data.room || newRoom();
-
-        const newData = { user, room };
-        insert(db, newData, (inserError) => {
-          dbCallback(inserError, newData);
-        });
-      }
+    const user = data.user || newUser();
+    const room = newRoom();
+    const newData = {
+      room,
+      users: [
+        user
+      ]
+    };
+    insert(db, newData, (inserError) => {
+      dbCallback(inserError, newData);
     });
+    // find(db, data, (findError, existData) => {
+    //   console.log('existData', existData);
+    //   if (findError || existData.length) {
+    //     console.log('existData[0]', existData[0]);
+    //     dbCallback(findError, existData[0]);
+    //   } else {
+    //     const user = data.user || newUser();
+    //     const room = data.room || newRoom();
+
+    //     const newData = { user, room };
+    //     insert(db, newData, (inserError) => {
+    //       dbCallback(inserError, newData);
+    //     });
+    //   }
+    // });
   });
 }
 
@@ -137,19 +160,50 @@ function joinRoom(data, callback) {
       return;
     }
 
-    find(db, data, (findError, existData) => {
-      if (findError || existData.length) {
-        dbCallback(findError, existData[0]);
-      } else {
-        const user = data.user || newUser();
-        const room = data.room || newRoom();
+    // TODO: Don't need find if room doesn't exist
+    const room = data.room || newRoom();
+    const roomData = {
+      room
+    };
 
-        const newData = { user, room };
-        insert(db, newData, (inserError) => {
-          dbCallback(inserError, newData);
+    find(db, roomData, (findError, existData) => {
+      console.log('find result:', existData);
+      if (findError) {
+        dbCallback(findError);
+      } else if (!existData.length) {
+        dbCallback(new Error('Room doesn\'t not exist'));
+      } else {
+        const findData = existData[0];
+        const users = findData.users || [];
+        console.log('users before push', users);
+        users.push(data.user || newUser());
+        console.log('users after push', users);
+
+        console.log('before update');
+        update(db, roomData, { users }, (updateError, result) => {
+          if (updateError) {
+            dbCallback(updateError);
+          } else {
+            dbCallback(updateError, findData);
+          }
         });
       }
     });
+
+
+    // find(db, data, (findError, existData) => {
+    //   if (findError || existData.length) {
+    //     dbCallback(findError, existData[0]);
+    //   } else {
+    //     const user = data.user || newUser();
+    //     const room = data.room || newRoom();
+
+    //     const newData = { user, room };
+    //     insert(db, newData, (inserError) => {
+    //       dbCallback(inserError, newData);
+    //     });
+    //   }
+    // });
   });
 }
 
