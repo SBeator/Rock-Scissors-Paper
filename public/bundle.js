@@ -358,7 +358,7 @@ var GameControl = function (_Component) {
   }, {
     key: 'dbLoadError',
     value: function dbLoadError() {
-      this.setSinglePlayerGame();
+      this.singlePlayerGame();
     }
   }, {
     key: 'singlePlayerGame',

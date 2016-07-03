@@ -133,21 +133,6 @@ function createRoom(data, callback) {
     insert(db, newData, (inserError) => {
       dbCallback(inserError, newData);
     });
-    // find(db, data, (findError, existData) => {
-    //   console.log('existData', existData);
-    //   if (findError || existData.length) {
-    //     console.log('existData[0]', existData[0]);
-    //     dbCallback(findError, existData[0]);
-    //   } else {
-    //     const user = data.user || newUser();
-    //     const room = data.room || newRoom();
-
-    //     const newData = { user, room };
-    //     insert(db, newData, (inserError) => {
-    //       dbCallback(inserError, newData);
-    //     });
-    //   }
-    // });
   });
 }
 
@@ -175,11 +160,8 @@ function joinRoom(data, callback) {
       } else {
         const findData = existData[0];
         const users = findData.users || [];
-        console.log('users before push', users);
         users.push(data.user || newUser());
-        console.log('users after push', users);
 
-        console.log('before update');
         update(db, roomData, { users }, (updateError, result) => {
           if (updateError) {
             dbCallback(updateError);
@@ -189,21 +171,6 @@ function joinRoom(data, callback) {
         });
       }
     });
-
-
-    // find(db, data, (findError, existData) => {
-    //   if (findError || existData.length) {
-    //     dbCallback(findError, existData[0]);
-    //   } else {
-    //     const user = data.user || newUser();
-    //     const room = data.room || newRoom();
-
-    //     const newData = { user, room };
-    //     insert(db, newData, (inserError) => {
-    //       dbCallback(inserError, newData);
-    //     });
-    //   }
-    // });
   });
 }
 

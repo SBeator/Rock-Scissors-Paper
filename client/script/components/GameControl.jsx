@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 
 import Cookie from './../Cookie.js';
 
-import Result from './Result.jsx';
+import Status from './Status.jsx';
 import Choose from './Choose.jsx';
 
 class GameControl extends Component {
@@ -50,7 +50,7 @@ class GameControl extends Component {
   }
 
   dbLoadError() {
-    this.setSinglePlayerGame();
+    this.singlePlayerGame();
   }
 
   singlePlayerGame() {
@@ -62,7 +62,7 @@ class GameControl extends Component {
   render() {
     return (
       <div className="game-control">
-        <Result />
+        <Status />
         <Choose />
       </div>
     );
