@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { insertData, listData, createRoom, joinRoom } from './db.js';
+import { insertData, listData, createRoom, joinRoom, findRoom, punch } from './db.js';
 
 const router = express.Router();
 
@@ -18,6 +18,14 @@ function getRoomData(req) {
   const room = query.room;
 
   return { room };
+}
+
+function getPunchData(req) {
+  const query = req.query;
+
+  const punch = query.punch;
+
+  return { punch };
 }
 
 function getUserAndRoomData(req) {
@@ -91,5 +99,41 @@ router.get('/joinroom', (req, res, next) => {
     }
   });
 });
+
+router.get('/getroomstatus', (req, res, next) => {
+  const roomData = getRoomData(req);
+
+  if (!roomData.room) {
+    res.send({});
+    console.log('Wrong query!!!!!!');
+    return;
+  }
+
+  findRoom(roomData, (err, data) => {
+    if (err) {
+      next(err);
+    } else {
+      console.log('data', data);
+      res.send(data);
+    }
+  });
+});
+
+router.get('/punch', (req, res, next) => {
+  const punchData = getPunchData(req);
+
+  Object.assign(punchData, getUserAndRoomData(req));
+
+  // TODO error check
+
+  punch(punchData, (err, data) => {
+    if (err) {
+      next(err);
+    } else {
+      res.send({ success: true });
+    }
+  });
+});
+
 
 export default router;

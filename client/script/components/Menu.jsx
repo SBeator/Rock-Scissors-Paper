@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Event, { CustomEvents } from './../Event.js';
 
 const propTypes = {};
-class Status extends Component {
+class Menu extends Component {
   constructor(props) {
     super(props);
 
@@ -32,16 +32,16 @@ class Status extends Component {
   }
 
   getChooseString() {
-    return Status.chooseValueStringMap[this.state.otherChoose];
+    return Menu.chooseValueStringMap[this.state.otherChoose];
   }
 
   getResultString() {
-    return Status.resultValueStringMap[this.state.result];
+    return Menu.resultValueStringMap[this.state.result];
   }
 
   render() {
     return (
-      <div className={this.getClasses()} >
+      <div className="menu" >
         <p>对方出的是：{this.getChooseString()}</p>
         <p>{this.getResultString()}</p>
       </div>
@@ -49,18 +49,6 @@ class Status extends Component {
   }
 }
 
-Status.chooseValueStringMap = {
-  0: '石头',
-  1: '剪刀',
-  2: '布'
-};
+Menu.propTypes = propTypes;
 
-Status.resultValueStringMap = {
-  0: '打平了',
-  1: '你赢了',
-  2: '你输了'
-};
-
-Status.propTypes = propTypes;
-
-export default Status;
+export default Menu;

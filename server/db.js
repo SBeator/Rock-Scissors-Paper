@@ -137,6 +137,10 @@ function createRoom(data, callback) {
 }
 
 function joinRoom(data, callback) {
+  if (!data.room) {
+    callback(new Error('no room parameter'));
+  }
+
   connectData((err, db) => {
     const dbCallback = closeDbInCallback(db, callback);
 
@@ -145,8 +149,7 @@ function joinRoom(data, callback) {
       return;
     }
 
-    // TODO: Don't need find if room doesn't exist
-    const room = data.room || newRoom();
+    const room = data.room;
     const roomData = {
       room
     };
@@ -174,4 +177,87 @@ function joinRoom(data, callback) {
   });
 }
 
-export { insertData, listData, createRoom, joinRoom };
+function findRoom(data, callback) {
+  if (!data.room) {
+    callback(new Error('no room parameter'));
+  }
+
+  connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
+    if (err) {
+      dbCallback(err);
+      return;
+    }
+
+    const room = data.room;
+    const roomData = {
+      room
+    };
+
+    find(db, roomData, (findError, existData) => {
+      console.log('find result:', existData);
+      if (findError) {
+        dbCallback(findError);
+      } else if (!existData.length) {
+        dbCallback(new Error('Room doesn\'t not exist'));
+      } else {
+        dbCallback(null, existData[0]);
+      }
+    });
+  });
+}
+
+function punch(data, callback) {
+  // TODO: do more error check
+  if (!data.room) {
+    callback(new Error('no room parameter'));
+  }
+
+  connectData((err, db) => {
+    const dbCallback = closeDbInCallback(db, callback);
+
+    if (err) {
+      dbCallback(err);
+      return;
+    }
+
+    const room = data.room;
+    const roomData = {
+      room
+    };
+
+    find(db, roomData, (findError, existData) => {
+      console.log('find result:', existData);
+      if (findError) {
+        dbCallback(findError);
+      } else if (!existData.length) {
+        dbCallback(new Error('Room doesn\'t not exist'));
+      } else {
+        const findData = existData[0];
+        const usersPunch = {
+          [data.user]: 1
+        };
+
+        update(db, roomData, usersPunch, (updateError, result) => {
+          console.log('punch update error:', updateError);
+          console.log('punch update result:', result);
+          if (updateError) {
+            dbCallback(updateError);
+          } else {
+            dbCallback(updateError, findData);
+          }
+        });
+      }
+    });
+  });
+}
+
+export {
+insertData,
+listData,
+createRoom,
+joinRoom,
+findRoom,
+punch
+};

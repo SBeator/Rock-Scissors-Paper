@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import Cookie from './../Cookie.js';
 
 import Status from './Status.jsx';
+import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
 
 class GameControl extends Component {
@@ -62,8 +63,9 @@ class GameControl extends Component {
   render() {
     return (
       <div className="game-control">
-        <Status />
         <Choose />
+        <Status />
+        <Menu />
       </div>
     );
   }
