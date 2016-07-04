@@ -60,7 +60,7 @@ class GameControl extends Component {
 
     if (!this[name]) {
       this[name] = Date.now();
-      Cookie.getCookie(name, this[name]);
+      Cookie.setCookie(name, this[name]);
     }
 
     return this[name];
@@ -68,6 +68,11 @@ class GameControl extends Component {
 
   getUser() {
     return this.getInfoFromCookie('user');
+  }
+
+  setUser(user) {
+    Cookie.setCookie('user', user);
+    this.user = user;
   }
 
   getRoom() {

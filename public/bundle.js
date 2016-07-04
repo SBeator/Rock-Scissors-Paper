@@ -9,15 +9,10 @@ var time = Days * 24 * 60 * 60 * 1000;
 
 var Cookie = {
   setCookie: function setCookie(name, value) {
-    var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     var exp = new Date();
     exp.setTime(exp.getTime() + time);
 
-    if (Cookie.getCookie(name)) {
-      document.cookie.replace(reg, name + "=" + escape(value) + ";expires=" + exp.toGMTString());
-    } else {
-      document.cookie += name + "=" + escape(value) + ";expires=" + exp.toGMTString();
-    }
+    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
   },
   getCookie: function getCookie(name) {
     var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -360,7 +355,7 @@ var GameControl = function (_Component) {
 
       if (!this[name]) {
         this[name] = Date.now();
-        _Cookie2.default.getCookie(name, this[name]);
+        _Cookie2.default.setCookie(name, this[name]);
       }
 
       return this[name];
@@ -369,6 +364,12 @@ var GameControl = function (_Component) {
     key: 'getUser',
     value: function getUser() {
       return this.getInfoFromCookie('user');
+    }
+  }, {
+    key: 'setUser',
+    value: function setUser(user) {
+      _Cookie2.default.setCookie('user', user);
+      this.user = user;
     }
   }, {
     key: 'getRoom',
