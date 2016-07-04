@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as $ from 'jquery';
 
 import Cookie from './../Cookie.js';
+import Event, { CustomEvents } from './../Event.js';
 
 import Status from './Status.jsx';
 import Menu from './Menu.jsx';
@@ -11,22 +12,45 @@ class GameControl extends Component {
   constructor(props) {
     super(props);
 
-    let user = this.getUser();
-    let room = this.getRoom();
+    this.createGame = this.createGame.bind(this);
+    this.joinGame = this.joinGame.bind(this);
 
-    $.getJSON('/api/createroom', { user, room }, (data) => {
-      user = data.user;
-      room = data.room;
+    this.getUser = this.getUser.bind(this);
+    this.getRoom = this.getRoom.bind(this);
 
-      if (user && room) {
-        this.user = user;
-        this.room = room;
-      } else {
-        this.dbLoadError();
-      }
-    }).catch((...args) => {
-      this.dbLoadError();
-    });
+    this.state = {
+      showMenu: true,
+      showStatus: false,
+      multiPlayer: false,
+    };
+
+    this.onSubmitChoose = this.onSubmitChoose.bind(this);
+
+    Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
+  }
+
+  onSubmitChoose(value) {
+    if (!this.state.multiPlayer) {
+      const otherChoose = (Math.random() * 3) | 0;
+      const result = (3 + otherChoose - value) % 3;
+
+      this.setState({
+        otherChoose,
+        result,
+        showStatus: true
+      });
+    } else {
+      const user = this.getUser();
+      const room = this.getRoom();
+      const punch = value;
+      $.getJSON(
+        '/api/punch',
+        {
+          user,
+          room,
+          punch
+        });
+    }
   }
 
   getInfoFromCookie(name) {
@@ -50,6 +74,11 @@ class GameControl extends Component {
     return this.getInfoFromCookie('room');
   }
 
+  setRoom(room) {
+    Cookie.setCookie('room', room);
+    this.room = room;
+  }
+
   dbLoadError() {
     this.singlePlayerGame();
   }
@@ -58,14 +87,45 @@ class GameControl extends Component {
   }
 
   multiPlayersGame() {
+    this.setState({
+      showMenu: false,
+      multiPlayer: true
+    });
+  }
+
+  createGame() {
+    const user = this.getUser();
+
+    $.getJSON('/api/createroom', { user })
+      .then((data) => {
+        const room = data.room;
+
+        if (room) {
+          this.setRoom(room);
+
+          this.multiPlayersGame();
+        } else {
+          this.dbLoadError();
+        }
+      })
+      .catch((...args) => {
+        this.dbLoadError();
+      });
+  }
+
+  joinGame() {
   }
 
   render() {
     return (
       <div className="game-control">
         <Choose />
-        <Status />
-        <Menu />
+        <Status
+          show={this.state.showStatus}
+          otherChoose={this.state.otherChoose}
+          result={this.state.result}
+        />
+        <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
       </div>
     );
   }

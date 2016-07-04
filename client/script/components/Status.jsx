@@ -1,42 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-import Event, { CustomEvents } from './../Event.js';
-
-const propTypes = {};
+const propTypes = {
+  show: PropTypes.bool,
+  otherChoose: PropTypes.number,
+  result: PropTypes.number,
+};
 class Status extends Component {
   constructor(props) {
     super(props);
-
-    this.onSubmitChoose = this.onSubmitChoose.bind(this);
-
-    Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
 
     this.state = {
       show: false,
     };
   }
 
-  onSubmitChoose(value) {
-    const otherChoose = (Math.random() * 3) | 0;
-    const result = (3 + otherChoose - value) % 3;
-
-    this.setState({
-      otherChoose,
-      result,
-      show: true
-    });
-  }
-
   getClasses() {
-    return `result ${this.state.show ? 'result--display' : ''}`;
+    return `result ${this.props.show ? 'result--display' : ''}`;
   }
 
   getChooseString() {
-    return Status.chooseValueStringMap[this.state.otherChoose];
+    return Status.chooseValueStringMap[this.props.otherChoose];
   }
 
   getResultString() {
-    return Status.resultValueStringMap[this.state.result];
+    return Status.resultValueStringMap[this.props.result];
   }
 
   render() {

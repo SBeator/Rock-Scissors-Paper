@@ -1,49 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
-import Event, { CustomEvents } from './../Event.js';
+const propTypes = {
+  show: PropTypes.bool,
+  createGame: PropTypes.func,
+  joinGame: PropTypes.func,
+};
 
-const propTypes = {};
 class Menu extends Component {
   constructor(props) {
     super(props);
 
-    this.onSubmitChoose = this.onSubmitChoose.bind(this);
-
-    Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
-
-    this.state = {
-      show: false,
-    };
+    this.onClick = this.onClick.bind(this);
   }
 
-  onSubmitChoose(value) {
-    const otherChoose = (Math.random() * 3) | 0;
-    const result = (3 + otherChoose - value) % 3;
+  onClick(event) {
+    const target = event.target;
+    const menu = target.dataset.menu;
 
-    this.setState({
-      otherChoose,
-      result,
-      show: true
-    });
+    switch (menu) {
+      case 'create':
+        this.props.createGame();
+        break;
+      case 'join':
+        this.props.joinGame();
+        break;
+      default:
+        break;
+    }
   }
 
   getClasses() {
-    return `result ${this.state.show ? 'result--display' : ''}`;
-  }
-
-  getChooseString() {
-    return Menu.chooseValueStringMap[this.state.otherChoose];
-  }
-
-  getResultString() {
-    return Menu.resultValueStringMap[this.state.result];
+    return `menu ${this.props.show ? '' : 'hide'}`;
   }
 
   render() {
     return (
-      <div className="menu" >
-        <p>对方出的是：{this.getChooseString()}</p>
-        <p>{this.getResultString()}</p>
+      <div className={this.getClasses()} >
+        <button className="btn" onClick={this.onClick} data-menu="create">Create Game</button>
+        <button className="btn" onClick={this.onClick} data-menu="join">Join Game</button>
       </div>
     );
   }
