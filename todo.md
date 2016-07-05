@@ -2,10 +2,11 @@
 
 ## To do
 - Add multiple player support for Game
-  - Add wait logic and status changing
+  - ~~Add wait logic and status changing~~
   - Add join room logic
-  - Add punch and get punch status logic
+  - ~~Add punch and get punch status logic~~
   - People can see result and restart punch
+- User promise to write all the logic in db.js
 
 
 ## bugs
@@ -18,3 +19,5 @@
 - ~~Join room will create room itself.~~
 - db.js: Don't need find room if room doesn't exist
 - Only return nessecery data
+- Add error handler for playing
+- Don't user hard code string
