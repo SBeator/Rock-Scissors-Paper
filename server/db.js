@@ -236,7 +236,7 @@ function punch(data, callback) {
       } else {
         const findData = existData[0];
         const usersPunch = {
-          [data.user]: 1
+          [data.user]: data.punch
         };
 
         update(db, roomData, usersPunch, (updateError, result) => {

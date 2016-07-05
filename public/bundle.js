@@ -61,7 +61,7 @@ var Event = {
       var handlers = eventHandlerMap[name];
       handlers.forEach(function (handler) {
         setTimeout(function () {
-          handler(args);
+          handler.apply(undefined, args);
         }, 0);
       });
     }
@@ -115,14 +115,15 @@ var _Event2 = _interopRequireDefault(_Event);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var propTypes = {
+  gameType: _react.PropTypes.string
+};
+
 var Choose = function (_Component) {
   (0, _inherits3.default)(Choose, _Component);
 
   function Choose(props) {
     (0, _classCallCheck3.default)(this, Choose);
-
-
-    // Event.bind(EventList.SUBMIT_CHOOSE, () => {});
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Choose).call(this, props));
 
@@ -132,9 +133,21 @@ var Choose = function (_Component) {
   }
 
   (0, _createClass3.default)(Choose, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.refs.submit.disabled = this.props.gameType !== 'ready';
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      this.refs.submit.disabled = this.props.gameType !== 'ready';
+    }
+  }, {
     key: 'onChooseChange',
     value: function onChooseChange() {
-      this.refs.submit.disabled = false;
+      if (this.props.gameType === 'ready') {
+        this.refs.submit.disabled = false;
+      }
     }
   }, {
     key: 'onSubmit',
@@ -204,6 +217,8 @@ var Choose = function (_Component) {
   }]);
   return Choose;
 }(_react.Component);
+
+Choose.propTypes = propTypes;
 
 exports.default = Choose;
 
@@ -314,7 +329,8 @@ var GameControl = function (_Component) {
     _this.state = {
       showMenu: true,
       showStatus: false,
-      multiPlayer: false
+      multiPlayer: false,
+      gameType: 'ide'
     };
 
     _this.onSubmitChoose = _this.onSubmitChoose.bind(_this);
@@ -325,10 +341,12 @@ var GameControl = function (_Component) {
 
   (0, _createClass3.default)(GameControl, [{
     key: 'onSubmitChoose',
-    value: function onSubmitChoose(value) {
+    value: function onSubmitChoose(choose) {
+      var _this2 = this;
+
       if (!this.state.multiPlayer) {
         var otherChoose = Math.random() * 3 | 0;
-        var result = (3 + otherChoose - value) % 3;
+        var result = (3 + otherChoose - choose) % 3;
 
         this.setState({
           otherChoose: otherChoose,
@@ -338,11 +356,13 @@ var GameControl = function (_Component) {
       } else {
         var user = this.getUser();
         var room = this.getRoom();
-        var punch = value;
+        var punch = choose;
         $.getJSON('/api/punch', {
           user: user,
           room: room,
           punch: punch
+        }).then(function () {
+          _this2.waitOtherPlayPunch(choose);
         });
       }
     }
@@ -395,13 +415,75 @@ var GameControl = function (_Component) {
     value: function multiPlayersGame() {
       this.setState({
         showMenu: false,
-        multiPlayer: true
+        multiPlayer: true,
+        gameType: 'waiting'
+      });
+
+      this.waitOtherPlayerJoin();
+    }
+  }, {
+    key: 'waitOtherPlayerJoin',
+    value: function waitOtherPlayerJoin() {
+      var _this3 = this;
+
+      var room = this.getRoom();
+      $.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
+        if (data.users.length > 1) {
+          _this3.otherPlayerIsJoined();
+        } else {
+          setTimeout(function () {
+            _this3.waitOtherPlayerJoin();
+          }, 1000);
+        }
+      });
+    }
+  }, {
+    key: 'otherPlayerIsJoined',
+    value: function otherPlayerIsJoined() {
+      this.setState({
+        gameType: 'ready'
+      });
+    }
+  }, {
+    key: 'waitOtherPlayPunch',
+    value: function waitOtherPlayPunch(choose) {
+      var _this4 = this;
+
+      var room = this.getRoom();
+      $.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
+        if (data.users && data.users.length === 2 && data[data.users[0]] !== undefined && data[data.users[1]] !== undefined) {
+          (function () {
+            var currentUser = _this4.getUser();
+
+            var otherUser = data.users.filter(function (user) {
+              return currentUser !== user;
+            });
+            var otherChoose = data[otherUser];
+
+            _this4.otherPlayerIsPunched(choose, otherChoose);
+          })();
+        } else {
+          setTimeout(function () {
+            _this4.waitOtherPlayPunch(choose);
+          }, 1000);
+        }
+      });
+    }
+  }, {
+    key: 'otherPlayerIsPunched',
+    value: function otherPlayerIsPunched(choose, otherChoose) {
+      var result = (3 + otherChoose - choose) % 3;
+
+      this.setState({
+        otherChoose: otherChoose,
+        result: result,
+        showStatus: true
       });
     }
   }, {
     key: 'createGame',
     value: function createGame() {
-      var _this2 = this;
+      var _this5 = this;
 
       var user = this.getUser();
 
@@ -409,14 +491,14 @@ var GameControl = function (_Component) {
         var room = data.room;
 
         if (room) {
-          _this2.setRoom(room);
+          _this5.setRoom(room);
 
-          _this2.multiPlayersGame();
+          _this5.multiPlayersGame();
         } else {
-          _this2.dbLoadError();
+          _this5.dbLoadError();
         }
       }).catch(function () {
-        _this2.dbLoadError();
+        _this5.dbLoadError();
       });
     }
   }, {
@@ -428,7 +510,9 @@ var GameControl = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'game-control' },
-        _react2.default.createElement(_Choose2.default, null),
+        _react2.default.createElement(_Choose2.default, {
+          gameType: this.state.gameType
+        }),
         _react2.default.createElement(_Status2.default, {
           show: this.state.showStatus,
           otherChoose: this.state.otherChoose,

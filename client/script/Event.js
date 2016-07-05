@@ -10,7 +10,7 @@ const Event = {
       const handlers = eventHandlerMap[name];
       handlers.forEach((handler) => {
         setTimeout(() => {
-          handler(args);
+          handler(...args);
         }, 0);
       });
     }

@@ -1,18 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import Event, { CustomEvents } from './../Event.js';
+
+const propTypes = {
+  gameType: PropTypes.string,
+};
 
 class Choose extends Component {
   constructor(props) {
     super(props);
 
-    // Event.bind(EventList.SUBMIT_CHOOSE, () => {});
     this.onChooseChange = this.onChooseChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.refs.submit.disabled = (this.props.gameType !== 'ready');
+  }
+
+  componentDidUpdate() {
+    this.refs.submit.disabled = (this.props.gameType !== 'ready');
+  }
+
   onChooseChange() {
-    this.refs.submit.disabled = false;
+    if (this.props.gameType === 'ready') {
+      this.refs.submit.disabled = false;
+    }
   }
 
   onSubmit(event) {
@@ -63,5 +76,7 @@ class Choose extends Component {
       </div>);
   }
 }
+
+Choose.propTypes = propTypes;
 
 export default Choose;

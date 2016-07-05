@@ -5,6 +5,7 @@ const propTypes = {
   otherChoose: PropTypes.number,
   result: PropTypes.number,
 };
+
 class Status extends Component {
   constructor(props) {
     super(props);
