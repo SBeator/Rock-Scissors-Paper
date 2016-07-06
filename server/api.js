@@ -81,15 +81,15 @@ router.get('/createroom', (req, res, next) => {
 });
 
 router.get('/joinroom', (req, res, next) => {
-  const roomData = getRoomData(req);
+  const userAndRoomData = getUserAndRoomData(req);
 
-  if (!roomData.room) {
+  if (!userAndRoomData.room) {
     res.send({});
     console.log('empty room');
     return;
   }
 
-  joinRoom(roomData, (err, data) => {
+  joinRoom(userAndRoomData, (err, data) => {
     if (err) {
       console.log('joinRoom error', err);
       next(err);

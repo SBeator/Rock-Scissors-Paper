@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react';
 
 const propTypes = {
   show: PropTypes.bool,
-  otherChoose: PropTypes.number,
+  otherChoose: PropTypes.string,
   result: PropTypes.number,
+  room: PropTypes.string
 };
 
 class Status extends Component {
@@ -16,7 +17,8 @@ class Status extends Component {
   }
 
   getClasses() {
-    return `result ${this.props.show ? 'result--display' : ''}`;
+    // return `result ${this.props.show ? 'result--display' : ''}`;
+    return 'result result--display';
   }
 
   getChooseString() {
@@ -27,9 +29,22 @@ class Status extends Component {
     return Status.resultValueStringMap[this.props.result];
   }
 
+  getRoomInfo() {
+    let roomInfo;
+
+    if (this.props.room) {
+      roomInfo = <p>Room: {this.props.room}</p>;
+    } else {
+      roomInfo = '';
+    }
+
+    return roomInfo;
+  }
+
   render() {
     return (
       <div className={this.getClasses()} >
+        {this.getRoomInfo()}
         <p>对方出的是：{this.getChooseString()}</p>
         <p>{this.getResultString()}</p>
       </div>

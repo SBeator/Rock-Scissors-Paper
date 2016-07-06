@@ -3,9 +3,11 @@
 ## To do
 - Add multiple player support for Game
   - ~~Add wait logic and status changing~~
-  - Add join room logic
+  - ~~Add join room logic~~
   - ~~Add punch and get punch status logic~~
-  - People can see result and restart punch
+  - People can see result
+  - Restart punch
+  - Share join link
 - User promise to write all the logic in db.js
 
 
@@ -21,3 +23,4 @@
 - Only return nessecery data
 - Add error handler for playing
 - Don't user hard code string
+- Game layout is bad

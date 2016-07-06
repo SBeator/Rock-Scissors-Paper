@@ -58,16 +58,24 @@ class GameControl extends Component {
   }
 
   getInfoFromCookie(name) {
-    if (!this[name]) {
-      this[name] = Cookie.getCookie(name);
+    if (!this.state[name]) {
+      this.state[name] = Cookie.getCookie(name);
     }
 
-    if (!this[name]) {
-      this[name] = Date.now();
-      Cookie.setCookie(name, this[name]);
+    if (!this.state[name]) {
+      this.state[name] = Date.now();
+      Cookie.setCookie(name, this.state[name]);
     }
 
-    return this[name];
+    return this.state[name];
+  }
+
+  setInfoToCookie(name, value) {
+    Cookie.setCookie(name, value);
+
+    this.setState({
+      [name]: value
+    });
   }
 
   getUser() {
@@ -75,8 +83,7 @@ class GameControl extends Component {
   }
 
   setUser(user) {
-    Cookie.setCookie('user', user);
-    this.user = user;
+    this.setInfoToCookie('user', user);
   }
 
   getRoom() {
@@ -84,8 +91,7 @@ class GameControl extends Component {
   }
 
   setRoom(room) {
-    Cookie.setCookie('room', room);
-    this.room = room;
+    this.setInfoToCookie('room', room);
   }
 
   dbLoadError() {
@@ -177,7 +183,16 @@ class GameControl extends Component {
       });
   }
 
-  joinGame() {
+  joinGame(room) {
+    const user = this.getUser();
+    $.getJSON('/api/joinroom', { room, user })
+      .then((data) => {
+        this.setRoom(room);
+        this.multiPlayersGame();
+      })
+      .catch((...args) => {
+        this.dbLoadError();
+      });
   }
 
   render() {
@@ -190,6 +205,7 @@ class GameControl extends Component {
           show={this.state.showStatus}
           otherChoose={this.state.otherChoose}
           result={this.state.result}
+          room={this.state.room}
         />
         <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
       </div>

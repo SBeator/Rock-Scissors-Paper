@@ -22,7 +22,7 @@ class Menu extends Component {
         this.props.createGame();
         break;
       case 'join':
-        this.props.joinGame();
+        this.props.joinGame(this.refs.room.value);
         break;
       default:
         break;
@@ -38,6 +38,8 @@ class Menu extends Component {
       <div className={this.getClasses()} >
         <button className="btn" onClick={this.onClick} data-menu="create">Create Game</button>
         <button className="btn" onClick={this.onClick} data-menu="join">Join Game</button>
+        <label htmlFor="room-number">Room:</label>
+        <input type="text" id="room-number" ref="room" />
       </div>
     );
   }
