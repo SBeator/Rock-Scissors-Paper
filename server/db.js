@@ -235,11 +235,11 @@ function punch(data, callback) {
         dbCallback(new Error('Room doesn\'t not exist'));
       } else {
         const findData = existData[0];
-        const usersPunch = {
-          [data.user]: data.punch
-        };
+        const punches = findData.punches || {};
 
-        update(db, roomData, usersPunch, (updateError, result) => {
+        punches[data.user] = data.punch;
+
+        update(db, roomData, { punches }, (updateError, result) => {
           console.log('punch update error:', updateError);
           console.log('punch update result:', result);
           if (updateError) {

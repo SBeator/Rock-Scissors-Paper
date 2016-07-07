@@ -460,14 +460,14 @@ var GameControl = function (_Component) {
 
       var room = this.getRoom();
       $.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
-        if (data.users && data.users.length === 2 && data[data.users[0]] !== undefined && data[data.users[1]] !== undefined) {
+        if (data.users && data.users.length === 2 && data.punches[data.users[0]] !== undefined && data.punches[data.users[1]] !== undefined) {
           (function () {
             var currentUser = _this4.getUser();
 
             var otherUser = data.users.filter(function (user) {
               return currentUser !== user;
             });
-            var otherChoose = data[otherUser];
+            var otherChoose = data.punches[otherUser];
 
             _this4.otherPlayerIsPunched(choose, otherChoose);
           })();

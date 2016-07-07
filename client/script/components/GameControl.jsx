@@ -137,12 +137,12 @@ class GameControl extends Component {
       .then((data) => {
         if (data.users &&
             data.users.length === 2 &&
-            data[data.users[0]] !== undefined &&
-            data[data.users[1]] !== undefined) {
+            data.punches[data.users[0]] !== undefined &&
+            data.punches[data.users[1]] !== undefined) {
           const currentUser = this.getUser();
 
           const otherUser = data.users.filter((user) => currentUser !== user);
-          const otherChoose = data[otherUser];
+          const otherChoose = data.punches[otherUser];
 
           this.otherPlayerIsPunched(choose, otherChoose);
         } else {
