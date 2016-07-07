@@ -202,7 +202,24 @@ function findRoom(data, callback) {
       } else if (!existData.length) {
         dbCallback(new Error('Room doesn\'t not exist'));
       } else {
-        dbCallback(null, existData[0]);
+        const findData = existData[0];
+
+        if (!data.removePunch || !data.user) {
+          dbCallback(null, findData);
+        } else {
+          const removePunch = !findData.removePunch;
+          const punches = removePunch ? findData.punches : {};
+
+          update(db, roomData, { removePunch, punches }, (updateError, result) => {
+            console.log('punch update error:', updateError);
+            console.log('punch update result:', result);
+            if (updateError) {
+              dbCallback(updateError);
+            } else {
+              dbCallback(updateError, findData);
+            }
+          });
+        }
       }
     });
   });

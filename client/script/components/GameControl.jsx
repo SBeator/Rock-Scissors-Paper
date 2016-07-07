@@ -133,18 +133,28 @@ class GameControl extends Component {
 
   waitOtherPlayPunch(choose) {
     const room = this.getRoom();
-    $.getJSON('/api/getroomstatus', { room })
+    const user = this.getUser();
+    $.getJSON(
+      '/api/getroomstatus',
+      {
+        room
+      })
       .then((data) => {
         if (data.users &&
             data.users.length === 2 &&
             data.punches[data.users[0]] !== undefined &&
             data.punches[data.users[1]] !== undefined) {
-          const currentUser = this.getUser();
-
-          const otherUser = data.users.filter((user) => currentUser !== user);
+          const otherUser = data.users.filter((dataUser) => user !== dataUser);
           const otherChoose = data.punches[otherUser];
 
           this.otherPlayerIsPunched(choose, otherChoose);
+
+          $.getJSON('/api/getroomstatus',
+            {
+              room,
+              user,
+              removePunch: true
+            });
         } else {
           setTimeout(() => {
             this.waitOtherPlayPunch(choose);

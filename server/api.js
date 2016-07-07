@@ -5,9 +5,13 @@ import { insertData, listData, createRoom, joinRoom, findRoom, punch } from './d
 const router = express.Router();
 
 function getUserData(req) {
+  console.log(req);
+  
   const query = req.query;
+  console.log('b');
 
   const user = query.user;
+  console.log('c');
 
   return { user };
 }
@@ -23,9 +27,7 @@ function getRoomData(req) {
 function getPunchData(req) {
   const query = req.query;
 
-  const punch = query.punch;
-
-  return { punch };
+  return { punch: query.punch };
 }
 
 function getUserAndRoomData(req) {
@@ -103,11 +105,31 @@ router.get('/joinroom', (req, res, next) => {
 router.get('/getroomstatus', (req, res, next) => {
   const roomData = getRoomData(req);
 
+  console.log('getroomstatus');
+
   if (!roomData.room) {
-    res.send({});
     console.log('Wrong query!!!!!!');
+    res.send({});
     return;
   }
+  console.log('3');
+
+  const userData = getUserData(req);
+
+  console.log('4');
+  if (req.query.removePunch && userData.user) {
+    console.log('1');
+
+    Object.assign(
+      roomData,
+      userData,
+      {
+        removePunch: true
+      });
+    console.log('2');
+  }
+
+  console.log('roomData:', roomData);
 
   findRoom(roomData, (err, data) => {
     if (err) {
