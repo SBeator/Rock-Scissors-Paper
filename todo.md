@@ -5,8 +5,8 @@
   - ~~Add wait logic and status changing~~
   - ~~Add join room logic~~
   - ~~Add punch and get punch status logic~~
-  - People can see result
-  - Restart punch
+  - ~~People can see result~~
+  - ~~Restart punch~~
   - Share join link
 - User promise to write all the logic in db.js
 
