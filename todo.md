@@ -9,6 +9,7 @@
   - ~~Restart punch~~
   - Share join link
 - User promise to write all the logic in db.js
+- User i18n strings
 
 
 ## bugs
