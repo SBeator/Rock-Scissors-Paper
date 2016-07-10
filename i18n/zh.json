@@ -2,8 +2,8 @@
 {
   "createGame": "创建游戏",
   "joinGame": "加入游戏",
-  "roomTitle": "房间号",
-  "otherChooseFormat": "对手出的是：{0}",
+  "roomTitle": "房间号：{{room}}",
+  "otherChooseFormat": "对手出的是：{{choose}}",
   "resultWin": "你赢了",
   "resultLose": "你输了",
   "resultDraw": "打平了",

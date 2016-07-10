@@ -832,25 +832,25 @@ _reactDom2.default.render(_react2.default.createElement(_Game2.default, null), d
 
 },{"../../i18n/en.json":9,"../../i18n/zh.json":10,"./components/Game.jsx":4,"i18n-core":126,"react":265,"react-dom":136}],9:[function(require,module,exports){
 module.exports={
-  "createGame": "创建游戏",
-  "joinGame": "加入游戏",
-  "roomTitle": "房间号",
-  "otherChooseFormat": "对手出的是：{0}",
-  "resultWin": "你赢了",
+  "createGame": "Create game",
+  "joinGame": "Join game",
+  "roomTitle": "Room: {{room}}",
+  "otherChooseFormat": "His punsh is: {0}",
+  "resultWin": "You win!",
   "resultLose": "You lose!",
-  "resultDraw": "打平了",
-  "chooseRock": "石头",
-  "chooseScissors": "剪子",
-  "choosePaper": "布",
-  "punch": "出拳"
+  "resultDraw": "It draw",
+  "chooseRock": "Rock",
+  "chooseScissors": "Scissors",
+  "choosePaper": "Paper",
+  "punch": "Punch"
 }
 },{}],10:[function(require,module,exports){
 module.exports=
 {
   "createGame": "创建游戏",
   "joinGame": "加入游戏",
-  "roomTitle": "房间号",
-  "otherChooseFormat": "对手出的是：{0}",
+  "roomTitle": "房间号：{{room}}",
+  "otherChooseFormat": "对手出的是：{{choose}}",
   "resultWin": "你赢了",
   "resultLose": "你输了",
   "resultDraw": "打平了",

@@ -1,13 +1,13 @@
 {
-  "createGame": "创建游戏",
-  "joinGame": "加入游戏",
-  "roomTitle": "房间号",
-  "otherChooseFormat": "对手出的是：{0}",
-  "resultWin": "你赢了",
+  "createGame": "Create game",
+  "joinGame": "Join game",
+  "roomTitle": "Room: {{room}}",
+  "otherChooseFormat": "His punsh is: {0}",
+  "resultWin": "You win!",
   "resultLose": "You lose!",
-  "resultDraw": "打平了",
-  "chooseRock": "石头",
-  "chooseScissors": "剪子",
-  "choosePaper": "布",
-  "punch": "出拳"
+  "resultDraw": "It draw",
+  "chooseRock": "Rock",
+  "chooseScissors": "Scissors",
+  "choosePaper": "Paper",
+  "punch": "Punch"
 }
