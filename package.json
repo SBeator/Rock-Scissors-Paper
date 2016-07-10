@@ -44,6 +44,7 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^18.1.0",
+    "i18n-core": "^2.1.1",
     "jquery": "^3.0.0",
     "mongodb": "^2.1.18",
     "nodemon": "^1.9.2",

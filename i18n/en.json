@@ -4,7 +4,7 @@
   "roomTitle": "房间号",
   "otherChooseFormat": "对手出的是：{0}",
   "resultWin": "你赢了",
-  "resultLose": "你输了",
+  "resultLose": "You lose!",
   "resultDraw": "打平了",
   "chooseRock": "石头",
   "chooseScissors": "剪子",
