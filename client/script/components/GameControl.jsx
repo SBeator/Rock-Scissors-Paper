@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 import Cookie from './../Cookie.js';
 import Event, { CustomEvents } from './../Event.js';

@@ -290,7 +290,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _jquery = require('jquery');
 
-var $ = _interopRequireWildcard(_jquery);
+var _jquery2 = _interopRequireDefault(_jquery);
 
 var _Cookie = require('./../Cookie.js');
 
@@ -311,8 +311,6 @@ var _Menu2 = _interopRequireDefault(_Menu);
 var _Choose = require('./Choose.jsx');
 
 var _Choose2 = _interopRequireDefault(_Choose);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -361,7 +359,7 @@ var GameControl = function (_Component) {
         var user = this.getUser();
         var room = this.getRoom();
         var punch = choose;
-        $.getJSON('/api/punch', {
+        _jquery2.default.getJSON('/api/punch', {
           user: user,
           room: room,
           punch: punch
@@ -436,7 +434,7 @@ var GameControl = function (_Component) {
       var _this3 = this;
 
       var room = this.getRoom();
-      $.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
+      _jquery2.default.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
         if (data.users.length > 1) {
           _this3.otherPlayerIsJoined();
         } else {
@@ -460,7 +458,7 @@ var GameControl = function (_Component) {
 
       var room = this.getRoom();
       var user = this.getUser();
-      $.getJSON('/api/getroomstatus', {
+      _jquery2.default.getJSON('/api/getroomstatus', {
         room: room
       }).then(function (data) {
         if (data.users && data.users.length === 2 && data.punches[data.users[0]] !== undefined && data.punches[data.users[1]] !== undefined) {
@@ -471,7 +469,7 @@ var GameControl = function (_Component) {
 
           _this4.otherPlayerIsPunched(choose, otherChoose);
 
-          $.getJSON('/api/getroomstatus', {
+          _jquery2.default.getJSON('/api/getroomstatus', {
             room: room,
             user: user,
             removePunch: true
@@ -501,7 +499,7 @@ var GameControl = function (_Component) {
 
       var user = this.getUser();
 
-      $.getJSON('/api/createroom', { user: user }).then(function (data) {
+      _jquery2.default.getJSON('/api/createroom', { user: user }).then(function (data) {
         var room = data.room;
 
         if (room) {
@@ -521,7 +519,7 @@ var GameControl = function (_Component) {
       var _this6 = this;
 
       var user = this.getUser();
-      $.getJSON('/api/joinroom', { room: room, user: user }).then(function (data) {
+      _jquery2.default.getJSON('/api/joinroom', { room: room, user: user }).then(function (data) {
         _this6.setRoom(room);
         _this6.multiPlayersGame();
       }).catch(function () {
@@ -585,6 +583,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
@@ -602,6 +604,8 @@ var Menu = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Menu).call(this, props));
 
     _this.onClick = _this.onClick.bind(_this);
+    _this.onJoinRoomSubmit = _this.onJoinRoomSubmit.bind(_this);
+    _this.onRoomChange = _this.onRoomChange.bind(_this);
     return _this;
   }
 
@@ -616,10 +620,30 @@ var Menu = function (_Component) {
           this.props.createGame();
           break;
         case 'join':
-          this.props.joinGame(this.refs.room.value);
+          (0, _jquery2.default)(this.refs.form).slideDown();
           break;
         default:
           break;
+      }
+    }
+  }, {
+    key: 'onRoomChange',
+    value: function onRoomChange() {
+      var roomNumber = this.refs.room.value;
+
+      if (roomNumber) {
+        this.refs.submit.disabled = false;
+      }
+    }
+  }, {
+    key: 'onJoinRoomSubmit',
+    value: function onJoinRoomSubmit(event) {
+      event.preventDefault();
+
+      var roomNumber = this.refs.room.value;
+
+      if (roomNumber) {
+        this.props.joinGame(this.refs.room.value);
       }
     }
   }, {
@@ -644,11 +668,22 @@ var Menu = function (_Component) {
           'Join Game'
         ),
         _react2.default.createElement(
-          'label',
-          { htmlFor: 'room-number' },
-          'Room:'
-        ),
-        _react2.default.createElement('input', { type: 'text', id: 'room-number', ref: 'room' })
+          'form',
+          { className: 'menu--join-form hide', ref: 'form', onSubmit: this.onJoinRoomSubmit },
+          _react2.default.createElement(
+            'label',
+            { htmlFor: 'room-number' },
+            'Room:'
+          ),
+          _react2.default.createElement('input', { type: 'text', id: 'room-number', ref: 'room', onChange: this.onRoomChange }),
+          _react2.default.createElement('input', {
+            type: 'submit',
+            className: 'btn',
+            value: '√',
+            disabled: 'disabled',
+            ref: 'submit'
+          })
+        )
       );
     }
   }]);
@@ -659,7 +694,7 @@ Menu.propTypes = propTypes;
 
 exports.default = Menu;
 
-},{"babel-runtime/core-js/object/get-prototype-of":13,"babel-runtime/helpers/classCallCheck":17,"babel-runtime/helpers/createClass":18,"babel-runtime/helpers/inherits":20,"babel-runtime/helpers/possibleConstructorReturn":21,"react":265}],7:[function(require,module,exports){
+},{"babel-runtime/core-js/object/get-prototype-of":13,"babel-runtime/helpers/classCallCheck":17,"babel-runtime/helpers/createClass":18,"babel-runtime/helpers/inherits":20,"babel-runtime/helpers/possibleConstructorReturn":21,"jquery":132,"react":265}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
