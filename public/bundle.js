@@ -239,17 +239,25 @@ var _GameControl2 = _interopRequireDefault(_GameControl);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Game() {
+var propTypes = {
+  roomToJoin: _react.PropTypes.string
+};
+
+function Game(_ref) {
+  var roomToJoin = _ref.roomToJoin;
+
   return _react2.default.createElement(
     'div',
     { className: 'game' },
     _react2.default.createElement(
       'div',
       { className: 'game__panel' },
-      _react2.default.createElement(_GameControl2.default, null)
+      _react2.default.createElement(_GameControl2.default, { roomToJoin: roomToJoin })
     )
   );
 }
+
+Game.propTypes = propTypes;
 
 exports.default = Game;
 
@@ -314,6 +322,10 @@ var _Choose2 = _interopRequireDefault(_Choose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var propTypes = {
+  roomToJoin: _react.PropTypes.string
+};
+
 var GameControl = function (_Component) {
   (0, _inherits3.default)(GameControl, _Component);
 
@@ -337,6 +349,10 @@ var GameControl = function (_Component) {
     _this.onSubmitChoose = _this.onSubmitChoose.bind(_this);
 
     _Event2.default.bindEvent(_Event.CustomEvents.SUBMIT_CHOOSE, _this.onSubmitChoose);
+
+    if (_this.props.roomToJoin) {
+      _this.joinGame(_this.props.roomToJoin);
+    }
     return _this;
   }
 
@@ -570,7 +586,7 @@ GameControl.resultValueStringMap = {
   2: '你输了'
 };
 
-GameControl.propTypes = {};
+GameControl.propTypes = propTypes;
 
 exports.default = GameControl;
 
@@ -867,9 +883,14 @@ console.log(i18n.lang('zh').__('resultLose'));
 console.log(i18n.lang('en').__('resultLose'));
 /* eslint-enable */
 
-// hello!
+var match = location.search.match(/[\?&]joinroom=(\d*)/);
 
-_reactDom2.default.render(_react2.default.createElement(_Game2.default, null), document.getElementById('root'));
+var roomToJoin = void 0;
+if (match) {
+  roomToJoin = match[1];
+}
+
+_reactDom2.default.render(_react2.default.createElement(_Game2.default, { roomToJoin: roomToJoin }), document.getElementById('root'));
 
 },{"../../i18n/en.json":9,"../../i18n/zh.json":10,"./components/Game.jsx":4,"i18n-core":126,"react":265,"react-dom":136}],9:[function(require,module,exports){
 module.exports={

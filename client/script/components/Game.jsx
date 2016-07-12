@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import GameControl from './GameControl.jsx';
 
-function Game() {
+const propTypes = {
+  roomToJoin: PropTypes.string
+};
+
+function Game({ roomToJoin }) {
   return (
     <div className="game">
       <div className="game__panel">
-        <GameControl />
+        <GameControl roomToJoin={roomToJoin} />
       </div>
     </div>);
 }
+
+Game.propTypes = propTypes;
 
 export default Game;

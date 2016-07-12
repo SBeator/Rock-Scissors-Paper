@@ -17,9 +17,15 @@ console.log(i18n.lang('zh').__('resultLose'));
 console.log(i18n.lang('en').__('resultLose'));
 /* eslint-enable */
 
- // hello!
+
+const match = location.search.match(/[\?&]joinroom=(\d*)/);
+
+let roomToJoin;
+if (match) {
+  roomToJoin = match[1];
+}
 
 ReactDOM.render(
-  <Game />,
+  <Game roomToJoin={roomToJoin} />,
   document.getElementById('root')
 );

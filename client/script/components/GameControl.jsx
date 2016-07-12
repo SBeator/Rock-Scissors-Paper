@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import $ from 'jquery';
 
 import Cookie from './../Cookie.js';
@@ -7,6 +7,10 @@ import Event, { CustomEvents } from './../Event.js';
 import Status from './Status.jsx';
 import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
+
+const propTypes = {
+  roomToJoin: PropTypes.string
+};
 
 class GameControl extends Component {
   constructor(props) {
@@ -27,6 +31,10 @@ class GameControl extends Component {
     this.onSubmitChoose = this.onSubmitChoose.bind(this);
 
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
+
+    if (this.props.roomToJoin) {
+      this.joinGame(this.props.roomToJoin);
+    }
   }
 
   onSubmitChoose(choose) {
@@ -254,8 +262,6 @@ GameControl.resultValueStringMap = {
 };
 
 
-GameControl.propTypes = {
-
-};
+GameControl.propTypes = propTypes;
 
 export default GameControl;
