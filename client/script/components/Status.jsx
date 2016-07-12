@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import Share from './Share.jsx';
+
 const propTypes = {
   otherChoose: PropTypes.string,
   result: PropTypes.number,
@@ -46,12 +48,8 @@ class Status extends Component {
 
   getShareBlock() {
     return this.state.showShareBlock ?
-        (<div className="status__share" >
-          <div className="status__share-close" onClick={this.onClickCloseShare}>×</div>
-          <p>Please Share this link to your friend</p>
-          <p>{this.getShareLinkString()}</p>
-        </div>) :
-        '';
+      < Share link={this.getShareLinkString()} /> :
+      '';
   }
 
   getRoomInfo() {
