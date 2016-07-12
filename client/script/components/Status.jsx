@@ -4,7 +4,8 @@ const propTypes = {
   show: PropTypes.bool,
   otherChoose: PropTypes.string,
   result: PropTypes.number,
-  room: PropTypes.string
+  room: PropTypes.string,
+  messages: PropTypes.array
 };
 
 class Status extends Component {
@@ -14,11 +15,6 @@ class Status extends Component {
     this.state = {
       show: false,
     };
-  }
-
-  getClasses() {
-    // return `result ${this.props.show ? 'result--display' : ''}`;
-    return 'result result--display';
   }
 
   getChooseString() {
@@ -33,7 +29,7 @@ class Status extends Component {
     let roomInfo;
 
     if (this.props.room) {
-      roomInfo = <p>Room: {this.props.room}</p>;
+      roomInfo = <div className="status__room btn">Room: {this.props.room}</div>;
     } else {
       roomInfo = '';
     }
@@ -41,28 +37,23 @@ class Status extends Component {
     return roomInfo;
   }
 
+  getStatusMessage() {
+    return this.props.messages ?
+      this.props.messages.map(
+        message => <p className="status__message" key={message.slice(4)} >{message}</p>
+        ) :
+      '';
+  }
+
   render() {
     return (
-      <div className={this.getClasses()} >
+      <div className="status" >
         {this.getRoomInfo()}
-        <p>对方出的是：{this.getChooseString()}</p>
-        <p>{this.getResultString()}</p>
+        {this.getStatusMessage()}
       </div>
     );
   }
 }
-
-Status.chooseValueStringMap = {
-  0: '石头',
-  1: '剪刀',
-  2: '布'
-};
-
-Status.resultValueStringMap = {
-  0: '打平了',
-  1: '你赢了',
-  2: '你输了'
-};
 
 Status.propTypes = propTypes;
 

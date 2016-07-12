@@ -20,7 +20,6 @@ class GameControl extends Component {
 
     this.state = {
       showMenu: true,
-      showStatus: false,
       multiPlayer: false,
       gameType: 'ide'
     };
@@ -33,13 +32,8 @@ class GameControl extends Component {
   onSubmitChoose(choose) {
     if (!this.state.multiPlayer) {
       const otherChoose = (Math.random() * 3) | 0;
-      const result = (3 + otherChoose - choose) % 3;
 
-      this.setState({
-        otherChoose,
-        result,
-        showStatus: true
-      });
+      this.setResultMessage(choose, otherChoose);
     } else {
       const user = this.getUser();
       const room = this.getRoom();
@@ -94,6 +88,19 @@ class GameControl extends Component {
     this.setInfoToCookie('room', room);
   }
 
+  setResultMessage(choose, otherChoose) {
+    const result = (3 + otherChoose - choose) % 3;
+
+    const messages = [
+      `对方出的是:${GameControl.chooseValueStringMap[otherChoose]}`,
+      GameControl.resultValueStringMap[result]
+    ];
+
+    this.setState({
+      messages
+    });
+  }
+
   dbLoadError() {
     this.singlePlayerGame();
   }
@@ -102,10 +109,15 @@ class GameControl extends Component {
   }
 
   multiPlayersGame() {
+    const messages = [
+      'Please wait for other player joining'
+    ];
+
     this.setState({
       showMenu: false,
       multiPlayer: true,
-      gameType: 'waiting'
+      gameType: 'waiting',
+      messages
     });
 
     this.waitOtherPlayerJoin();
@@ -126,14 +138,28 @@ class GameControl extends Component {
   }
 
   otherPlayerIsJoined() {
+    const messages = [
+      'Please punch'
+    ];
+
     this.setState({
-      gameType: 'ready'
+      gameType: 'ready',
+      messages
     });
   }
 
   waitOtherPlayPunch(choose) {
     const room = this.getRoom();
     const user = this.getUser();
+
+    const messages = [
+      'please wait other player punch'
+    ];
+
+    this.setState({
+      messages
+    });
+
     $.getJSON(
       '/api/getroomstatus',
       {
@@ -164,13 +190,7 @@ class GameControl extends Component {
   }
 
   otherPlayerIsPunched(choose, otherChoose) {
-    const result = (3 + otherChoose - choose) % 3;
-
-    this.setState({
-      otherChoose,
-      result,
-      showStatus: true
-    });
+    this.setResultMessage(choose, otherChoose);
   }
 
   createGame() {
@@ -212,16 +232,27 @@ class GameControl extends Component {
           gameType={this.state.gameType}
         />
         <Status
-          show={this.state.showStatus}
-          otherChoose={this.state.otherChoose}
-          result={this.state.result}
           room={this.state.room}
+          messages={this.state.messages}
         />
         <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
       </div>
     );
   }
 }
+
+GameControl.chooseValueStringMap = {
+  0: '石头',
+  1: '剪刀',
+  2: '布'
+};
+
+GameControl.resultValueStringMap = {
+  0: '打平了',
+  1: '你赢了',
+  2: '你输了'
+};
+
 
 GameControl.propTypes = {
 

@@ -330,7 +330,6 @@ var GameControl = function (_Component) {
 
     _this.state = {
       showMenu: true,
-      showStatus: false,
       multiPlayer: false,
       gameType: 'ide'
     };
@@ -348,13 +347,8 @@ var GameControl = function (_Component) {
 
       if (!this.state.multiPlayer) {
         var otherChoose = Math.random() * 3 | 0;
-        var result = (3 + otherChoose - choose) % 3;
 
-        this.setState({
-          otherChoose: otherChoose,
-          result: result,
-          showStatus: true
-        });
+        this.setResultMessage(choose, otherChoose);
       } else {
         var user = this.getUser();
         var room = this.getRoom();
@@ -410,6 +404,17 @@ var GameControl = function (_Component) {
       this.setInfoToCookie('room', room);
     }
   }, {
+    key: 'setResultMessage',
+    value: function setResultMessage(choose, otherChoose) {
+      var result = (3 + otherChoose - choose) % 3;
+
+      var messages = ['对方出的是:' + GameControl.chooseValueStringMap[otherChoose], GameControl.resultValueStringMap[result]];
+
+      this.setState({
+        messages: messages
+      });
+    }
+  }, {
     key: 'dbLoadError',
     value: function dbLoadError() {
       this.singlePlayerGame();
@@ -420,10 +425,13 @@ var GameControl = function (_Component) {
   }, {
     key: 'multiPlayersGame',
     value: function multiPlayersGame() {
+      var messages = ['Please wait for other player joining'];
+
       this.setState({
         showMenu: false,
         multiPlayer: true,
-        gameType: 'waiting'
+        gameType: 'waiting',
+        messages: messages
       });
 
       this.waitOtherPlayerJoin();
@@ -447,8 +455,11 @@ var GameControl = function (_Component) {
   }, {
     key: 'otherPlayerIsJoined',
     value: function otherPlayerIsJoined() {
+      var messages = ['Please punch'];
+
       this.setState({
-        gameType: 'ready'
+        gameType: 'ready',
+        messages: messages
       });
     }
   }, {
@@ -458,6 +469,13 @@ var GameControl = function (_Component) {
 
       var room = this.getRoom();
       var user = this.getUser();
+
+      var messages = ['please wait other player punch'];
+
+      this.setState({
+        messages: messages
+      });
+
       _jquery2.default.getJSON('/api/getroomstatus', {
         room: room
       }).then(function (data) {
@@ -484,13 +502,7 @@ var GameControl = function (_Component) {
   }, {
     key: 'otherPlayerIsPunched',
     value: function otherPlayerIsPunched(choose, otherChoose) {
-      var result = (3 + otherChoose - choose) % 3;
-
-      this.setState({
-        otherChoose: otherChoose,
-        result: result,
-        showStatus: true
-      });
+      this.setResultMessage(choose, otherChoose);
     }
   }, {
     key: 'createGame',
@@ -536,10 +548,8 @@ var GameControl = function (_Component) {
           gameType: this.state.gameType
         }),
         _react2.default.createElement(_Status2.default, {
-          show: this.state.showStatus,
-          otherChoose: this.state.otherChoose,
-          result: this.state.result,
-          room: this.state.room
+          room: this.state.room,
+          messages: this.state.messages
         }),
         _react2.default.createElement(_Menu2.default, { show: this.state.showMenu, createGame: this.createGame, joinGame: this.joinGame })
       );
@@ -547,6 +557,18 @@ var GameControl = function (_Component) {
   }]);
   return GameControl;
 }(_react.Component);
+
+GameControl.chooseValueStringMap = {
+  0: '石头',
+  1: '剪刀',
+  2: '布'
+};
+
+GameControl.resultValueStringMap = {
+  0: '打平了',
+  1: '你赢了',
+  2: '你输了'
+};
 
 GameControl.propTypes = {};
 
@@ -731,7 +753,8 @@ var propTypes = {
   show: _react.PropTypes.bool,
   otherChoose: _react.PropTypes.string,
   result: _react.PropTypes.number,
-  room: _react.PropTypes.string
+  room: _react.PropTypes.string,
+  messages: _react.PropTypes.array
 };
 
 var Status = function (_Component) {
@@ -749,12 +772,6 @@ var Status = function (_Component) {
   }
 
   (0, _createClass3.default)(Status, [{
-    key: 'getClasses',
-    value: function getClasses() {
-      // return `result ${this.props.show ? 'result--display' : ''}`;
-      return 'result result--display';
-    }
-  }, {
     key: 'getChooseString',
     value: function getChooseString() {
       return Status.chooseValueStringMap[this.props.otherChoose];
@@ -771,8 +788,8 @@ var Status = function (_Component) {
 
       if (this.props.room) {
         roomInfo = _react2.default.createElement(
-          'p',
-          null,
+          'div',
+          { className: 'status__room btn' },
           'Room: ',
           this.props.room
         );
@@ -783,40 +800,29 @@ var Status = function (_Component) {
       return roomInfo;
     }
   }, {
+    key: 'getStatusMessage',
+    value: function getStatusMessage() {
+      return this.props.messages ? this.props.messages.map(function (message) {
+        return _react2.default.createElement(
+          'p',
+          { className: 'status__message', key: message.slice(4) },
+          message
+        );
+      }) : '';
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { className: this.getClasses() },
+        { className: 'status' },
         this.getRoomInfo(),
-        _react2.default.createElement(
-          'p',
-          null,
-          '对方出的是：',
-          this.getChooseString()
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          this.getResultString()
-        )
+        this.getStatusMessage()
       );
     }
   }]);
   return Status;
 }(_react.Component);
-
-Status.chooseValueStringMap = {
-  0: '石头',
-  1: '剪刀',
-  2: '布'
-};
-
-Status.resultValueStringMap = {
-  0: '打平了',
-  1: '你赢了',
-  2: '你输了'
-};
 
 Status.propTypes = propTypes;
 

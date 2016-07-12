@@ -42,13 +42,16 @@ input[type="text"] {
   box-shadow: 10 10 10 #8db7fe;
 }
 
-.result {
-  display: none;
+.status {
   padding: 20px;
-  text-align: center;
 }
-.result--display {
-  display: block;
+.status .status__room {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.status .status__message {
+  text-align: center;
 }
 
 .choose {
