@@ -110,6 +110,7 @@ class GameControl extends Component {
   }
 
   dbLoadError() {
+    alert('join room fail');
     this.singlePlayerGame();
   }
 

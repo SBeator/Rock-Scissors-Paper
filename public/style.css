@@ -7,7 +7,7 @@ body {
 }
 
 .btn {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #e6e6e6;
   padding: 10px;
   margin: 10px;
@@ -45,6 +45,28 @@ input[type="text"] {
 .status {
   padding: 20px;
 }
+.status .status__share {
+  position: absolute;
+  border: 1px solid #e6e6e6;
+  z-index: 1;
+  background-color: #fff;
+  top: 51px;
+  left: 0;
+  margin: 10px;
+  padding: 10px;
+}
+.status .status__share-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 15px;
+  line-height: 15px;
+  color: #e6e6e6;
+  cursor: pointer;
+}
+.status .status__share-close:hover {
+  color: #000000;
+}
 .status .status__room {
   position: absolute;
   left: 0;
@@ -80,7 +102,7 @@ input[type="text"] {
   height: 100%;
   padding: 30% 0;
   text-align: center;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 .menu .menu--join-form label {
   display: block;

@@ -433,6 +433,7 @@ var GameControl = function (_Component) {
   }, {
     key: 'dbLoadError',
     value: function dbLoadError() {
+      alert('join room fail');
       this.singlePlayerGame();
     }
   }, {
@@ -733,40 +734,39 @@ Menu.propTypes = propTypes;
 exports.default = Menu;
 
 },{"babel-runtime/core-js/object/get-prototype-of":13,"babel-runtime/helpers/classCallCheck":17,"babel-runtime/helpers/createClass":18,"babel-runtime/helpers/inherits":20,"babel-runtime/helpers/possibleConstructorReturn":21,"jquery":132,"react":265}],7:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+var _getPrototypeOf = require("babel-runtime/core-js/object/get-prototype-of");
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _createClass2 = require("babel-runtime/helpers/createClass");
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
 
 var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-var _inherits2 = require('babel-runtime/helpers/inherits');
+var _inherits2 = require("babel-runtime/helpers/inherits");
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
-  show: _react.PropTypes.bool,
   otherChoose: _react.PropTypes.string,
   result: _react.PropTypes.number,
   room: _react.PropTypes.string,
@@ -782,31 +782,80 @@ var Status = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Status).call(this, props));
 
     _this.state = {
-      show: false
+      showShareBlock: false
     };
+
+    _this.onClickRoom = _this.onClickRoom.bind(_this);
+    _this.onClickCloseShare = _this.onClickCloseShare.bind(_this);
     return _this;
   }
 
   (0, _createClass3.default)(Status, [{
-    key: 'getChooseString',
+    key: "onClickRoom",
+    value: function onClickRoom() {
+      var showShareBlock = !this.state.showShareBlock;
+      this.setState({
+        showShareBlock: showShareBlock
+      });
+    }
+  }, {
+    key: "onClickCloseShare",
+    value: function onClickCloseShare() {
+      this.setState({
+        showShareBlock: false
+      });
+    }
+  }, {
+    key: "getChooseString",
     value: function getChooseString() {
       return Status.chooseValueStringMap[this.props.otherChoose];
     }
   }, {
-    key: 'getResultString',
+    key: "getResultString",
     value: function getResultString() {
       return Status.resultValueStringMap[this.props.result];
     }
   }, {
-    key: 'getRoomInfo',
+    key: "getShareLinkString",
+    value: function getShareLinkString() {
+      return location.origin + "?joinroom=" + this.props.room;
+    }
+  }, {
+    key: "getShareBlock",
+    value: function getShareBlock() {
+      return this.state.showShareBlock ? _react2.default.createElement(
+        "div",
+        { className: "status__share" },
+        _react2.default.createElement(
+          "div",
+          { className: "status__share-close", onClick: this.onClickCloseShare },
+          "×"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Please Share this link to your friend"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          this.getShareLinkString()
+        )
+      ) : '';
+    }
+  }, {
+    key: "getRoomInfo",
     value: function getRoomInfo() {
       var roomInfo = void 0;
 
       if (this.props.room) {
         roomInfo = _react2.default.createElement(
-          'div',
-          { className: 'status__room btn' },
-          'Room: ',
+          "div",
+          {
+            className: "status__room btn",
+            onClick: this.onClickRoom
+          },
+          "Room: ",
           this.props.room
         );
       } else {
@@ -816,22 +865,23 @@ var Status = function (_Component) {
       return roomInfo;
     }
   }, {
-    key: 'getStatusMessage',
+    key: "getStatusMessage",
     value: function getStatusMessage() {
       return this.props.messages ? this.props.messages.map(function (message) {
         return _react2.default.createElement(
-          'p',
-          { className: 'status__message', key: message.slice(4) },
+          "p",
+          { className: "status__message", key: message.slice(4) },
           message
         );
       }) : '';
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       return _react2.default.createElement(
-        'div',
-        { className: 'status' },
+        "div",
+        { className: "status" },
+        this.getShareBlock(),
         this.getRoomInfo(),
         this.getStatusMessage()
       );

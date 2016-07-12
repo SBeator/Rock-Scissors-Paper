@@ -1,6 +1,31 @@
 .status {
   padding: 20px;
 
+  .status__share {
+    position: absolute;
+    border: 1px solid $block-border;
+    z-index: 1;
+    background-color: #fff;
+    top: 51px;
+    left: 0;
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .status__share-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 15px;
+    line-height: 15px;
+    color: $block-border;
+    cursor: pointer;
+
+    &:hover {
+      color: $black;
+    }
+  }
+
   .status__room {
     position: absolute;
     left: 0;
@@ -10,6 +35,4 @@
   .status__message {
     text-align: center;
   }
-
-
 }
