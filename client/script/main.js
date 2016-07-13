@@ -7,6 +7,8 @@ import stringZh from '../../i18n/zh.json';
 
 import Game from './components/Game.jsx';
 
+import GameWebSocket from './GameWebSocket.js';
+
 const i18n = i18nCore({
   en: stringEn,
   zh: stringZh
@@ -29,3 +31,12 @@ ReactDOM.render(
   <Game roomToJoin={roomToJoin} />,
   document.getElementById('root')
 );
+
+const gameWebSocket = new GameWebSocket();
+
+gameWebSocket.on('open', () => {
+  console.log('open!');
+});
+
+gameWebSocket.send('test');
+

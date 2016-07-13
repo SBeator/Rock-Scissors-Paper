@@ -1,6 +1,7 @@
 import express from 'express';
 
 import apiRouters from './api.js';
+import initializeWebSocketServer from './websocket.js';
 
 const app = express();
 
@@ -15,3 +16,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(process.env.PORT || 3000);
+
+initializeWebSocketServer();

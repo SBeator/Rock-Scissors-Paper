@@ -6,7 +6,7 @@ const router = express.Router();
 
 function getUserData(req) {
   console.log(req);
-  
+
   const query = req.query;
   console.log('b');
 
