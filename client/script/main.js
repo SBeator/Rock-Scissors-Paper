@@ -36,7 +36,7 @@ const gameWebSocket = new GameWebSocket();
 
 gameWebSocket.on('open', () => {
   console.log('open!');
-});
 
-gameWebSocket.send('test');
+  gameWebSocket.send('test');
+});
 

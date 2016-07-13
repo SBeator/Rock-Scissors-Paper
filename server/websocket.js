@@ -1,18 +1,16 @@
-const WebSocketServer = require('websocket').server;
-const http = require('http');
+import { server as WebSocketServer } from 'websocket';
+import http from 'http';
 
-const port = 8888;
-const protocal = 'echo-protocol';
+import { port, protocal } from '../config/websocket.json';
 
 function initializeWebSocketServer() {
-  console.log('websocket');
   const server = http.createServer((request, response) => {
     console.log(`${(new Date())}  Received request for ${request.url}`);
     response.writeHead(404);
     response.end();
   });
   server.listen(port, () => {
-    console.log(`${(new Date())} Server is listening on port ${port}`);
+    console.log(`${(new Date())} Web socket server is listening on port ${port}`);
   });
 
   const wsServer = new WebSocketServer({

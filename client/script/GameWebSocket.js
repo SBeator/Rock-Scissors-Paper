@@ -1,6 +1,6 @@
 import { w3cwebsocket as W3cwebsocket } from 'websocket';
 
-import { port, protocal } from '../../server/websocket.js';
+import { port, protocal } from '../../config/websocket.json';
 
 const validEvents = [
   'open',

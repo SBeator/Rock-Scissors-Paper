@@ -8,9 +8,9 @@
   - ~~People can see result~~
   - ~~Restart punch~~
   - Share join link
-- User promise to write all the logic in db.js
+- Use promise to write all the logic in db.js
 - User i18n strings
-
+- User promise to write websocket
 
 ## bugs
 - Need lots of refactor in react structures
