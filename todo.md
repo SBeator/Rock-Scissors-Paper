@@ -9,8 +9,10 @@
   - ~~Restart punch~~
   - ~~Share join link~~
 - Use promise to write all the logic in db.js
-- User i18n strings
-- User promise to write websocket
+- Use i18n strings
+- Use promise to write websocket
+- Use websocket instead of db
+- Add testing
 
 ## bugs
 - Need lots of refactor in react structures
