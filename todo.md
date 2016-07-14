@@ -7,7 +7,7 @@
   - ~~Add punch and get punch status logic~~
   - ~~People can see result~~
   - ~~Restart punch~~
-  - Share join link
+  - ~~Share join link~~
 - Use promise to write all the logic in db.js
 - User i18n strings
 - User promise to write websocket
@@ -23,5 +23,5 @@
 - db.js: Don't need find room if room doesn't exist
 - Only return nessecery data
 - Add error handler for playing
-- Don't user hard code string
+- Don't use hard code string
 - Game layout is bad
