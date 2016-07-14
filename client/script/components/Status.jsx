@@ -48,7 +48,7 @@ class Status extends Component {
 
   getShareBlock() {
     return this.state.showShareBlock ?
-      < Share link={this.getShareLinkString()} /> :
+      <Share link={this.getShareLinkString()} onClose={this.onClickCloseShare} /> :
       '';
   }
 

@@ -1,4 +1,7 @@
 import express from 'express';
+import qr from 'qr-image';
+import qrConfig from '../config/qrcode.json';
+
 
 import { insertData, listData, createRoom, joinRoom, findRoom, punch } from './db.js';
 
@@ -155,6 +158,21 @@ router.get('/punch', (req, res, next) => {
       res.send({ success: true });
     }
   });
+});
+
+router.get(qrConfig.path, (req, res) => {
+  const query = req.query;
+
+  const text = query[qrConfig.textPara];
+  const size = parseInt(query[qrConfig.sizePara], 10) || 5;
+  const margin = parseInt(query[qrConfig.marginPara], 10) || 4;
+
+  const qrImage = qr.image(text, {
+    size,
+    margin
+  });
+  res.type('png');
+  qrImage.pipe(res);
 });
 
 

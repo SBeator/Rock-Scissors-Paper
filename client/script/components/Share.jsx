@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-import QRCode from '../plugins/QRCode.js';
+import {
+  path,
+  textPara
+} from '../../../config/qrcode.json';
 
 const propTypes = {
-  link: PropTypes.string
+  link: PropTypes.string,
+  onClose: PropTypes.func
 };
 
 class Share extends Component {
@@ -11,36 +15,24 @@ class Share extends Component {
     super(props);
 
     this.onClickCloseShare = this.onClickCloseShare.bind(this);
-
-    this.state = {
-      show: true
-    };
-  }
-
-  componentDidMount() {
-    if (!this.qrcode) {
-      this.qrcode = new QRCode(this.refs.qrcode, this.props.link);
-    }
   }
 
   onClickCloseShare() {
-    this.setState({
-      show: false
-    });
+    this.props.onClose();
   }
 
-  getClasses() {
-    return `share ${this.state.show ? '' : 'hide'}`;
+  getQRcodeLink() {
+    return `${location.origin}/api/${path}?${textPara}=${this.props.link}`;
   }
 
   render() {
     return (
-      <div className={this.getClasses()} >
+      <div className="share" >
         <div className="share__close" onClick={this.onClickCloseShare}>×</div>
         <p>Please Share this link to your friend</p>
         <p>{this.props.link}</p>
         <p>Or you can ask your find to scan the qrcode:</p>
-        <div className="share__qrcode" ref="qrcode"></div>
+        <img className="share__qrcode" alt="Share link QR code" src={this.getQRcodeLink()} />
       </div>);
   }
 }
