@@ -7,7 +7,7 @@ import stringZh from '../../i18n/zh.json';
 
 import Game from './components/Game.jsx';
 
-import GameWebSocket from './GameWebSocket.js';
+import GameWebSocket from './ClientWebSocket.js';
 
 const i18n = i18nCore({
   en: stringEn,

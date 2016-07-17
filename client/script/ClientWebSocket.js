@@ -9,12 +9,10 @@ const validEvents = [
   'message'
 ];
 
-class GameWebSocket {
+class ClientWebSocket {
   constructor(room, user) {
     this.hostname = location.hostname;
-    this.room = room;
-    this.user = user;
-
+    this.eventHandlers = {};
     this.connect();
   }
 
@@ -22,10 +20,13 @@ class GameWebSocket {
     this.client = new W3cwebsocket(`ws://${this.hostname}:${port}/`, protocal);
 
     validEvents.forEach((event) => {
-      const eventHandler = `on${event}`;
-      this.client[eventHandler] = (...args) => {
-        if (this[eventHandler]) {
-          this[eventHandler](...args);
+      const eventKey = `on${event}`;
+      const eventHandlers = this.eventHandlers;
+      this.client[eventKey] = (...args) => {
+        if (eventHandlers[eventKey] && eventHandlers[eventKey].length) {
+          eventHandlers[eventKey].forEach((eventHandler) => {
+            eventHandler(...args);
+          });
         }
       };
     });
@@ -33,7 +34,11 @@ class GameWebSocket {
 
   on(event, callback) {
     if (validEvents.indexOf(event) >= 0) {
-      this[`on${event}`] = callback;
+      if (!this[`on${event}`]) {
+        this[`on${event}`] = [];
+      }
+
+      this[`on${event}`].push(callback);
     }
   }
 
@@ -48,4 +53,4 @@ class GameWebSocket {
   }
 }
 
-export default GameWebSocket;
+export default ClientWebSocket;
