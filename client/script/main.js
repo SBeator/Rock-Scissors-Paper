@@ -7,7 +7,8 @@ import stringZh from '../../i18n/zh.json';
 
 import Game from './components/Game.jsx';
 
-import GameWebSocket from './ClientWebSocket.js';
+// import GameWebSocket from './ClientWebSocket.js';
+import GameConnect from './GameConnect.js';
 
 const i18n = i18nCore({
   en: stringEn,
@@ -32,11 +33,14 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-const gameWebSocket = new GameWebSocket();
+// const gameWebSocket = new GameWebSocket();
 
-gameWebSocket.on('open', () => {
-  console.log('open!');
+// gameWebSocket.on('open', () => {
+//   console.log('open!');
 
-  gameWebSocket.send('test');
-});
+//   gameWebSocket.send('test');
+// });
 
+const gameConnect = new GameConnect();
+
+gameConnect.createRoom(123456);

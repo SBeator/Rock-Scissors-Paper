@@ -2,10 +2,7 @@ import ClientWebSocket from './ClientWebSocket.js';
 
 class GameConnect {
 
-  constructor(room, user) {
-    this.room = room;
-    this.user = user;
-
+  constructor() {
     this.connectedSocket = this.connect();
   }
 
@@ -23,8 +20,26 @@ class GameConnect {
     });
   }
 
-  createRoom() {
+  createMessage(type, messageObject) {
+    Object.assign(messageObject, { type });
 
+    return JSON.stringify(messageObject);
+  }
+
+  sendMessage(type, messageObject) {
+    return this.connectedSocket
+      .then(() => {
+        const message = this.createMessage(type, messageObject);
+        this.webSocket.send(message);
+      });
+  }
+
+  createRoom(user) {
+    this.sendMessage('createRoom', { user });
+  }
+
+  joinRoom(room, user) {
+    this.sendMessage('joinRoom', { room, user });
   }
 }
 

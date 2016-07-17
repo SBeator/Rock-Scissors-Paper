@@ -34,11 +34,12 @@ class ClientWebSocket {
 
   on(event, callback) {
     if (validEvents.indexOf(event) >= 0) {
-      if (!this[`on${event}`]) {
-        this[`on${event}`] = [];
+      const eventHandlers = this.eventHandlers;
+      if (!eventHandlers[`on${event}`]) {
+        eventHandlers[`on${event}`] = [];
       }
 
-      this[`on${event}`].push(callback);
+      eventHandlers[`on${event}`].push(callback);
     }
   }
 
