@@ -43,4 +43,6 @@ ReactDOM.render(
 
 const gameConnect = new GameConnect();
 
-gameConnect.createRoom(123456);
+gameConnect.createRoom(123456, (message) => {
+  console.log(message);
+});

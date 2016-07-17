@@ -26,20 +26,36 @@ class GameConnect {
     return JSON.stringify(messageObject);
   }
 
-  sendMessage(type, messageObject) {
+  sendMessage(type, messageObject, recieveMessageCallback) {
     return this.connectedSocket
       .then(() => {
         const message = this.createMessage(type, messageObject);
         this.webSocket.send(message);
+      })
+      .then(() => {
+        if (recieveMessageCallback) {
+          this.webSocket.on('message', (event) => {
+            let recieveMessageObject;
+            try {
+              recieveMessageObject = JSON.parse(event.data);
+            } catch (error) {
+              recieveMessageObject = {
+                error
+              };
+            }
+            
+            recieveMessageCallback(recieveMessageObject);
+          });
+        }
       });
   }
 
-  createRoom(user) {
-    this.sendMessage('createRoom', { user });
+  createRoom(user, recieveMessageCallback) {
+    this.sendMessage('createRoom', { user }, recieveMessageCallback);
   }
 
-  joinRoom(room, user) {
-    this.sendMessage('joinRoom', { room, user });
+  joinRoom(room, user, recieveMessageCallback) {
+    this.sendMessage('joinRoom', { room, user }, recieveMessageCallback);
   }
 }
 

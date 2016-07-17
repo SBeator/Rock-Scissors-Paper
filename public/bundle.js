@@ -228,23 +228,38 @@ var GameConnect = function () {
     }
   }, {
     key: 'sendMessage',
-    value: function sendMessage(type, messageObject) {
+    value: function sendMessage(type, messageObject, recieveMessageCallback) {
       var _this2 = this;
 
       return this.connectedSocket.then(function () {
         var message = _this2.createMessage(type, messageObject);
         _this2.webSocket.send(message);
+      }).then(function () {
+        if (recieveMessageCallback) {
+          _this2.webSocket.on('message', function (event) {
+            var recieveMessageObject = void 0;
+            try {
+              recieveMessageObject = JSON.parse(event.data);
+            } catch (error) {
+              recieveMessageObject = {
+                error: error
+              };
+            }
+
+            recieveMessageCallback(recieveMessageObject);
+          });
+        }
       });
     }
   }, {
     key: 'createRoom',
-    value: function createRoom(user) {
-      this.sendMessage('createRoom', { user: user });
+    value: function createRoom(user, recieveMessageCallback) {
+      this.sendMessage('createRoom', { user: user }, recieveMessageCallback);
     }
   }, {
     key: 'joinRoom',
-    value: function joinRoom(room, user) {
-      this.sendMessage('joinRoom', { room: room, user: user });
+    value: function joinRoom(room, user, recieveMessageCallback) {
+      this.sendMessage('joinRoom', { room: room, user: user }, recieveMessageCallback);
     }
   }]);
   return GameConnect;
@@ -1218,7 +1233,9 @@ _reactDom2.default.render(_react2.default.createElement(_Game2.default, { roomTo
 
 var gameConnect = new _GameConnect2.default();
 
-gameConnect.createRoom(123456);
+gameConnect.createRoom(123456, function (message) {
+  console.log(message);
+});
 
 },{"../../i18n/en.json":14,"../../i18n/zh.json":15,"./GameConnect.js":4,"./components/Game.jsx":6,"i18n-core":153,"react":292,"react-dom":163}],12:[function(require,module,exports){
 module.exports={
