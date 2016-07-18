@@ -22,6 +22,14 @@ class GameConnect {
     });
   }
 
+  createRoom(user, recieveMessageCallback) {
+    this.sendMessage(messageType.createRoom, { user }, recieveMessageCallback);
+  }
+
+  joinRoom(room, user, recieveMessageCallback) {
+    this.sendMessage(messageType.joinRoom, { room, user }, recieveMessageCallback);
+  }
+
   createMessage(type, messageObject) {
     return JSON.stringify(Object.assign({}, messageObject, { type }));
   }
@@ -54,14 +62,6 @@ class GameConnect {
           });
         }
       });
-  }
-
-  createRoom(user, recieveMessageCallback) {
-    this.sendMessage(messageType.createRoom, { user }, recieveMessageCallback);
-  }
-
-  joinRoom(room, user, recieveMessageCallback) {
-    this.sendMessage(messageType.joinRoom, { room, user }, recieveMessageCallback);
   }
 }
 

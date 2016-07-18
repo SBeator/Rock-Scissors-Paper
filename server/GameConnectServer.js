@@ -54,7 +54,11 @@ class GameConnectServer {
 
             const otherUserConnect = this.getOtherUserConnectInRoom();
             if (otherUserConnect) {
-              otherUserConnect.sendMessage(messageType.otherUserJoin);
+              otherUserConnect.sendMessage(
+                messageType.otherUserJoin,
+                {
+                  user: data.user
+                });
             }
           }
         });

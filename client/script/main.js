@@ -43,6 +43,13 @@ ReactDOM.render(
 
 const gameConnect = new GameConnect();
 
-gameConnect.createRoom(123456, (message) => {
-  console.log(message);
-});
+if (roomToJoin) {
+  gameConnect.joinRoom(roomToJoin, 654321, (message) => {
+    console.log(message);
+  });
+} else {
+  gameConnect.createRoom(123456, (message) => {
+    console.log(message);
+  });
+}
+

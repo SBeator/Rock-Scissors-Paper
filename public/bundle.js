@@ -223,6 +223,16 @@ var GameConnect = function () {
       });
     }
   }, {
+    key: 'createRoom',
+    value: function createRoom(user, recieveMessageCallback) {
+      this.sendMessage(_websocket.messageType.createRoom, { user: user }, recieveMessageCallback);
+    }
+  }, {
+    key: 'joinRoom',
+    value: function joinRoom(room, user, recieveMessageCallback) {
+      this.sendMessage(_websocket.messageType.joinRoom, { room: room, user: user }, recieveMessageCallback);
+    }
+  }, {
     key: 'createMessage',
     value: function createMessage(type, messageObject) {
       return (0, _stringify2.default)((0, _assign2.default)({}, messageObject, { type: type }));
@@ -258,16 +268,6 @@ var GameConnect = function () {
           });
         }
       });
-    }
-  }, {
-    key: 'createRoom',
-    value: function createRoom(user, recieveMessageCallback) {
-      this.sendMessage(_websocket.messageType.createRoom, { user: user }, recieveMessageCallback);
-    }
-  }, {
-    key: 'joinRoom',
-    value: function joinRoom(room, user, recieveMessageCallback) {
-      this.sendMessage(_websocket.messageType.joinRoom, { room: room, user: user }, recieveMessageCallback);
     }
   }]);
   return GameConnect;
@@ -1242,9 +1242,15 @@ _reactDom2.default.render(_react2.default.createElement(_Game2.default, { roomTo
 
 var gameConnect = new _GameConnect2.default();
 
-gameConnect.createRoom(123456, function (message) {
-  console.log(message);
-});
+if (roomToJoin) {
+  gameConnect.joinRoom(roomToJoin, 654321, function (message) {
+    console.log(message);
+  });
+} else {
+  gameConnect.createRoom(123456, function (message) {
+    console.log(message);
+  });
+}
 
 },{"../../i18n/en.json":14,"../../i18n/zh.json":15,"./GameConnect.js":4,"./components/Game.jsx":6,"i18n-core":153,"react":292,"react-dom":163}],12:[function(require,module,exports){
 module.exports={
