@@ -1,30 +1,11 @@
 import { messageType } from '../config/websocket.json';
 import { createRoom, joinRoom, findRoom, punch } from './db.js';
 
-const gameConnectRooms = {};
+const gameConnectsInRoom = {};
 
 class GameConnectServer {
   constructor(connection) {
     this.connection = connection;
-  }
-
-  sendMessage(type, messageObject) {
-    const message = JSON.stringify(Object.assign({}, messageObject, { type }));
-
-    this.connection.sendUTF(message);
-  }
-
-  parseMessageObject(message) {
-    let messageObject;
-    try {
-      messageObject = JSON.parse(message);
-    } catch (error) {
-      messageObject = {
-        error
-      };
-    }
-
-    return messageObject;
   }
 
   recieveMessage(message) {
@@ -49,7 +30,7 @@ class GameConnectServer {
                 room: data.room
               });
 
-            gameConnectRooms[data.room] = [this];
+            this.setRoom(data.room);
           }
         });
         break;
@@ -68,6 +49,13 @@ class GameConnectServer {
                 user: data.user,
                 room: data.room
               });
+
+            this.setRoom(data.room);
+
+            const otherUserConnect = this.getOtherUserConnectInRoom();
+            if (otherUserConnect) {
+              otherUserConnect.sendMessage(messageType.otherUserJoin);
+            }
           }
         });
         break;
@@ -77,6 +65,45 @@ class GameConnectServer {
   }
 
   disconnect() {
+  }
+
+  setRoom(room) {
+    if (!gameConnectsInRoom[room]) {
+      gameConnectsInRoom[room] = [this];
+    } else {
+      gameConnectsInRoom[room].push(this);
+    }
+
+    this.room = room;
+  }
+
+  getOtherUserConnectInRoom() {
+    let otherGameConnect;
+    if (gameConnectsInRoom[this.room].length > 1) {
+      otherGameConnect = gameConnectsInRoom[this.room]
+                          .filter(gameConnect => gameConnect !== this)[0];
+    }
+
+    return otherGameConnect;
+  }
+
+  sendMessage(type, messageObject) {
+    const message = JSON.stringify(Object.assign({}, messageObject, { type }));
+
+    this.connection.sendUTF(message);
+  }
+
+  parseMessageObject(message) {
+    let messageObject;
+    try {
+      messageObject = JSON.parse(message);
+    } catch (error) {
+      messageObject = {
+        error
+      };
+    }
+
+    return messageObject;
   }
 }
 

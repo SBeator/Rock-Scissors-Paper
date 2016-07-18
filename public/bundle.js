@@ -1259,7 +1259,8 @@ module.exports={
   "protocal": "echo-protocol",
   "messageType" : {
     "createRoom" : "createRoom",
-    "joinRoom" : "joinRoom"
+    "joinRoom" : "joinRoom",
+    "otherUserJoin" : "otherUserJoin"
   }
 }
 },{}],14:[function(require,module,exports){
