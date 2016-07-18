@@ -1,4 +1,5 @@
 import ClientWebSocket from './ClientWebSocket.js';
+import { messageType } from '../../config/websocket.json';
 
 class GameConnect {
 
@@ -15,15 +16,27 @@ class GameConnect {
       });
 
       this.webSocket.on('error', () => {
+        // TODO: Add reject handle logic
         reject();
       });
     });
   }
 
   createMessage(type, messageObject) {
-    Object.assign(messageObject, { type });
+    return JSON.stringify(Object.assign({}, messageObject, { type }));
+  }
 
-    return JSON.stringify(messageObject);
+  parseMessageObject(message) {
+    let messageObject;
+    try {
+      messageObject = JSON.parse(message);
+    } catch (error) {
+      messageObject = {
+        error
+      };
+    }
+
+    return messageObject;
   }
 
   sendMessage(type, messageObject, recieveMessageCallback) {
@@ -35,15 +48,8 @@ class GameConnect {
       .then(() => {
         if (recieveMessageCallback) {
           this.webSocket.on('message', (event) => {
-            let recieveMessageObject;
-            try {
-              recieveMessageObject = JSON.parse(event.data);
-            } catch (error) {
-              recieveMessageObject = {
-                error
-              };
-            }
-            
+            const recieveMessageObject = this.parseMessageObject(event.data);
+
             recieveMessageCallback(recieveMessageObject);
           });
         }
@@ -51,11 +57,11 @@ class GameConnect {
   }
 
   createRoom(user, recieveMessageCallback) {
-    this.sendMessage('createRoom', { user }, recieveMessageCallback);
+    this.sendMessage(messageType.createRoom, { user }, recieveMessageCallback);
   }
 
   joinRoom(room, user, recieveMessageCallback) {
-    this.sendMessage('joinRoom', { room, user }, recieveMessageCallback);
+    this.sendMessage(messageType.joinRoom, { room, user }, recieveMessageCallback);
   }
 }
 

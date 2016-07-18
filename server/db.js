@@ -131,6 +131,12 @@ function createRoom(data, callback) {
       ]
     };
     insert(db, newData, (inserError) => {
+      Object.assign(
+        newData,
+        {
+          user
+        });
+
       dbCallback(inserError, newData);
     });
   });
@@ -169,6 +175,12 @@ function joinRoom(data, callback) {
           if (updateError) {
             dbCallback(updateError);
           } else {
+            Object.assign(
+              findData,
+              {
+                user: data.user
+              });
+
             dbCallback(updateError, findData);
           }
         });

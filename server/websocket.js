@@ -1,5 +1,6 @@
 import { server as WebSocketServer } from 'websocket';
 import http from 'http';
+import GameConnectServer from './GameConnectServer.js';
 
 import { port, protocal } from '../config/websocket.json';
 
@@ -32,6 +33,9 @@ function initializeWebSocketServer() {
     }
 
     const connection = request.accept(protocal, request.origin);
+
+    const gameConnect = new GameConnectServer(connection);
+
     console.log(`${new Date()} Connection accepted. Origin: ${request.origin}`);
     connection.on('message', (message) => {
       if (message.type === 'utf8') {
@@ -41,9 +45,13 @@ function initializeWebSocketServer() {
         console.log(`Received Binary Message of ${message.binaryData.length} bytes`);
         connection.sendBytes(message.binaryData);
       }
+
+      gameConnect.recieveMessage(message.utf8Data);
     });
     connection.on('close', (reasonCode, description) => {
       console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
+
+      gameConnect.disconnect();
     });
   });
 }

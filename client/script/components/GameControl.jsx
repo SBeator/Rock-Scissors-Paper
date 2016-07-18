@@ -64,10 +64,10 @@ class GameControl extends Component {
       this.state[name] = Cookie.getCookie(name);
     }
 
-    if (!this.state[name]) {
-      this.state[name] = Date.now();
-      Cookie.setCookie(name, this.state[name]);
-    }
+    // if (!this.state[name]) {
+    //   this.state[name] = Date.now();
+    //   Cookie.setCookie(name, this.state[name]);
+    // }
 
     return this.state[name];
   }
@@ -227,6 +227,7 @@ class GameControl extends Component {
     $.getJSON('/api/joinroom', { room, user })
       .then((data) => {
         this.setRoom(room);
+        this.setUser(user);
         this.multiPlayersGame();
       })
       .catch((...args) => {

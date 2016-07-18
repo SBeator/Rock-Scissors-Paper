@@ -169,13 +169,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
 
 var _promise = require('babel-runtime/core-js/promise');
 
@@ -192,6 +192,8 @@ var _createClass3 = _interopRequireDefault(_createClass2);
 var _ClientWebSocket = require('./ClientWebSocket.js');
 
 var _ClientWebSocket2 = _interopRequireDefault(_ClientWebSocket);
+
+var _websocket = require('../../config/websocket.json');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -215,6 +217,7 @@ var GameConnect = function () {
         });
 
         _this.webSocket.on('error', function () {
+          // TODO: Add reject handle logic
           reject();
         });
       });
@@ -222,9 +225,21 @@ var GameConnect = function () {
   }, {
     key: 'createMessage',
     value: function createMessage(type, messageObject) {
-      (0, _assign2.default)(messageObject, { type: type });
+      return (0, _stringify2.default)((0, _assign2.default)({}, messageObject, { type: type }));
+    }
+  }, {
+    key: 'parseMessageObject',
+    value: function parseMessageObject(message) {
+      var messageObject = void 0;
+      try {
+        messageObject = JSON.parse(message);
+      } catch (error) {
+        messageObject = {
+          error: error
+        };
+      }
 
-      return (0, _stringify2.default)(messageObject);
+      return messageObject;
     }
   }, {
     key: 'sendMessage',
@@ -237,14 +252,7 @@ var GameConnect = function () {
       }).then(function () {
         if (recieveMessageCallback) {
           _this2.webSocket.on('message', function (event) {
-            var recieveMessageObject = void 0;
-            try {
-              recieveMessageObject = JSON.parse(event.data);
-            } catch (error) {
-              recieveMessageObject = {
-                error: error
-              };
-            }
+            var recieveMessageObject = _this2.parseMessageObject(event.data);
 
             recieveMessageCallback(recieveMessageObject);
           });
@@ -254,12 +262,12 @@ var GameConnect = function () {
   }, {
     key: 'createRoom',
     value: function createRoom(user, recieveMessageCallback) {
-      this.sendMessage('createRoom', { user: user }, recieveMessageCallback);
+      this.sendMessage(_websocket.messageType.createRoom, { user: user }, recieveMessageCallback);
     }
   }, {
     key: 'joinRoom',
     value: function joinRoom(room, user, recieveMessageCallback) {
-      this.sendMessage('joinRoom', { room: room, user: user }, recieveMessageCallback);
+      this.sendMessage(_websocket.messageType.joinRoom, { room: room, user: user }, recieveMessageCallback);
     }
   }]);
   return GameConnect;
@@ -267,7 +275,7 @@ var GameConnect = function () {
 
 exports.default = GameConnect;
 
-},{"./ClientWebSocket.js":1,"babel-runtime/core-js/json/stringify":16,"babel-runtime/core-js/object/assign":17,"babel-runtime/core-js/promise":22,"babel-runtime/helpers/classCallCheck":25,"babel-runtime/helpers/createClass":26}],5:[function(require,module,exports){
+},{"../../config/websocket.json":13,"./ClientWebSocket.js":1,"babel-runtime/core-js/json/stringify":16,"babel-runtime/core-js/object/assign":17,"babel-runtime/core-js/promise":22,"babel-runtime/helpers/classCallCheck":25,"babel-runtime/helpers/createClass":26}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -574,10 +582,10 @@ var GameControl = function (_Component) {
         this.state[name] = _Cookie2.default.getCookie(name);
       }
 
-      if (!this.state[name]) {
-        this.state[name] = Date.now();
-        _Cookie2.default.setCookie(name, this.state[name]);
-      }
+      // if (!this.state[name]) {
+      //   this.state[name] = Date.now();
+      //   Cookie.setCookie(name, this.state[name]);
+      // }
 
       return this.state[name];
     }
@@ -739,6 +747,7 @@ var GameControl = function (_Component) {
       var user = this.getUser();
       _jquery2.default.getJSON('/api/joinroom', { room: room, user: user }).then(function (data) {
         _this6.setRoom(room);
+        _this6.setUser(user);
         _this6.multiPlayersGame();
       }).catch(function () {
         _this6.dbLoadError();
@@ -1247,7 +1256,11 @@ module.exports={
 },{}],13:[function(require,module,exports){
 module.exports={
   "port": 8888,
-  "protocal": "echo-protocol"
+  "protocal": "echo-protocol",
+  "messageType" : {
+    "createRoom" : "createRoom",
+    "joinRoom" : "joinRoom"
+  }
 }
 },{}],14:[function(require,module,exports){
 module.exports={
