@@ -11,8 +11,12 @@
 - Use promise to write all the logic in db.js
 - Use i18n strings
 - Use promise to write websocket
-- Use websocket instead of db
+- ~~Use websocket instead of db~~
 - Add testing
+- Add more game socket hanlder
+  - Other player is disconnected
+  - Get ready for game
+  - Re-join game if disconnect or refresh
 
 ## bugs
 - Need lots of refactor in react structures

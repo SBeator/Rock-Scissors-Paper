@@ -56,9 +56,3 @@ function initializeWebSocketServer() {
 
 
 export default initializeWebSocketServer;
-
-export {
-  initializeWebSocketServer,
-  port,
-  protocal
-};

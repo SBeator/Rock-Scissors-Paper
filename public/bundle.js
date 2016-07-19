@@ -576,20 +576,6 @@ var GameControl = function (_Component) {
       } else {
         this.gameConnect.punch(choose);
         this.waitOtherPlayPunch(choose);
-
-        // const user = this.getUser();
-        // const room = this.getRoom();
-        // const punch = choose;
-        // $.getJSON(
-        //   '/api/punch',
-        //   {
-        //     user,
-        //     room,
-        //     punch
-        //   })
-        //   .then(() => {
-        //     this.waitOtherPlayPunch(choose);
-        //   });
       }
     }
   }, {
@@ -598,11 +584,6 @@ var GameControl = function (_Component) {
       if (!this.state[name]) {
         this.state[name] = _Cookie2.default.getCookie(name);
       }
-
-      // if (!this.state[name]) {
-      //   this.state[name] = Date.now();
-      //   Cookie.setCookie(name, this.state[name]);
-      // }
 
       return this.state[name];
     }
@@ -733,45 +714,6 @@ var GameControl = function (_Component) {
           messages: messages
         });
       }
-
-      // const room = this.getRoom();
-      // const user = this.getUser();
-
-      // const messages = [
-      //   'please wait other player punch'
-      // ];
-
-      // this.setState({
-      //   messages
-      // });
-
-      // $.getJSON(
-      //   '/api/getroomstatus',
-      //   {
-      //     room
-      //   })
-      //   .then((data) => {
-      //     if (data.users &&
-      //         data.users.length === 2 &&
-      //         data.punches[data.users[0]] !== undefined &&
-      //         data.punches[data.users[1]] !== undefined) {
-      //       const otherUser = data.users.filter((dataUser) => user !== dataUser);
-      //       const otherChoose = data.punches[otherUser];
-
-      //       this.bothPlayersArePunched(choose, otherChoose);
-
-      //       $.getJSON('/api/getroomstatus',
-      //         {
-      //           room,
-      //           user,
-      //           removePunch: true
-      //         });
-      //     } else {
-      //       setTimeout(() => {
-      //         this.waitOtherPlayPunch(choose);
-      //       }, 1000);
-      //     }
-      //   });
     }
   }, {
     key: 'bothPlayersArePunched',
@@ -787,22 +729,6 @@ var GameControl = function (_Component) {
       var user = this.getUser();
 
       this.gameConnect.createRoom(user, this.recieveConnectMessage);
-
-      // $.getJSON('/api/createroom', { user })
-      //   .then((data) => {
-      //     const room = data.room;
-
-      //     if (room) {
-      //       this.setRoom(room);
-
-      //       this.multiPlayersGame();
-      //     } else {
-      //       this.dbLoadError();
-      //     }
-      //   })
-      //   .catch((...args) => {
-      //     this.dbLoadError();
-      //   });
     }
   }, {
     key: 'joinGame',
@@ -810,16 +736,6 @@ var GameControl = function (_Component) {
       var user = this.getUser();
 
       this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
-
-      // $.getJSON('/api/joinroom', { room, user })
-      //   .then((data) => {
-      //     this.setRoom(room);
-      //     this.setUser(user);
-      //     this.multiPlayersGame();
-      //   })
-      //   .catch((...args) => {
-      //     this.dbLoadError();
-      //   });
     }
   }, {
     key: 'recieveConnectMessage',

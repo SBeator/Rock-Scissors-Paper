@@ -14,21 +14,20 @@ function newRoom() {
 function insert(db, data, callback) {
   const collection = db.collection(dbCollectionName);
   const cursor = collection.find(data);
-  console.log('Data to be insert is:');
+  console.log('db:insert: Data to be insert is:');
   console.dir(data);
 
   const existData = [];
 
   cursor.each((error, doc) => {
     if (doc != null) {
-      console.dir(doc);
       existData.push(doc);
     } else {
-      console.log(`Exist data length is: ${existData.length}`);
+      console.log(`db:insert: Exist data length is: ${existData.length}`);
 
       if (!existData.length) {
         collection.insertOne(data, (err, result) => {
-          console.log('Inserted data into the collection.');
+          console.log('db:insert: Inserted data into the collection.');
           callback(err);
         });
       }
@@ -38,17 +37,17 @@ function insert(db, data, callback) {
 
 function find(db, dataToFind, callback) {
   const cursor = db.collection(dbCollectionName).find(dataToFind);
-  console.log('dataToFind', dataToFind);
+  console.log('db:find: dataToFind', dataToFind);
 
   const data = [];
 
   cursor.each((err, doc) => {
     if (doc != null) {
-      console.log('Found data:');
+      console.log('db:find: Found data:');
       console.dir(doc);
       data.push(doc);
     } else {
-      console.log('Find cursor err:', err);
+      console.log('db:find: Find cursor err:', err);
 
       callback(err, data);
     }
@@ -61,9 +60,9 @@ function list(db, callback) {
 
 function update(db, dataToFind, newData, callback) {
   const collection = db.collection(dbCollectionName);
-  console.log('update: dataToFind:', dataToFind);
-  console.log('newData:', newData);
-  console.log('$set:', { $set: newData });
+  console.log('db:update: dataToFind:', dataToFind);
+  console.log('db:update: newData:', newData);
+  console.log('db:update: $set:', { $set: newData });
 
   collection.updateOne(
     dataToFind,
@@ -161,7 +160,7 @@ function joinRoom(data, callback) {
     };
 
     find(db, roomData, (findError, existData) => {
-      console.log('find result:', existData);
+      console.log('db:joinRoom: find result:', existData);
       if (findError) {
         dbCallback(findError);
       } else if (!existData.length) {
@@ -208,7 +207,7 @@ function findRoom(data, callback) {
     };
 
     find(db, roomData, (findError, existData) => {
-      console.log('find result:', existData);
+      console.log('db:findRoom: find result:', existData);
       if (findError) {
         dbCallback(findError);
       } else if (!existData.length) {
@@ -223,8 +222,8 @@ function findRoom(data, callback) {
           const punches = removePunch ? findData.punches : {};
 
           update(db, roomData, { removePunch, punches }, (updateError, result) => {
-            console.log('punch update error:', updateError);
-            console.log('punch update result:', result);
+            console.log('db:findRoom: punch update error:', updateError);
+            console.log('db:findRoom: punch update result:', result);
             if (updateError) {
               dbCallback(updateError);
             } else {
@@ -257,7 +256,7 @@ function punch(data, callback) {
     };
 
     find(db, roomData, (findError, existData) => {
-      console.log('find result:', existData);
+      console.log('db:punch: find result:', existData);
       if (findError) {
         dbCallback(findError);
       } else if (!existData.length) {
@@ -269,8 +268,8 @@ function punch(data, callback) {
         punches[data.user] = data.punch;
 
         update(db, roomData, { punches }, (updateError, result) => {
-          console.log('punch update error:', updateError);
-          console.log('punch update result:', result);
+          console.log('db:punch: punch update error:', updateError);
+          console.log('db:punch: punch update result:', result);
           if (updateError) {
             dbCallback(updateError);
           } else {
