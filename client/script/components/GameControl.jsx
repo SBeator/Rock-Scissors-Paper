@@ -4,6 +4,9 @@ import $ from 'jquery';
 import Cookie from './../Cookie.js';
 import Event, { CustomEvents } from './../Event.js';
 
+import GameConnect from '../GameConnect.js';
+import { messageType } from '../../../config/websocket.json';
+
 import Status from './Status.jsx';
 import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
@@ -18,6 +21,7 @@ class GameControl extends Component {
 
     this.createGame = this.createGame.bind(this);
     this.joinGame = this.joinGame.bind(this);
+    this.recieveConnectMessage = this.recieveConnectMessage.bind(this);
 
     this.getUser = this.getUser.bind(this);
     this.getRoom = this.getRoom.bind(this);
@@ -31,6 +35,7 @@ class GameControl extends Component {
     this.onSubmitChoose = this.onSubmitChoose.bind(this);
 
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
+    this.gameConnect = new GameConnect();
 
     if (this.props.roomToJoin) {
       this.joinGame(this.props.roomToJoin);
@@ -43,19 +48,22 @@ class GameControl extends Component {
 
       this.setResultMessage(choose, otherChoose);
     } else {
-      const user = this.getUser();
-      const room = this.getRoom();
-      const punch = choose;
-      $.getJSON(
-        '/api/punch',
-        {
-          user,
-          room,
-          punch
-        })
-        .then(() => {
-          this.waitOtherPlayPunch(choose);
-        });
+      this.gameConnect.punch(choose);
+      this.waitOtherPlayPunch(choose);
+
+      // const user = this.getUser();
+      // const room = this.getRoom();
+      // const punch = choose;
+      // $.getJSON(
+      //   '/api/punch',
+      //   {
+      //     user,
+      //     room,
+      //     punch
+      //   })
+      //   .then(() => {
+      //     this.waitOtherPlayPunch(choose);
+      //   });
     }
   }
 
@@ -117,19 +125,30 @@ class GameControl extends Component {
   singlePlayerGame() {
   }
 
-  multiPlayersGame() {
-    const messages = [
-      'Please wait for other player joining'
-    ];
-
+  multiPlayersGame(hasOtherUser) {
     this.setState({
       showMenu: false,
       multiPlayer: true,
-      gameType: 'waiting',
-      messages
     });
 
-    this.waitOtherPlayerJoin();
+    if (!hasOtherUser) {
+      const messages = [
+        'Please wait for other player joining'
+      ];
+
+      this.setState({
+        gameType: 'waiting',
+        messages
+      });
+    } else {
+      this.setState({
+        showMenu: false,
+        multiPlayer: true,
+      });
+      this.otherPlayerIsJoined();
+    }
+
+    // this.waitOtherPlayerJoin();
   }
 
   waitOtherPlayerJoin() {
@@ -157,82 +176,144 @@ class GameControl extends Component {
     });
   }
 
-  waitOtherPlayPunch(choose) {
-    const room = this.getRoom();
-    const user = this.getUser();
+  waitMyselfPunch(otherChoose) {
+    this.otherChoose = otherChoose;
 
-    const messages = [
-      'please wait other player punch'
-    ];
+    if (this.choose) {
+      this.bothPlayersArePunched();
+    } else {
+      const messages = [
+        'Other player is punched!'
+      ];
 
-    this.setState({
-      messages
-    });
-
-    $.getJSON(
-      '/api/getroomstatus',
-      {
-        room
-      })
-      .then((data) => {
-        if (data.users &&
-            data.users.length === 2 &&
-            data.punches[data.users[0]] !== undefined &&
-            data.punches[data.users[1]] !== undefined) {
-          const otherUser = data.users.filter((dataUser) => user !== dataUser);
-          const otherChoose = data.punches[otherUser];
-
-          this.otherPlayerIsPunched(choose, otherChoose);
-
-          $.getJSON('/api/getroomstatus',
-            {
-              room,
-              user,
-              removePunch: true
-            });
-        } else {
-          setTimeout(() => {
-            this.waitOtherPlayPunch(choose);
-          }, 1000);
-        }
+      this.setState({
+        messages
       });
+    }
   }
 
-  otherPlayerIsPunched(choose, otherChoose) {
-    this.setResultMessage(choose, otherChoose);
+  waitOtherPlayPunch(choose) {
+    this.choose = choose;
+
+    if (this.otherChoose) {
+      this.bothPlayersArePunched();
+    } else {
+      const messages = [
+        'please wait other player punch'
+      ];
+
+      this.setState({
+        messages
+      });
+    }
+
+    // const room = this.getRoom();
+    // const user = this.getUser();
+
+    // const messages = [
+    //   'please wait other player punch'
+    // ];
+
+    // this.setState({
+    //   messages
+    // });
+
+    // $.getJSON(
+    //   '/api/getroomstatus',
+    //   {
+    //     room
+    //   })
+    //   .then((data) => {
+    //     if (data.users &&
+    //         data.users.length === 2 &&
+    //         data.punches[data.users[0]] !== undefined &&
+    //         data.punches[data.users[1]] !== undefined) {
+    //       const otherUser = data.users.filter((dataUser) => user !== dataUser);
+    //       const otherChoose = data.punches[otherUser];
+
+    //       this.bothPlayersArePunched(choose, otherChoose);
+
+    //       $.getJSON('/api/getroomstatus',
+    //         {
+    //           room,
+    //           user,
+    //           removePunch: true
+    //         });
+    //     } else {
+    //       setTimeout(() => {
+    //         this.waitOtherPlayPunch(choose);
+    //       }, 1000);
+    //     }
+    //   });
+  }
+
+  bothPlayersArePunched() {
+    this.setResultMessage(this.choose, this.otherChoose);
+
+    this.choose = null;
+    this.otherChoose = null;
   }
 
   createGame() {
     const user = this.getUser();
 
-    $.getJSON('/api/createroom', { user })
-      .then((data) => {
-        const room = data.room;
+    this.gameConnect.createRoom(user, this.recieveConnectMessage);
 
-        if (room) {
-          this.setRoom(room);
 
-          this.multiPlayersGame();
-        } else {
-          this.dbLoadError();
-        }
-      })
-      .catch((...args) => {
-        this.dbLoadError();
-      });
+    // $.getJSON('/api/createroom', { user })
+    //   .then((data) => {
+    //     const room = data.room;
+
+    //     if (room) {
+    //       this.setRoom(room);
+
+    //       this.multiPlayersGame();
+    //     } else {
+    //       this.dbLoadError();
+    //     }
+    //   })
+    //   .catch((...args) => {
+    //     this.dbLoadError();
+    //   });
   }
 
   joinGame(room) {
     const user = this.getUser();
-    $.getJSON('/api/joinroom', { room, user })
-      .then((data) => {
+
+    this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
+
+    // $.getJSON('/api/joinroom', { room, user })
+    //   .then((data) => {
+    //     this.setRoom(room);
+    //     this.setUser(user);
+    //     this.multiPlayersGame();
+    //   })
+    //   .catch((...args) => {
+    //     this.dbLoadError();
+    //   });
+  }
+
+  recieveConnectMessage(messageObject) {
+    const { room, user, hasOtherUser, punch } = messageObject;
+
+    switch (messageObject.type) {
+      case messageType.joinRoom:
         this.setRoom(room);
         this.setUser(user);
-        this.multiPlayersGame();
-      })
-      .catch((...args) => {
-        this.dbLoadError();
-      });
+        this.multiPlayersGame(hasOtherUser);
+        break;
+
+      case messageType.otherUserJoin:
+        this.otherPlayerIsJoined();
+        break;
+
+      case messageType.otherUserPunch:
+        this.waitMyselfPunch(punch);
+        break;
+
+      default:
+        break;
+    }
   }
 
   render() {

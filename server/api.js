@@ -94,6 +94,8 @@ router.get('/joinroom', (req, res, next) => {
     return;
   }
 
+  console.log('Api joinroom userAndRoomData:');
+  console.log(userAndRoomData);
   joinRoom(userAndRoomData, (err, data) => {
     if (err) {
       console.log('joinRoom error', err);

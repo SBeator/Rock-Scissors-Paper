@@ -27,3 +27,7 @@
 - Add error handler for playing
 - Don't use hard code string
 - Game layout is bad
+- Websocket error handling
+  - DB error
+  - parameter error
+  - connects array error

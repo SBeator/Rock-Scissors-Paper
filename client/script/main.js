@@ -8,7 +8,7 @@ import stringZh from '../../i18n/zh.json';
 import Game from './components/Game.jsx';
 
 // import GameWebSocket from './ClientWebSocket.js';
-import GameConnect from './GameConnect.js';
+// import GameConnect from './GameConnect.js';
 
 const i18n = i18nCore({
   en: stringEn,
@@ -41,15 +41,15 @@ ReactDOM.render(
 //   gameWebSocket.send('test');
 // });
 
-const gameConnect = new GameConnect();
+// const gameConnect = new GameConnect();
 
-if (roomToJoin) {
-  gameConnect.joinRoom(roomToJoin, 654321, (message) => {
-    console.log(message);
-  });
-} else {
-  gameConnect.createRoom(123456, (message) => {
-    console.log(message);
-  });
-}
+// if (roomToJoin) {
+//   gameConnect.joinRoom(roomToJoin, 654321, (message) => {
+//     console.log(message);
+//   });
+// } else {
+//   gameConnect.createRoom(123456, (message) => {
+//     console.log(message);
+//   });
+// }
 

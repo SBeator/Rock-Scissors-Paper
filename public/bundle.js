@@ -233,6 +233,11 @@ var GameConnect = function () {
       this.sendMessage(_websocket.messageType.joinRoom, { room: room, user: user }, recieveMessageCallback);
     }
   }, {
+    key: 'punch',
+    value: function punch(_punch) {
+      this.sendMessage(_websocket.messageType.punch, { punch: _punch });
+    }
+  }, {
     key: 'createMessage',
     value: function createMessage(type, messageObject) {
       return (0, _stringify2.default)((0, _assign2.default)({}, messageObject, { type: type }));
@@ -505,6 +510,12 @@ var _Event = require('./../Event.js');
 
 var _Event2 = _interopRequireDefault(_Event);
 
+var _GameConnect = require('../GameConnect.js');
+
+var _GameConnect2 = _interopRequireDefault(_GameConnect);
+
+var _websocket = require('../../../config/websocket.json');
+
 var _Status = require('./Status.jsx');
 
 var _Status2 = _interopRequireDefault(_Status);
@@ -533,6 +544,7 @@ var GameControl = function (_Component) {
 
     _this.createGame = _this.createGame.bind(_this);
     _this.joinGame = _this.joinGame.bind(_this);
+    _this.recieveConnectMessage = _this.recieveConnectMessage.bind(_this);
 
     _this.getUser = _this.getUser.bind(_this);
     _this.getRoom = _this.getRoom.bind(_this);
@@ -546,6 +558,7 @@ var GameControl = function (_Component) {
     _this.onSubmitChoose = _this.onSubmitChoose.bind(_this);
 
     _Event2.default.bindEvent(_Event.CustomEvents.SUBMIT_CHOOSE, _this.onSubmitChoose);
+    _this.gameConnect = new _GameConnect2.default();
 
     if (_this.props.roomToJoin) {
       _this.joinGame(_this.props.roomToJoin);
@@ -556,23 +569,27 @@ var GameControl = function (_Component) {
   (0, _createClass3.default)(GameControl, [{
     key: 'onSubmitChoose',
     value: function onSubmitChoose(choose) {
-      var _this2 = this;
-
       if (!this.state.multiPlayer) {
         var otherChoose = Math.random() * 3 | 0;
 
         this.setResultMessage(choose, otherChoose);
       } else {
-        var user = this.getUser();
-        var room = this.getRoom();
-        var punch = choose;
-        _jquery2.default.getJSON('/api/punch', {
-          user: user,
-          room: room,
-          punch: punch
-        }).then(function () {
-          _this2.waitOtherPlayPunch(choose);
-        });
+        this.gameConnect.punch(choose);
+        this.waitOtherPlayPunch(choose);
+
+        // const user = this.getUser();
+        // const room = this.getRoom();
+        // const punch = choose;
+        // $.getJSON(
+        //   '/api/punch',
+        //   {
+        //     user,
+        //     room,
+        //     punch
+        //   })
+        //   .then(() => {
+        //     this.waitOtherPlayPunch(choose);
+        //   });
       }
     }
   }, {
@@ -638,30 +655,41 @@ var GameControl = function (_Component) {
     value: function singlePlayerGame() {}
   }, {
     key: 'multiPlayersGame',
-    value: function multiPlayersGame() {
-      var messages = ['Please wait for other player joining'];
-
+    value: function multiPlayersGame(hasOtherUser) {
       this.setState({
         showMenu: false,
-        multiPlayer: true,
-        gameType: 'waiting',
-        messages: messages
+        multiPlayer: true
       });
 
-      this.waitOtherPlayerJoin();
+      if (!hasOtherUser) {
+        var messages = ['Please wait for other player joining'];
+
+        this.setState({
+          gameType: 'waiting',
+          messages: messages
+        });
+      } else {
+        this.setState({
+          showMenu: false,
+          multiPlayer: true
+        });
+        this.otherPlayerIsJoined();
+      }
+
+      // this.waitOtherPlayerJoin();
     }
   }, {
     key: 'waitOtherPlayerJoin',
     value: function waitOtherPlayerJoin() {
-      var _this3 = this;
+      var _this2 = this;
 
       var room = this.getRoom();
       _jquery2.default.getJSON('/api/getroomstatus', { room: room }).then(function (data) {
         if (data.users.length > 1) {
-          _this3.otherPlayerIsJoined();
+          _this2.otherPlayerIsJoined();
         } else {
           setTimeout(function () {
-            _this3.waitOtherPlayerJoin();
+            _this2.waitOtherPlayerJoin();
           }, 1000);
         }
       });
@@ -677,81 +705,149 @@ var GameControl = function (_Component) {
       });
     }
   }, {
-    key: 'waitOtherPlayPunch',
-    value: function waitOtherPlayPunch(choose) {
-      var _this4 = this;
+    key: 'waitMyselfPunch',
+    value: function waitMyselfPunch(otherChoose) {
+      this.otherChoose = otherChoose;
 
-      var room = this.getRoom();
-      var user = this.getUser();
+      if (this.choose) {
+        this.bothPlayersArePunched();
+      } else {
+        var messages = ['Other player is punched!'];
 
-      var messages = ['please wait other player punch'];
-
-      this.setState({
-        messages: messages
-      });
-
-      _jquery2.default.getJSON('/api/getroomstatus', {
-        room: room
-      }).then(function (data) {
-        if (data.users && data.users.length === 2 && data.punches[data.users[0]] !== undefined && data.punches[data.users[1]] !== undefined) {
-          var otherUser = data.users.filter(function (dataUser) {
-            return user !== dataUser;
-          });
-          var otherChoose = data.punches[otherUser];
-
-          _this4.otherPlayerIsPunched(choose, otherChoose);
-
-          _jquery2.default.getJSON('/api/getroomstatus', {
-            room: room,
-            user: user,
-            removePunch: true
-          });
-        } else {
-          setTimeout(function () {
-            _this4.waitOtherPlayPunch(choose);
-          }, 1000);
-        }
-      });
+        this.setState({
+          messages: messages
+        });
+      }
     }
   }, {
-    key: 'otherPlayerIsPunched',
-    value: function otherPlayerIsPunched(choose, otherChoose) {
-      this.setResultMessage(choose, otherChoose);
+    key: 'waitOtherPlayPunch',
+    value: function waitOtherPlayPunch(choose) {
+      this.choose = choose;
+
+      if (this.otherChoose) {
+        this.bothPlayersArePunched();
+      } else {
+        var messages = ['please wait other player punch'];
+
+        this.setState({
+          messages: messages
+        });
+      }
+
+      // const room = this.getRoom();
+      // const user = this.getUser();
+
+      // const messages = [
+      //   'please wait other player punch'
+      // ];
+
+      // this.setState({
+      //   messages
+      // });
+
+      // $.getJSON(
+      //   '/api/getroomstatus',
+      //   {
+      //     room
+      //   })
+      //   .then((data) => {
+      //     if (data.users &&
+      //         data.users.length === 2 &&
+      //         data.punches[data.users[0]] !== undefined &&
+      //         data.punches[data.users[1]] !== undefined) {
+      //       const otherUser = data.users.filter((dataUser) => user !== dataUser);
+      //       const otherChoose = data.punches[otherUser];
+
+      //       this.bothPlayersArePunched(choose, otherChoose);
+
+      //       $.getJSON('/api/getroomstatus',
+      //         {
+      //           room,
+      //           user,
+      //           removePunch: true
+      //         });
+      //     } else {
+      //       setTimeout(() => {
+      //         this.waitOtherPlayPunch(choose);
+      //       }, 1000);
+      //     }
+      //   });
+    }
+  }, {
+    key: 'bothPlayersArePunched',
+    value: function bothPlayersArePunched() {
+      this.setResultMessage(this.choose, this.otherChoose);
+
+      this.choose = null;
+      this.otherChoose = null;
     }
   }, {
     key: 'createGame',
     value: function createGame() {
-      var _this5 = this;
-
       var user = this.getUser();
 
-      _jquery2.default.getJSON('/api/createroom', { user: user }).then(function (data) {
-        var room = data.room;
+      this.gameConnect.createRoom(user, this.recieveConnectMessage);
 
-        if (room) {
-          _this5.setRoom(room);
+      // $.getJSON('/api/createroom', { user })
+      //   .then((data) => {
+      //     const room = data.room;
 
-          _this5.multiPlayersGame();
-        } else {
-          _this5.dbLoadError();
-        }
-      }).catch(function () {
-        _this5.dbLoadError();
-      });
+      //     if (room) {
+      //       this.setRoom(room);
+
+      //       this.multiPlayersGame();
+      //     } else {
+      //       this.dbLoadError();
+      //     }
+      //   })
+      //   .catch((...args) => {
+      //     this.dbLoadError();
+      //   });
     }
   }, {
     key: 'joinGame',
     value: function joinGame(room) {
-      var _this6 = this;
-
       var user = this.getUser();
-      _jquery2.default.getJSON('/api/joinroom', { room: room, user: user }).then(function (data) {
-        _this6.setRoom(room);
-        _this6.setUser(user);
-        _this6.multiPlayersGame();
-      }).catch(function () {
-        _this6.dbLoadError();
-      });
+
+      this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
+
+      // $.getJSON('/api/joinroom', { room, user })
+      //   .then((data) => {
+      //     this.setRoom(room);
+      //     this.setUser(user);
+      //     this.multiPlayersGame();
+      //   })
+      //   .catch((...args) => {
+      //     this.dbLoadError();
+      //   });
+    }
+  }, {
+    key: 'recieveConnectMessage',
+    value: function recieveConnectMessage(messageObject) {
+      var room = messageObject.room;
+      var user = messageObject.user;
+      var hasOtherUser = messageObject.hasOtherUser;
+      var punch = messageObject.punch;
+
+
+      switch (messageObject.type) {
+        case _websocket.messageType.joinRoom:
+          this.setRoom(room);
+          this.setUser(user);
+          this.multiPlayersGame(hasOtherUser);
+          break;
+
+        case _websocket.messageType.otherUserJoin:
+          this.otherPlayerIsJoined();
+          break;
+
+        case _websocket.messageType.otherUserPunch:
+          this.waitMyselfPunch(punch);
+          break;
+
+        default:
+          break;
+      }
     }
   }, {
     key: 'render',
@@ -789,7 +885,7 @@ GameControl.propTypes = propTypes;
 
 exports.default = GameControl;
 
-},{"./../Cookie.js":2,"./../Event.js":3,"./Choose.jsx":5,"./Menu.jsx":8,"./Status.jsx":10,"babel-runtime/core-js/object/get-prototype-of":20,"babel-runtime/helpers/classCallCheck":25,"babel-runtime/helpers/createClass":26,"babel-runtime/helpers/defineProperty":27,"babel-runtime/helpers/inherits":28,"babel-runtime/helpers/possibleConstructorReturn":29,"jquery":159,"react":292}],8:[function(require,module,exports){
+},{"../../../config/websocket.json":13,"../GameConnect.js":4,"./../Cookie.js":2,"./../Event.js":3,"./Choose.jsx":5,"./Menu.jsx":8,"./Status.jsx":10,"babel-runtime/core-js/object/get-prototype-of":20,"babel-runtime/helpers/classCallCheck":25,"babel-runtime/helpers/createClass":26,"babel-runtime/helpers/defineProperty":27,"babel-runtime/helpers/inherits":28,"babel-runtime/helpers/possibleConstructorReturn":29,"jquery":159,"react":292}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1204,11 +1300,10 @@ var _Game = require('./components/Game.jsx');
 
 var _Game2 = _interopRequireDefault(_Game);
 
-var _GameConnect = require('./GameConnect.js');
-
-var _GameConnect2 = _interopRequireDefault(_GameConnect);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import GameWebSocket from './ClientWebSocket.js';
+// import GameConnect from './GameConnect.js';
 
 var i18n = (0, _i18nCore2.default)({
   en: _en2.default,
@@ -1216,9 +1311,6 @@ var i18n = (0, _i18nCore2.default)({
 });
 
 /* eslint-disable */
-
-
-// import GameWebSocket from './ClientWebSocket.js';
 console.log(i18n.lang('zh').__('resultLose'));
 console.log(i18n.lang('en').__('resultLose'));
 /* eslint-enable */
@@ -1240,19 +1332,19 @@ _reactDom2.default.render(_react2.default.createElement(_Game2.default, { roomTo
 //   gameWebSocket.send('test');
 // });
 
-var gameConnect = new _GameConnect2.default();
+// const gameConnect = new GameConnect();
 
-if (roomToJoin) {
-  gameConnect.joinRoom(roomToJoin, 654321, function (message) {
-    console.log(message);
-  });
-} else {
-  gameConnect.createRoom(123456, function (message) {
-    console.log(message);
-  });
-}
+// if (roomToJoin) {
+//   gameConnect.joinRoom(roomToJoin, 654321, (message) => {
+//     console.log(message);
+//   });
+// } else {
+//   gameConnect.createRoom(123456, (message) => {
+//     console.log(message);
+//   });
+// }
 
-},{"../../i18n/en.json":14,"../../i18n/zh.json":15,"./GameConnect.js":4,"./components/Game.jsx":6,"i18n-core":153,"react":292,"react-dom":163}],12:[function(require,module,exports){
+},{"../../i18n/en.json":14,"../../i18n/zh.json":15,"./components/Game.jsx":6,"i18n-core":153,"react":292,"react-dom":163}],12:[function(require,module,exports){
 module.exports={
   "path": "/qrcode",
   "textPara": "t",

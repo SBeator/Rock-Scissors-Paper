@@ -6,12 +6,12 @@ import { port, protocal } from '../config/websocket.json';
 
 function initializeWebSocketServer() {
   const server = http.createServer((request, response) => {
-    console.log(`${(new Date())}  Received request for ${request.url}`);
+    console.log(`Websocket: ${(new Date())}  Received request for ${request.url}`);
     response.writeHead(404);
     response.end();
   });
   server.listen(port, () => {
-    console.log(`${(new Date())} Web socket server is listening on port ${port}`);
+    console.log(`Websocket: ${(new Date())} Web socket server is listening on port ${port}`);
   });
 
   const wsServer = new WebSocketServer({
@@ -28,7 +28,7 @@ function initializeWebSocketServer() {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
-      console.log(`${(new Date())} Connection from origin ${request.origin} rejected.`);
+      console.log(`Websocket: ${(new Date())} Connection from origin ${request.origin} rejected.`);
       return;
     }
 
@@ -36,20 +36,18 @@ function initializeWebSocketServer() {
 
     const gameConnect = new GameConnectServer(connection);
 
-    console.log(`${new Date()} Connection accepted. Origin: ${request.origin}`);
+    console.log(`Websocket: ${new Date()} Connection accepted. Origin: ${request.origin}`);
     connection.on('message', (message) => {
       if (message.type === 'utf8') {
-        console.log(`Received Message: ${message.utf8Data}`);
-        connection.sendUTF(message.utf8Data);
+        console.log(`Websocket: Received Message: ${message.utf8Data}`);
       } else if (message.type === 'binary') {
-        console.log(`Received Binary Message of ${message.binaryData.length} bytes`);
-        connection.sendBytes(message.binaryData);
+        console.log(`Websocket: Received Binary Message of ${message.binaryData.length} bytes`);
       }
 
       gameConnect.recieveMessage(message.utf8Data);
     });
     connection.on('close', (reasonCode, description) => {
-      console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
+      console.log(`Websocket: ${new Date()} Peer ${connection.remoteAddress} disconnected.`);
 
       gameConnect.disconnect();
     });

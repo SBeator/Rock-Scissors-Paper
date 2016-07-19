@@ -23,14 +23,7 @@ class GameConnectServer {
           if (err) {
             // Handle err;
           } else {
-            this.sendMessage(
-              messageType.createRoom,
-              {
-                user: data.user,
-                room: data.room
-              });
-
-            this.setRoom(data.room);
+            this.sendJoinRoomMessage(data.user, data.room);
           }
         });
         break;
@@ -39,18 +32,14 @@ class GameConnectServer {
           // Handle err;
         }
 
+
+        console.log('Socket joinroom userAndRoomData:');
+        console.log({ user, room });
         joinRoom({ user, room }, (err, data) => {
           if (err) {
             // Handle err;
           } else {
-            this.sendMessage(
-              messageType.joinRoom,
-              {
-                user: data.user,
-                room: data.room
-              });
-
-            this.setRoom(data.room);
+            this.sendJoinRoomMessage(data.user, data.room);
 
             this.sendMessageToOther(
               messageType.otherUserJoin,
@@ -86,6 +75,10 @@ class GameConnectServer {
     this.room = room;
   }
 
+  setUser(user) {
+    this.user = user;
+  }
+
   getOtherUserConnectInRoom() {
     let otherGameConnect;
     if (gameConnectsInRoom[this.room] && gameConnectsInRoom[this.room].length > 1) {
@@ -108,6 +101,23 @@ class GameConnectServer {
     if (otherUserConnect) {
       otherUserConnect.sendMessage(type, messageObject);
     }
+  }
+
+  sendJoinRoomMessage(user, room) {
+    this.setRoom(room);
+    this.setUser(user);
+
+    const otherUserConnect = this.getOtherUserConnectInRoom();
+
+    const hasOtherUser = !!otherUserConnect;
+
+    this.sendMessage(
+      messageType.joinRoom,
+      {
+        user,
+        room,
+        hasOtherUser
+      });
   }
 
   createMessageObject(type, messageObject) {

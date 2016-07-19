@@ -30,6 +30,10 @@ class GameConnect {
     this.sendMessage(messageType.joinRoom, { room, user }, recieveMessageCallback);
   }
 
+  punch(punch) {
+    this.sendMessage(messageType.punch, { punch });
+  }
+
   createMessage(type, messageObject) {
     return JSON.stringify(Object.assign({}, messageObject, { type }));
   }
