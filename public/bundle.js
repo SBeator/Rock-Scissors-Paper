@@ -1266,7 +1266,10 @@ module.exports={
   "messageType" : {
     "createRoom" : "createRoom",
     "joinRoom" : "joinRoom",
-    "otherUserJoin" : "otherUserJoin"
+    "otherUserJoin" : "otherUserJoin",
+    "punch" : "punch",
+    "otherUserPunch" : "otherUserPunch",
+    "otherUserLeft" : "otherUserLeft"
   }
 }
 },{}],14:[function(require,module,exports){

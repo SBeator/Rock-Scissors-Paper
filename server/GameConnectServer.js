@@ -1,5 +1,5 @@
 import { messageType } from '../config/websocket.json';
-import { createRoom, joinRoom, findRoom, punch } from './db.js';
+import { createRoom, joinRoom } from './db.js';
 
 const gameConnectsInRoom = {};
 
@@ -15,7 +15,7 @@ class GameConnectServer {
       // Handle err;
     }
 
-    const { user, room } = messageObject;
+    const { user, room, punch } = messageObject;
 
     switch (messageObject.type) {
       case messageType.createRoom:
@@ -52,16 +52,20 @@ class GameConnectServer {
 
             this.setRoom(data.room);
 
-            const otherUserConnect = this.getOtherUserConnectInRoom();
-            if (otherUserConnect) {
-              otherUserConnect.sendMessage(
-                messageType.otherUserJoin,
-                {
-                  user: data.user
-                });
-            }
+            this.sendMessageToOther(
+              messageType.otherUserJoin,
+              {
+                user: data.user
+              });
           }
         });
+        break;
+      case messageType.punch:
+        this.sendMessageToOther(
+          messageType.otherUserPunch,
+          {
+            punch
+          });
         break;
       default:
         break;
@@ -69,6 +73,7 @@ class GameConnectServer {
   }
 
   disconnect() {
+    this.sendMessageToOther(messageType.otherUserLeft);
   }
 
   setRoom(room) {
@@ -83,18 +88,30 @@ class GameConnectServer {
 
   getOtherUserConnectInRoom() {
     let otherGameConnect;
-    if (gameConnectsInRoom[this.room].length > 1) {
+    if (gameConnectsInRoom[this.room] && gameConnectsInRoom[this.room].length > 1) {
       otherGameConnect = gameConnectsInRoom[this.room]
-                          .filter(gameConnect => gameConnect !== this)[0];
+        .filter(gameConnect => gameConnect !== this)[0];
     }
 
     return otherGameConnect;
   }
 
   sendMessage(type, messageObject) {
-    const message = JSON.stringify(Object.assign({}, messageObject, { type }));
+    const message = this.createMessageObject(type, messageObject);
 
     this.connection.sendUTF(message);
+  }
+
+  sendMessageToOther(type, messageObject) {
+    const otherUserConnect = this.getOtherUserConnectInRoom();
+
+    if (otherUserConnect) {
+      otherUserConnect.sendMessage(type, messageObject);
+    }
+  }
+
+  createMessageObject(type, messageObject) {
+    return JSON.stringify(Object.assign({}, messageObject, { type }));
   }
 
   parseMessageObject(message) {
