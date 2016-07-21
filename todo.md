@@ -17,6 +17,7 @@
   - Other player is disconnected
   - Get ready for game
   - Re-join game if disconnect or refresh
+- **Use Redux**
 
 ## bugs
 - Need lots of refactor in react structures
