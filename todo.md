@@ -8,7 +8,7 @@
   - ~~People can see result~~
   - ~~Restart punch~~
   - ~~Share join link~~
-- Use promise to write all the logic in db.js
+- ~~Use promise to write all the logic in db.js~~
 - Use i18n strings
 - Use promise to write websocket
 - ~~Use websocket instead of db~~

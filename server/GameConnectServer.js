@@ -23,7 +23,7 @@ class GameConnectServer {
           if (err) {
             // Handle err;
           } else {
-            this.sendJoinRoomMessage(data.user, data.room);
+            this.sendJoinRoomMessage(data.currentUser, data.room);
           }
         });
         break;
@@ -39,7 +39,7 @@ class GameConnectServer {
           if (err) {
             // Handle err;
           } else {
-            this.sendJoinRoomMessage(data.user, data.room);
+            this.sendJoinRoomMessage(data.currentUser, data.room);
 
             this.sendMessageToOther(
               messageType.otherUserJoin,

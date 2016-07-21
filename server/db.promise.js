@@ -100,30 +100,30 @@ function result(callback) {
   };
 }
 
-connect()
-.then(getCollection(dbCollectionName))
-.then(drop())
-.then(insert({ test: 1 }))
-.then(result((resultData) => {
-  console.log('insert result:');
-  console.log(resultData);
-}))
-.then(find({ test: 1 }))
-.then(result((resultData) => {
-  console.log('find result:');
-  console.log(resultData);
-}))
-.then(deleteData({ test: 1 }))
-.then(result((resultData) => {
-  console.log('delete result:');
-  console.log(resultData);
-}))
-.then(find())
-.then((disConnect()))
-.then(result((resultData) => {
-  console.log('find result:');
-  console.log(resultData);
-}));
+// connect()
+// .then(getCollection(dbCollectionName))
+// .then(drop())
+// .then(insert({ test: 1 }))
+// .then(result((resultData) => {
+//   console.log('insert result:');
+//   console.log(resultData);
+// }))
+// .then(find({ test: 1 }))
+// .then(result((resultData) => {
+//   console.log('find result:');
+//   console.log(resultData);
+// }))
+// .then(deleteData({ test: 1 }))
+// .then(result((resultData) => {
+//   console.log('delete result:');
+//   console.log(resultData);
+// }))
+// .then(find())
+// .then((disConnect()))
+// .then(result((resultData) => {
+//   console.log('find result:');
+//   console.log(resultData);
+// }));
 
 // function insert(db, data, callback) {
 //   const collection = db.collection(dbCollectionName);
@@ -229,32 +229,30 @@ function listData(callback) {
 }
 
 function createRoom(data, callback) {
-  connectData((err, db) => {
-    const dbCallback = closeDbInCallback(db, callback);
+  const user = data.user || newUser();
+  const room = newRoom();
+  const newData = {
+    room,
+    users: [
+      user
+    ]
+  };
 
-    if (err) {
-      dbCallback(err);
-      return;
-    }
-
-    const user = data.user || newUser();
-    const room = newRoom();
-    const newData = {
-      room,
-      users: [
-        user
-      ]
-    };
-    insert(db, newData, (inserError) => {
+  connect()
+    .then(getCollection(dbCollectionName))
+    .then(insert(newData))
+    .then((disConnect()))
+    .then(result((resultData) => {
       Object.assign(
         newData,
         {
-          user
+          currentUser: user
         });
-
-      dbCallback(inserError, newData);
+      callback(null, newData);
+    }))
+    .catch((err) => {
+      callback(err);
     });
-  });
 }
 
 function joinRoom(data, callback) {
@@ -262,146 +260,45 @@ function joinRoom(data, callback) {
     callback(new Error('no room parameter'));
   }
 
-  connectData((err, db) => {
-    const dbCallback = closeDbInCallback(db, callback);
+  const room = data.room;
+  const roomData = {
+    room
+  };
 
-    if (err) {
-      dbCallback(err);
-      return;
-    }
+  let users;
+  let findData;
 
-    const room = data.room;
-    const roomData = {
-      room
-    };
-
-    find(db, roomData, (findError, existData) => {
-      console.log('db:joinRoom: find result:', existData);
-      if (findError) {
-        dbCallback(findError);
-      } else if (!existData.length) {
-        dbCallback(new Error('Room doesn\'t not exist'));
-      } else {
-        const findData = existData[0];
-        const users = findData.users || [];
-        users.push(data.user || newUser());
-
-        update(db, roomData, { users }, (updateError, result) => {
-          if (updateError) {
-            dbCallback(updateError);
-          } else {
-            Object.assign(
-              findData,
-              {
-                user: data.user
-              });
-
-            dbCallback(updateError, findData);
-          }
-        });
-      }
-    });
-  });
-}
-
-function findRoom(data, callback) {
-  if (!data.room) {
-    callback(new Error('no room parameter'));
-  }
-
-  connectData((err, db) => {
-    const dbCallback = closeDbInCallback(db, callback);
-
-    if (err) {
-      dbCallback(err);
-      return;
-    }
-
-    const room = data.room;
-    const roomData = {
-      room
-    };
-
-    find(db, roomData, (findError, existData) => {
-      console.log('db:findRoom: find result:', existData);
-      if (findError) {
-        dbCallback(findError);
-      } else if (!existData.length) {
-        dbCallback(new Error('Room doesn\'t not exist'));
-      } else {
-        const findData = existData[0];
-
-        if (!data.removePunch || !data.user) {
-          dbCallback(null, findData);
-        } else {
-          const removePunch = !findData.removePunch;
-          const punches = removePunch ? findData.punches : {};
-
-          update(db, roomData, { removePunch, punches }, (updateError, result) => {
-            console.log('db:findRoom: punch update error:', updateError);
-            console.log('db:findRoom: punch update result:', result);
-            if (updateError) {
-              dbCallback(updateError);
-            } else {
-              dbCallback(updateError, findData);
-            }
+  connect()
+    .then(getCollection(dbCollectionName))
+    .then(find(roomData))
+    .then(result(resultData => {
+      findData = resultData[0];
+      users = findData.users || [];
+      users.push(data.user || newUser());
+    }))
+    .then(update(roomData, { users }))
+    .then((disConnect()))
+    .then(result((resultData) => {
+      const { ok, nModified } = resultData;
+      if (ok && nModified) {
+        Object.assign(
+          findData,
+          {
+            currentUser: data.user
           });
-        }
-      }
-    });
-  });
-}
-
-function punch(data, callback) {
-  // TODO: do more error check
-  if (!data.room) {
-    callback(new Error('no room parameter'));
-  }
-
-  connectData((err, db) => {
-    const dbCallback = closeDbInCallback(db, callback);
-
-    if (err) {
-      dbCallback(err);
-      return;
-    }
-
-    const room = data.room;
-    const roomData = {
-      room
-    };
-
-    find(db, roomData, (findError, existData) => {
-      console.log('db:punch: find result:', existData);
-      if (findError) {
-        dbCallback(findError);
-      } else if (!existData.length) {
-        dbCallback(new Error('Room doesn\'t not exist'));
+        callback(null, findData);
       } else {
-        const findData = existData[0];
-        const punches = findData.punches || {};
-
-        punches[data.user] = data.punch;
-
-        update(db, roomData, { punches }, (updateError, result) => {
-          console.log('db:punch: punch update error:', updateError);
-          console.log('db:punch: punch update result:', result);
-          if (updateError) {
-            dbCallback(updateError);
-          } else {
-            dbCallback(updateError, findData);
-          }
-        });
+        callback(new Error('Update room db failed!'));
       }
+    }))
+    .catch((err) => {
+      callback(err);
     });
-  });
 }
 
 export {
-insertData,
-listData,
-createRoom,
-joinRoom,
-findRoom,
-punch
+  insertData,
+  listData,
+  createRoom,
+  joinRoom,
 };

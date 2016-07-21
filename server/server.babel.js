@@ -12,7 +12,9 @@ app.use('/api', apiRouters);
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send(err);
+  console.log('500, err:');
+  console.dir(err);
+  res.send({ err: err.message });
 });
 
 app.listen(process.env.PORT || 3000);
