@@ -18,6 +18,7 @@
   - Get ready for game
   - Re-join game if disconnect or refresh
 - **Use Redux**
+- Use server render instead of static html
 
 ## bugs
 - Need lots of refactor in react structures
