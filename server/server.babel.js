@@ -1,12 +1,18 @@
 import express from 'express';
+import path from 'path';
 
 import apiRouters from './api.js';
 import initializeWebSocketServer from './websocket.js';
 
 const app = express();
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-app.use('/', express.static('./public'));
+// app.use('/', express.static('./public'));
+app.get('/', (req, res, next) => {
+  res.render('index');
+});
 
 app.use('/api', apiRouters);
 
