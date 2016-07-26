@@ -1,7 +1,19 @@
 # To do/bug list
 
 ## To do
-- Add multiple player support for Game
+
+1 Use server render instead of static html
+1 Use i18n strings
+1 Use promise to write websocket
+1 Add testing
+1 Add more game socket hanlder
+  1 Other player is disconnected
+  1 Get ready for game
+  1 Re-join game if disconnect or refresh
+1 **Use Redux**
+
+### Done
+- ~~Add multiple player support for Game~~
   - ~~Add wait logic and status changing~~
   - ~~Add join room logic~~
   - ~~Add punch and get punch status logic~~
@@ -9,16 +21,7 @@
   - ~~Restart punch~~
   - ~~Share join link~~
 - ~~Use promise to write all the logic in db.js~~
-- Use i18n strings
-- Use promise to write websocket
 - ~~Use websocket instead of db~~
-- Add testing
-- Add more game socket hanlder
-  - Other player is disconnected
-  - Get ready for game
-  - Re-join game if disconnect or refresh
-- **Use Redux**
-- Use server render instead of static html
 
 ## bugs
 - Need lots of refactor in react structures
