@@ -2,7 +2,7 @@
 
 ## To do
 
-1. Use server render instead of static html
+1. ~~Use server render instead of static html~~
 1. Use Redux
 1. Add more game socket handler
   1. Other player is disconnected
