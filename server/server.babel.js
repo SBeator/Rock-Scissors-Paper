@@ -6,13 +6,14 @@ import initializeWebSocketServer from './websocket.js';
 
 const app = express();
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, '../views'));
+app.set('view engine', 'pug');
 
-// app.use('/', express.static('./public'));
 app.get('/', (req, res, next) => {
   res.render('index');
 });
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api', apiRouters);
 
