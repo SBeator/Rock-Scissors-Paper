@@ -6,4 +6,8 @@ html(lang='en')
     link(rel='stylesheet', href='style.css')
   body
     #root.root
+      != html
+    script 
+      - script = "window.globalInitialState = " + JSON.stringify(initialState);
+      != script
     script(type='text/javascript', src='bundle.js', charset='utf-8')

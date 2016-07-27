@@ -12,7 +12,9 @@ import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
 
 const propTypes = {
-  roomToJoin: PropTypes.string
+  room: PropTypes.string,
+  hostname: PropTypes.string,
+  pageOrigin: PropTypes.string
 };
 
 class GameControl extends Component {
@@ -35,10 +37,10 @@ class GameControl extends Component {
     this.onSubmitChoose = this.onSubmitChoose.bind(this);
 
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
-    this.gameConnect = new GameConnect();
+    this.gameConnect = new GameConnect(this.props.hostname);
 
-    if (this.props.roomToJoin) {
-      this.joinGame(this.props.roomToJoin);
+    if (this.props.room) {
+      this.joinGame(this.props.room);
     }
   }
 
@@ -240,6 +242,7 @@ class GameControl extends Component {
         <Status
           room={this.state.room}
           messages={this.state.messages}
+          pageOrigin={this.props.pageOrigin}
         />
         <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
       </div>

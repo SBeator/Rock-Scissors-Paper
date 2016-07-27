@@ -6,7 +6,8 @@ const propTypes = {
   otherChoose: PropTypes.string,
   result: PropTypes.number,
   room: PropTypes.string,
-  messages: PropTypes.array
+  messages: PropTypes.array,
+  pageOrigin: PropTypes.string
 };
 
 class Status extends Component {
@@ -43,12 +44,16 @@ class Status extends Component {
   }
 
   getShareLinkString() {
-    return `${location.origin}?joinroom=${this.props.room}`;
+    return `${this.props.pageOrigin}?room=${this.props.room}`;
   }
 
   getShareBlock() {
     return this.state.showShareBlock ?
-      <Share link={this.getShareLinkString()} onClose={this.onClickCloseShare} /> :
+      <Share
+        link={this.getShareLinkString()}
+        onClose={this.onClickCloseShare}
+        pageOrigin={this.props.pageOrigin}
+      /> :
       '';
   }
 

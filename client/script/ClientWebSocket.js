@@ -10,8 +10,8 @@ const validEvents = [
 ];
 
 class ClientWebSocket {
-  constructor(room, user) {
-    this.hostname = location.hostname;
+  constructor(hostname) {
+    this.hostname = hostname;
     this.eventHandlers = {};
     this.connect();
   }

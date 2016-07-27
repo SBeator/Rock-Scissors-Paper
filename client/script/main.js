@@ -20,16 +20,10 @@ console.log(i18n.lang('zh').__('resultLose'));
 console.log(i18n.lang('en').__('resultLose'));
 /* eslint-enable */
 
-
-const match = location.search.match(/[\?&]joinroom=(\d*)/);
-
-let roomToJoin;
-if (match) {
-  roomToJoin = match[1];
-}
+const initialState = window.globalInitialState;
 
 ReactDOM.render(
-  <Game roomToJoin={roomToJoin} />,
+  <Game hostname={location.hostname} pageOrigin={location.origin} {...initialState} />,
   document.getElementById('root')
 );
 

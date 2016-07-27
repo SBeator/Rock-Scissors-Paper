@@ -7,7 +7,8 @@ import {
 
 const propTypes = {
   link: PropTypes.string,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  pageOrigin: PropTypes.string
 };
 
 class Share extends Component {
@@ -22,7 +23,7 @@ class Share extends Component {
   }
 
   getQRcodeLink() {
-    return `${location.origin}/api/${path}?${textPara}=${this.props.link}`;
+    return `${this.props.pageOrigin}/api/${path}?${textPara}=${this.props.link}`;
   }
 
   render() {

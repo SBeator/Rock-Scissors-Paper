@@ -3,12 +3,13 @@ import { messageType } from '../../config/websocket.json';
 
 class GameConnect {
 
-  constructor() {
+  constructor(hostname) {
+    this.hostname = hostname;
     this.connectedSocket = this.connect();
   }
 
   connect() {
-    this.webSocket = new ClientWebSocket();
+    this.webSocket = new ClientWebSocket(this.hostname);
 
     return new Promise((resolve, reject) => {
       this.webSocket.on('open', () => {

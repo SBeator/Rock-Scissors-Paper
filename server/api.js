@@ -2,7 +2,6 @@ import express from 'express';
 import qr from 'qr-image';
 import qrConfig from '../config/qrcode.json';
 
-
 import { insertData, listData, createRoom, joinRoom, findRoom, punch } from './db.promise.js';
 
 const router = express.Router();

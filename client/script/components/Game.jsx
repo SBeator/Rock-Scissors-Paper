@@ -3,14 +3,16 @@ import React, { PropTypes } from 'react';
 import GameControl from './GameControl.jsx';
 
 const propTypes = {
-  roomToJoin: PropTypes.string
+  room: PropTypes.string,
+  hostname: PropTypes.string,
+  pageOrigin: PropTypes.string
 };
 
-function Game({ roomToJoin }) {
+function Game(props) {
   return (
     <div className="game">
       <div className="game__panel">
-        <GameControl roomToJoin={roomToJoin} />
+        <GameControl {...props} />
       </div>
     </div>);
 }
