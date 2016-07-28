@@ -35,7 +35,9 @@ class GameControl extends Component {
     };
 
     this.onSubmitChoose = this.onSubmitChoose.bind(this);
+  }
 
+  componentDidMount() {
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
     this.gameConnect = new GameConnect(this.props.hostname);
 

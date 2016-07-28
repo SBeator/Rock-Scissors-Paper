@@ -95,7 +95,6 @@ var Cookie = {
   setCookie: function setCookie(name, value) {
     var exp = new Date();
     exp.setTime(exp.getTime() + time);
-
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
   },
   getCookie: function getCookie(name) {
@@ -559,17 +558,20 @@ var GameControl = function (_Component) {
     };
 
     _this.onSubmitChoose = _this.onSubmitChoose.bind(_this);
-
-    _Event2.default.bindEvent(_Event.CustomEvents.SUBMIT_CHOOSE, _this.onSubmitChoose);
-    _this.gameConnect = new _GameConnect2.default(_this.props.hostname);
-
-    if (_this.props.room) {
-      _this.joinGame(_this.props.room);
-    }
     return _this;
   }
 
   (0, _createClass3.default)(GameControl, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _Event2.default.bindEvent(_Event.CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
+      this.gameConnect = new _GameConnect2.default(this.props.hostname);
+
+      if (this.props.room) {
+        this.joinGame(this.props.room);
+      }
+    }
+  }, {
     key: 'onSubmitChoose',
     value: function onSubmitChoose(choose) {
       if (!this.state.multiPlayer) {

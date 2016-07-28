@@ -5,7 +5,6 @@ const Cookie = {
   setCookie(name, value) {
     const exp = new Date();
     exp.setTime(exp.getTime() + time);
-
     document.cookie = `${name}=${escape(value)};expires=${exp.toGMTString()}`;
   },
 

@@ -1,6 +1,10 @@
 import actionType from './types.json';
 
-export const joinRoom = room => ({
+const joinRoom = room => ({
   type: actionType.JOIN_ROOM,
   room
 });
+
+export default {
+  joinRoom
+};
