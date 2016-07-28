@@ -1,0 +1,8 @@
+{
+  "CREATE_ROOM" : "createRoom",
+  "JOIN_ROOM" : "joinRoom",
+  "OTHER_USER_JOIN" : "otherUserJoin",
+  "PUNCH" : "punch",
+  "OTHER_USER_PUNCH" : "otherUserPunch",
+  "OTHER_USER_LEFT" : "otherUserLeft"
+}

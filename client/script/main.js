@@ -1,5 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+import reducer from '../../redux/reducers';
 
 import i18nCore from 'i18n-core';
 import stringEn from '../../i18n/en.json';
@@ -22,10 +27,20 @@ console.log(i18n.lang('en').__('resultLose'));
 
 const initialState = window.globalInitialState;
 
-ReactDOM.render(
-  <Game hostname={location.hostname} pageOrigin={location.origin} {...initialState} />,
+// render(
+//   <Game hostname={location.hostname} pageOrigin={location.origin} {...initialState} />,
+//   document.getElementById('root')
+// );
+
+let store = createStore(reducer);
+
+render(
+  (<Provider store={store}>
+    <Game hostname={location.hostname} pageOrigin={location.origin} {...initialState} />
+  </Provider>),
   document.getElementById('root')
 );
+
 
 // const gameWebSocket = new GameWebSocket();
 
