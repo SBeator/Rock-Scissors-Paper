@@ -35336,12 +35336,17 @@ module.exports={
 
 },{}],320:[function(require,module,exports){
 module.exports={
+  // Room action
   "CREATE_ROOM" : "createRoom",
   "JOIN_ROOM" : "joinRoom",
   "OTHER_USER_JOIN" : "otherUserJoin",
   "PUNCH" : "punch",
   "OTHER_USER_PUNCH" : "otherUserPunch",
-  "OTHER_USER_LEFT" : "otherUserLeft"
+  "OTHER_USER_LEFT" : "otherUserLeft",
+
+  // menu action
+  "CLICK_CREATE_ROOM" : "clickCreateRoom",
+  "CLICK_JOIN_ROOM" : "clickJoinRoom"
 }
 
 },{}],321:[function(require,module,exports){
