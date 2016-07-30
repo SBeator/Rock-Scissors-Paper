@@ -1,11 +1,11 @@
-import actionType from './types.json';
+import types from './types.json';
 
 const clickCreateRoom = () => ({
-  type: actionType.CLICK_CREATE_ROOM
+  type: types.CLICK_CREATE_ROOM
 });
 
 const clickJoinRoom = (room) => ({
-  type: actionType.CLICK_CREATE_ROOM,
+  type: types.CLICK_CREATE_ROOM,
   room
 });
 

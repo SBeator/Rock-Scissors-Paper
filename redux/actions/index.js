@@ -1,7 +1,7 @@
-import actionType from './types.json';
+import types from './types.json';
 
 const joinRoom = room => ({
-  type: actionType.JOIN_ROOM,
+  type: types.JOIN_ROOM,
   room
 });
 

@@ -1,10 +1,13 @@
-const visibilityFilter = (state = 'SHOW_ALL', action) => {
+import types from '../actions/types.json';
+
+const menuReducer = (state = { show: true }, action) => {
   switch (action.type) {
-    case 'SET_VISIBILITY_FILTER':
-      return action.filter;
+    case types.CLICK_CREATE_ROOM:
+    case types.CLICK_JOIN_ROOM:
+      return { show: false };
     default:
       return state;
   }
 };
 
-export default visibilityFilter;
+export default menuReducer;
