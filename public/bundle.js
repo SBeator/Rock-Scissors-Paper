@@ -1237,7 +1237,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
     createGame: function createGame() {
       dispatch(_actions2.default.clickCreateRoom());
     },
-    joinRoom: function joinRoom(room) {
+    joinGame: function joinGame(room) {
       dispatch(_actions2.default.clickJoinRoom(room));
     }
   };

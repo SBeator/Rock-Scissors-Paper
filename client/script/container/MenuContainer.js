@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   createGame: () => {
     dispatch(actions.clickCreateRoom());
   },
-  joinRoom: (room) => {
+  joinGame: (room) => {
     dispatch(actions.clickJoinRoom(room));
   }
 });
