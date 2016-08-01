@@ -1,10 +1,10 @@
-import types from './types.json';
+import menu from './menu';
+import room from './room';
 
-const joinRoom = room => ({
-  type: types.JOIN_ROOM,
-  room
-});
+const action = {};
 
-export default {
-  joinRoom
-};
+Object.assign(action, menu, room);
+
+console.log(11111);
+
+export default action;

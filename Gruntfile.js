@@ -2,7 +2,7 @@
 module.exports = function (grunt) {
   grunt.initConfig({
     paths: {
-      js: ['client/script/**/*.js', 'client/script/**/*.jsx'],
+      js: ['client/script/**/*.js', 'client/script/**/*.jsx', 'redux/**/*.*'],
       scss: ['client/style/**/*.scss'],
       main_scss: ['client/style/style.scss'],
       js_target: 'public/bundle.js',

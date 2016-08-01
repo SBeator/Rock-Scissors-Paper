@@ -1,4 +1,4 @@
-import types from '../actions/types.json';
+import types from '../actions/types';
 
 const roomReducers = (state = {}, action) => {
   switch (action.type) {

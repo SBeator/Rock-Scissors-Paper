@@ -1,4 +1,4 @@
-import types from './types.json';
+import types from './types';
 
 const clickCreateRoom = () => ({
   type: types.CLICK_CREATE_ROOM

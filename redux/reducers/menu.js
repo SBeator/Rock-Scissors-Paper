@@ -1,4 +1,4 @@
-import types from '../actions/types.json';
+import types from '../actions/types';
 
 const menuReducer = (state = { show: true }, action) => {
   switch (action.type) {

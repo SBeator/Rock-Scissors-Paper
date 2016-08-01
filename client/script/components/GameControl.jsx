@@ -8,8 +8,10 @@ import GameConnect from '../GameConnect.js';
 import { messageType } from '../../../config/websocket.json';
 
 import Status from './Status.jsx';
-import Menu from './Menu.jsx';
+// import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
+
+import MenuContainer from '../container/MenuContainer';
 
 const propTypes = {
   room: PropTypes.string,
@@ -246,7 +248,12 @@ class GameControl extends Component {
           messages={this.state.messages}
           pageOrigin={this.props.pageOrigin}
         />
-        <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
+        <MenuContainer />
+
+        { /*
+          <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
+        */}
+
       </div>
     );
   }
