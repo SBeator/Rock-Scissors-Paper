@@ -16,6 +16,17 @@ class Share extends Component {
     super(props);
 
     this.onClickCloseShare = this.onClickCloseShare.bind(this);
+    this.onClickWindow = this.onClickWindow.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('click', this.onClickWindow);
+  }
+
+  onClickWindow(event) {
+    if (this.refs.share.contains(event.target)) {
+      this.props.onClose();
+    }
   }
 
   onClickCloseShare() {
@@ -28,7 +39,7 @@ class Share extends Component {
 
   render() {
     return (
-      <div className="share" >
+      <div className="share" ref="share">
         <div className="share__close" onClick={this.onClickCloseShare}>×</div>
         <p>Please Share this link to your friend</p>
         <p>{this.props.link}</p>

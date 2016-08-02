@@ -1005,10 +1005,23 @@ var Share = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Share).call(this, props));
 
     _this.onClickCloseShare = _this.onClickCloseShare.bind(_this);
+    _this.onClickWindow = _this.onClickWindow.bind(_this);
     return _this;
   }
 
   (0, _createClass3.default)(Share, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      window.addEventListener('click', this.onClickWindow);
+    }
+  }, {
+    key: 'onClickWindow',
+    value: function onClickWindow(event) {
+      if (this.refs.share.contains(event.target)) {
+        this.props.onClose();
+      }
+    }
+  }, {
     key: 'onClickCloseShare',
     value: function onClickCloseShare() {
       this.props.onClose();
@@ -1023,7 +1036,7 @@ var Share = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { className: 'share' },
+        { className: 'share', ref: 'share' },
         _react2.default.createElement(
           'div',
           { className: 'share__close', onClick: this.onClickCloseShare },
