@@ -1,16 +1,29 @@
 .share {
   position: absolute;
-  border: 1px solid $block-border;
   z-index: 1;
-  background-color: #fff;
   top: 51px;
   left: 0;
-  padding: 10px;
   max-width: 100%;
 
   img, canvas {
     margin: auto;
     max-width: 100%;
+  }
+
+  .share__bg_hover {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: $grey-half-transparent;
+  }
+
+  .share__block {
+    padding: 10px;
+    border: 1px solid $block-border;
+    background-color: $white;
   }
 
   .share__close {

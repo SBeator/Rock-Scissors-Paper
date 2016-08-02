@@ -99,17 +99,28 @@ input[type="text"] {
 
 .share {
   position: absolute;
-  border: 1px solid #e6e6e6;
   z-index: 1;
-  background-color: #fff;
   top: 51px;
   left: 0;
-  padding: 10px;
   max-width: 100%;
 }
 .share img, .share canvas {
   margin: auto;
   max-width: 100%;
+}
+.share .share__bg_hover {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.share .share__block {
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  background-color: #ffffff;
 }
 .share .share__close {
   position: absolute;

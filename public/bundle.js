@@ -1002,7 +1002,6 @@ var Share = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Share).call(this, props));
 
     _this.onClickCloseShare = _this.onClickCloseShare.bind(_this);
-    _this.onClickWindow = _this.onClickWindow.bind(_this);
     return _this;
   }
 
@@ -1015,14 +1014,6 @@ var Share = function (_Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       window.removeEventListener('click', this.onClickWindow);
-    }
-  }, {
-    key: 'onClickWindow',
-    value: function onClickWindow(event) {
-      // if (!this.refs.share.contains(event.target)) {
-      //   event.preventDefault();
-      //   this.props.onClose();
-      // }
     }
   }, {
     key: 'onClickCloseShare',
@@ -1040,27 +1031,32 @@ var Share = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'share', ref: 'share' },
+        _react2.default.createElement('div', { className: 'share__bg_hover', onClick: this.onClickCloseShare }),
         _react2.default.createElement(
           'div',
-          { className: 'share__close', onClick: this.onClickCloseShare },
-          '×'
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          'Please Share this link to your friend'
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          this.props.link
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          'Or you can ask your find to scan the qrcode:'
-        ),
-        _react2.default.createElement('img', { className: 'share__qrcode', alt: 'Share link QR code', src: this.getQRcodeLink() })
+          { className: 'share__block' },
+          _react2.default.createElement(
+            'div',
+            { className: 'share__close', onClick: this.onClickCloseShare },
+            '×'
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            'Please Share this link to your friend'
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            this.props.link
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            'Or you can ask your find to scan the qrcode:'
+          ),
+          _react2.default.createElement('img', { className: 'share__qrcode', alt: 'Share link QR code', src: this.getQRcodeLink() })
+        )
       );
     }
   }]);
