@@ -7,9 +7,11 @@ import Event, { CustomEvents } from './../Event.js';
 import GameConnect from '../GameConnect.js';
 import { messageType } from '../../../config/websocket.json';
 
-import Status from './Status.jsx';
+// import Status from './Status.jsx';
 // import Menu from './Menu.jsx';
 import Choose from './Choose.jsx';
+
+import StatusContainer from '../container/StatusContainer';
 
 import MenuContainer from '../container/MenuContainer';
 
@@ -243,13 +245,17 @@ class GameControl extends Component {
         <Choose
           gameType={this.state.gameType}
         />
+
+        <StatusContainer />
+        { /*
         <Status
           room={this.state.room}
           messages={this.state.messages}
           pageOrigin={this.props.pageOrigin}
         />
-        <MenuContainer />
+        */ }
 
+        <MenuContainer />
         { /*
           <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
         */}

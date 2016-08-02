@@ -23,10 +23,15 @@ class Share extends Component {
     window.addEventListener('click', this.onClickWindow);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('click', this.onClickWindow);
+  }
+
   onClickWindow(event) {
-    if (this.refs.share.contains(event.target)) {
-      this.props.onClose();
-    }
+    // if (!this.refs.share.contains(event.target)) {
+    //   event.preventDefault();
+    //   this.props.onClose();
+    // }
   }
 
   onClickCloseShare() {

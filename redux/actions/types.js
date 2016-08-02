@@ -9,5 +9,8 @@ export default {
 
   // menu action
   CLICK_CREATE_ROOM: 'clickCreateRoom',
-  CLICK_JOIN_ROOM: 'clickJoinRoom'
+  CLICK_JOIN_ROOM: 'clickJoinRoom',
+
+  // client side init
+  CLIENT_SIDE_INIT: 'clientSideInit',
 };

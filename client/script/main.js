@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import reducer from '../../redux/reducers';
+import actions from '../../redux/actions';
 
 import i18nCore from 'i18n-core';
 import stringEn from '../../i18n/en.json';
@@ -34,9 +35,11 @@ const initialState = window.globalInitialState;
 
 let store = createStore(reducer);
 
+store.dispatch(actions.clientSideInit(location.hostname, location.origin));
+
 render(
   (<Provider store={store}>
-    <Game hostname={location.hostname} pageOrigin={location.origin} {...initialState} />
+    <Game hostname={location.hostname} {...initialState} />
   </Provider>),
   document.getElementById('root')
 );
