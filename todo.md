@@ -9,8 +9,8 @@
   1. Other player is disconnected
   1. Get ready for game
   1. Re-join game if disconnect or refresh
-1. Add animation and more icons to make game beautiful
 1. Use i18n strings
+1. Add animation and more icons to make game beautiful
 1. Add testing
 
 ### Done
