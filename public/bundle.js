@@ -921,31 +921,35 @@ var Menu = function (_Component) {
         'div',
         { className: this.getClasses() },
         _react2.default.createElement(
-          'button',
-          { className: 'btn', onClick: this.onClick, 'data-menu': 'create' },
-          'Create Game'
-        ),
-        _react2.default.createElement(
-          'button',
-          { className: 'btn', onClick: this.onClick, 'data-menu': 'join' },
-          'Join Game'
-        ),
-        _react2.default.createElement(
-          'form',
-          { className: 'menu--join-form hide', ref: 'form', onSubmit: this.onJoinRoomSubmit },
+          'div',
+          { className: 'menu__block' },
           _react2.default.createElement(
-            'label',
-            { htmlFor: 'room-number' },
-            'Room:'
+            'button',
+            { className: 'btn', onClick: this.onClick, 'data-menu': 'create' },
+            'Create Game'
           ),
-          _react2.default.createElement('input', { type: 'text', id: 'room-number', ref: 'room', onChange: this.onRoomChange }),
-          _react2.default.createElement('input', {
-            type: 'submit',
-            className: 'btn',
-            value: '√',
-            disabled: 'disabled',
-            ref: 'submit'
-          })
+          _react2.default.createElement(
+            'button',
+            { className: 'btn', onClick: this.onClick, 'data-menu': 'join' },
+            'Join Game'
+          ),
+          _react2.default.createElement(
+            'form',
+            { className: 'menu--join-form hide', ref: 'form', onSubmit: this.onJoinRoomSubmit },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'room-number' },
+              'Room:'
+            ),
+            _react2.default.createElement('input', { type: 'text', id: 'room-number', ref: 'room', onChange: this.onRoomChange }),
+            _react2.default.createElement('input', {
+              type: 'submit',
+              className: 'btn',
+              value: '√',
+              disabled: 'disabled',
+              ref: 'submit'
+            })
+          )
         )
       );
     }

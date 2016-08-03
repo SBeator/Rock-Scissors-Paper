@@ -57,19 +57,21 @@ class Menu extends Component {
   render() {
     return (
       <div className={this.getClasses()} >
-        <button className="btn" onClick={this.onClick} data-menu="create">Create Game</button>
-        <button className="btn" onClick={this.onClick} data-menu="join">Join Game</button>
-        <form className="menu--join-form hide" ref="form" onSubmit={this.onJoinRoomSubmit}>
-          <label htmlFor="room-number">Room:</label>
-          <input type="text" id="room-number" ref="room" onChange={this.onRoomChange} />
-          <input
-            type="submit"
-            className="btn"
-            value="&#8730;"
-            disabled="disabled"
-            ref="submit"
-          />
-        </form>
+        <div className="menu__block">
+          <button className="btn" onClick={this.onClick} data-menu="create">Create Game</button>
+          <button className="btn" onClick={this.onClick} data-menu="join">Join Game</button>
+          <form className="menu--join-form hide" ref="form" onSubmit={this.onJoinRoomSubmit}>
+            <label htmlFor="room-number">Room:</label>
+            <input type="text" id="room-number" ref="room" onChange={this.onRoomChange} />
+            <input
+              type="submit"
+              className="btn"
+              value="&#8730;"
+              disabled="disabled"
+              ref="submit"
+            />
+          </form>
+        </div>
       </div>
     );
   }
