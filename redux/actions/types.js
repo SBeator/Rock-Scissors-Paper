@@ -8,6 +8,7 @@ export default {
   OTHER_USER_LEFT: 'otherUserLeft',
 
   // menu action
+  CLICK_MULTI_GAME: 'clickMultiGame',
   CLICK_CREATE_ROOM: 'clickCreateRoom',
   CLICK_JOIN_ROOM: 'clickJoinRoom',
 

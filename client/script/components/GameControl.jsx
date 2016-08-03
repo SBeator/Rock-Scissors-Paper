@@ -12,8 +12,8 @@ import { messageType } from '../../../config/websocket.json';
 import Choose from './Choose.jsx';
 
 import StatusContainer from '../container/StatusContainer';
-
 import MenuContainer from '../container/MenuContainer';
+import WelcomeContainer from '../container/WelcomeContainer';
 
 const propTypes = {
   room: PropTypes.string,
@@ -259,6 +259,8 @@ class GameControl extends Component {
         { /*
           <Menu show={this.state.showMenu} createGame={this.createGame} joinGame={this.joinGame} />
         */}
+
+        <WelcomeContainer />
 
       </div>
     );

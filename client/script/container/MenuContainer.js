@@ -3,7 +3,7 @@ import actions from '../../../redux/actions';
 import Menu from '../components/Menu.jsx';
 
 const mapStateToProps = (state, ownProps) => ({
-  show: state.menu.show
+  show: state.layout === 'menu'
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

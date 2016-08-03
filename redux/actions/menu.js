@@ -9,7 +9,12 @@ const clickJoinRoom = (room) => ({
   room
 });
 
+const clickMultiGame = () => ({
+  type: types.CLICK_MULTI_GAME
+});
+
 export default {
   clickCreateRoom,
-  clickJoinRoom
+  clickJoinRoom,
+  clickMultiGame
 };

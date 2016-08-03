@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import menu from './menu';
 import room from './room';
 import status from './status';
+import layout from './layout';
 
 export default combineReducers({
-  menu,
   room,
-  status
+  status,
+  layout
 });
