@@ -9,11 +9,12 @@ import { messageType } from '../../../config/websocket.json';
 
 // import Status from './Status.jsx';
 // import Menu from './Menu.jsx';
-import Choose from './Choose.jsx';
+// import Choose from './Choose.jsx';
 
 import StatusContainer from '../container/StatusContainer';
 import MenuContainer from '../container/MenuContainer';
 import WelcomeContainer from '../container/WelcomeContainer';
+import ChooseContainer from '../container/ChooseContainer';
 
 const propTypes = {
   room: PropTypes.string,
@@ -242,9 +243,14 @@ class GameControl extends Component {
   render() {
     return (
       <div className="game-control">
+
+        <ChooseContainer />
+        { /*
         <Choose
           gameType={this.state.gameType}
+          submitChoose={this.onSubmitChoose}
         />
+        */ }
 
         <StatusContainer />
         { /*

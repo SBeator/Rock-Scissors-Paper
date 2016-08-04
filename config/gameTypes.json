@@ -1,0 +1,17 @@
+{
+  "IDLE": "idle",
+
+  "JOINING": "joining",
+  "WAITING": "waiting",
+  "OTHER_PLAYER_JOINED": "otherPlayerJoined",
+
+  "READYING": "readying",
+  "READY": "ready",
+  "OTHER_PLAYER_READY": "ready",
+
+  "PUNCHING" : "punching",
+  "PUNCHED" : "punched",
+  "OTHER_PLAYER_PUNCHED" : "otherPlayerPunched",
+
+  "OTHER_PLAYER_LEFT" : "otherUserLeft"
+}

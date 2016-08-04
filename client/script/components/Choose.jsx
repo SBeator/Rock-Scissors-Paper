@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
-import Event, { CustomEvents } from './../Event.js';
+// import Event, { CustomEvents } from './../Event.js';
 
 const propTypes = {
-  gameType: PropTypes.string,
+  ready: PropTypes.bool,
+  punch: PropTypes.func
 };
 
 class Choose extends Component {
@@ -15,15 +16,15 @@ class Choose extends Component {
   }
 
   componentDidMount() {
-    this.refs.submit.disabled = (this.props.gameType !== 'ready');
+    this.refs.submit.disabled = !this.props.ready;
   }
 
   componentDidUpdate() {
-    this.refs.submit.disabled = (this.props.gameType !== 'ready');
+    this.refs.submit.disabled = !this.props.ready;
   }
 
   onChooseChange() {
-    if (this.props.gameType === 'ready') {
+    if (this.props.ready) {
       this.refs.submit.disabled = false;
     }
   }
@@ -31,7 +32,8 @@ class Choose extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
+    this.props.punch(this.refs.form.choose.value);
+    // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
   }
 
   render() {
