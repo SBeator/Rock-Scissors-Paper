@@ -13,7 +13,7 @@ import Game from '../client/script/components/Game.jsx';
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  const { room } = req.query;
+  // const { room } = req.query;
 
   // const initialState = {
   //   room
@@ -21,7 +21,9 @@ router.get('/', (req, res, next) => {
 
   // const html = renderToString(<Game />);
 
-  const store = createStore(reducer, actions.joinRoom(room));
+  console.log(res.__('createGame'));
+
+  const store = createStore(reducer);
 
   const initialState = store.getState();
 

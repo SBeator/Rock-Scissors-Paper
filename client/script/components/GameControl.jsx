@@ -19,7 +19,6 @@ import ChooseContainer from '../container/ChooseContainer';
 const propTypes = {
   room: PropTypes.string,
   hostname: PropTypes.string,
-  pageOrigin: PropTypes.string
 };
 
 class GameControl extends Component {

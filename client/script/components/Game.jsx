@@ -5,7 +5,6 @@ import GameControl from './GameControl.jsx';
 const propTypes = {
   room: PropTypes.string,
   hostname: PropTypes.string,
-  pageOrigin: PropTypes.string
 };
 
 function Game(props) {

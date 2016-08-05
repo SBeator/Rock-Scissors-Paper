@@ -7,24 +7,10 @@ import { createStore } from 'redux';
 import reducer from '../../redux/reducers';
 import actions from '../../redux/actions';
 
-import i18nCore from 'i18n-core';
-import stringEn from '../../i18n/en.json';
-import stringZh from '../../i18n/zh.json';
-
 import Game from './components/Game.jsx';
 
 // import GameWebSocket from './ClientWebSocket.js';
 // import GameConnect from './GameConnect.js';
-
-const i18n = i18nCore({
-  en: stringEn,
-  zh: stringZh
-});
-
-/* eslint-disable */
-console.log(i18n.lang('zh').__('resultLose'));
-console.log(i18n.lang('en').__('resultLose'));
-/* eslint-enable */
 
 const initialState = window.globalInitialState;
 
