@@ -6,7 +6,6 @@
 1. Use Redux
   1. TODO: remove the first two lines after JOIN_ROOM action is created
   1. TODO: Change punch to punching and punched
-
 1. Add more game socket handler
   1. Other player is disconnected
   1. Get ready for game
