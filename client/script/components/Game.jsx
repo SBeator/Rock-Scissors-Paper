@@ -3,8 +3,8 @@ import React, { PropTypes } from 'react';
 import GameControl from './GameControl.jsx';
 
 const propTypes = {
-  room: PropTypes.string,
   hostname: PropTypes.string,
+  game: PropTypes.object
 };
 
 function Game(props) {

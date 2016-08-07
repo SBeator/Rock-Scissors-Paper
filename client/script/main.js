@@ -7,7 +7,7 @@ import { createStore } from 'redux';
 import reducer from '../../redux/reducers';
 import actions from '../../redux/actions';
 
-import Game from './components/Game.jsx';
+import GameContainer from './container/GameContainer';
 
 // import GameWebSocket from './ClientWebSocket.js';
 // import GameConnect from './GameConnect.js';
@@ -19,13 +19,13 @@ const initialState = window.globalInitialState;
 //   document.getElementById('root')
 // );
 
-let store = createStore(reducer);
+let store = createStore(reducer, initialState);
 
 store.dispatch(actions.clientSideInit(location.hostname, location.origin));
 
 render(
   (<Provider store={store}>
-    <Game hostname={location.hostname} {...initialState} />
+    <GameContainer />
   </Provider>),
   document.getElementById('root')
 );

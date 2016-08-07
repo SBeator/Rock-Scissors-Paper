@@ -17,8 +17,8 @@ import WelcomeContainer from '../container/WelcomeContainer';
 import ChooseContainer from '../container/ChooseContainer';
 
 const propTypes = {
-  room: PropTypes.string,
   hostname: PropTypes.string,
+  game: PropTypes.object
 };
 
 class GameControl extends Component {
@@ -45,9 +45,9 @@ class GameControl extends Component {
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
     this.gameConnect = new GameConnect(this.props.hostname);
 
-    if (this.props.room) {
-      this.joinGame(this.props.room);
-    }
+    // if (this.props.room) {
+    //   this.joinGame(this.props.room);
+    // }
   }
 
   onSubmitChoose(choose) {

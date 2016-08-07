@@ -8,10 +8,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   createGame: () => {
-    dispatch(actions.clickCreateRoom());
+    dispatch(actions.creatingRoom());
   },
   joinGame: (room) => {
-    dispatch(actions.clickJoinRoom(room));
+    dispatch(actions.joiningRoom(room));
   }
 });
 
