@@ -5,8 +5,8 @@ import gameTypes from '../../config/gameTypes.json';
 const gameReducers = (state = { type: gameTypes.IDLE }, action) => {
   switch (action.type) {
     // TODO: remove the first two lines after JOIN_ROOM action is created
-    case types.CLICK_CREATE_ROOM:
-    case types.CLICK_JOIN_ROOM:
+    case types.CREATING_ROOM:
+    case types.JOINING_ROOM:
       return {
         type: gameTypes.OTHER_PLAYER_JOINED
       };

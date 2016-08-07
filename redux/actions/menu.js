@@ -1,11 +1,11 @@
 import types from './types';
 
 const clickCreateRoom = () => ({
-  type: types.CLICK_CREATE_ROOM
+  type: types.CREATING_ROOM
 });
 
 const clickJoinRoom = (room) => ({
-  type: types.CLICK_CREATE_ROOM,
+  type: types.CREATING_ROOM,
   room
 });
 

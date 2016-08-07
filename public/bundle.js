@@ -34311,13 +34311,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var clickCreateRoom = function clickCreateRoom() {
   return {
-    type: _types2.default.CLICK_CREATE_ROOM
+    type: _types2.default.CREATING_ROOM
   };
 };
 
 var clickJoinRoom = function clickJoinRoom(room) {
   return {
-    type: _types2.default.CLICK_CREATE_ROOM,
+    type: _types2.default.CREATING_ROOM,
     room: room
   };
 };
@@ -34335,51 +34335,53 @@ exports.default = {
 };
 
 },{"./types":321}],320:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+// import types from './types';
 
-var _types = require('./types');
-
-var _types2 = _interopRequireDefault(_types);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var joinRoom = function joinRoom(room) {
-  return {
-    type: _types2.default.JOIN_ROOM,
-    room: room
-  };
-};
+// const joinRoom = room => ({
+//   type: types.JOIN_ROOM,
+//   room
+// });
 
 exports.default = {
-  joinRoom: joinRoom
+  // joinRoom
 };
 
-},{"./types":321}],321:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  // Room action
-  CREATE_ROOM: 'createRoom',
-  JOIN_ROOM: 'joinRoom',
-  OTHER_USER_JOIN: 'otherUserJoin',
-  PUNCH: 'punch',
-  OTHER_USER_PUNCH: 'otherUserPunch',
-  OTHER_USER_LEFT: 'otherUserLeft',
-
   // menu action
   CLICK_MULTI_GAME: 'clickMultiGame',
-  CLICK_CREATE_ROOM: 'clickCreateRoom',
-  CLICK_JOIN_ROOM: 'clickJoinRoom',
 
   // client side init
-  CLIENT_SIDE_INIT: 'clientSideInit'
+  CLIENT_SIDE_INIT: 'clientSideInit',
+
+  // game related
+  IDLE: 'idle',
+
+  CREATING_ROOM: 'creatingRoom',
+  WAITING_IN_ROOM: 'waitingInRoom',
+
+  JOINING_ROOM: 'joiningRoom',
+  OTHER_PLAYER_JOINED: 'otherPlayerJoined',
+
+  READYING: 'readying',
+  READY: 'ready',
+  OTHER_PLAYER_READY: 'ready',
+
+  PUNCHING: 'punching',
+  PUNCHED: 'punched',
+  OTHER_PLAYER_PUNCHED: 'otherPlayerPunched',
+
+  OTHER_PLAYER_LEFT: 'otherUserLeft'
 };
 
 },{}],322:[function(require,module,exports){
@@ -34405,8 +34407,8 @@ var gameReducers = function gameReducers() {
 
   switch (action.type) {
     // TODO: remove the first two lines after JOIN_ROOM action is created
-    case _types2.default.CLICK_CREATE_ROOM:
-    case _types2.default.CLICK_JOIN_ROOM:
+    case _types2.default.CREATING_ROOM:
+    case _types2.default.JOINING_ROOM:
       return {
         type: _gameTypes2.default.OTHER_PLAYER_JOINED
       };
@@ -34477,8 +34479,8 @@ var layoutReducer = function layoutReducer() {
   switch (action.type) {
     case _types2.default.CLICK_MULTI_GAME:
       return 'menu';
-    case _types2.default.CLICK_CREATE_ROOM:
-    case _types2.default.CLICK_JOIN_ROOM:
+    case _types2.default.CREATING_ROOM:
+    case _types2.default.JOINING_ROOM:
       return 'game';
     default:
       return state;
@@ -34506,8 +34508,8 @@ var roomReducers = function roomReducers() {
 
   switch (action.type) {
     // TODO: remove the first two lines after JOIN_ROOM action is created
-    case _types2.default.CLICK_CREATE_ROOM:
-    case _types2.default.CLICK_JOIN_ROOM:
+    case _types2.default.CREATING_ROOM:
+    case _types2.default.JOINING_ROOM:
     case _types2.default.JOIN_ROOM:
       return {
         room: action.room || '11111'
@@ -34544,8 +34546,8 @@ var statusReducers = function statusReducers() {
 
   switch (action.type) {
     // TODO: remove the first two lines after JOIN_ROOM action is created
-    case _types2.default.CLICK_CREATE_ROOM:
-    case _types2.default.CLICK_JOIN_ROOM:
+    case _types2.default.CREATING_ROOM:
+    case _types2.default.JOINING_ROOM:
     case _types2.default.JOIN_ROOM:
       (0, _assign2.default)(newState, state, {
         messages: ['Please wait for other player joining']

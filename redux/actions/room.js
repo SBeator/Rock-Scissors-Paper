@@ -1,10 +1,10 @@
-import types from './types';
+// import types from './types';
 
-const joinRoom = room => ({
-  type: types.JOIN_ROOM,
-  room
-});
+// const joinRoom = room => ({
+//   type: types.JOIN_ROOM,
+//   room
+// });
 
 export default {
-  joinRoom
+ // joinRoom
 };
