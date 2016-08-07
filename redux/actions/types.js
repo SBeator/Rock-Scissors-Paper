@@ -1,4 +1,5 @@
 export default {
+
   // menu action
   CLICK_MULTI_GAME: 'clickMultiGame',
 
