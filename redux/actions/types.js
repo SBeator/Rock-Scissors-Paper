@@ -15,6 +15,7 @@ export default {
   JOINING_ROOM: 'joiningRoom',
   OTHER_PLAYER_JOINED: 'otherPlayerJoined',
 
+  // TODO: handle ready actions
   READYING: 'readying',
   READY: 'ready',
   OTHER_PLAYER_READY: 'ready',
@@ -23,5 +24,6 @@ export default {
   PUNCHED: 'punched',
   OTHER_PLAYER_PUNCHED: 'otherPlayerPunched',
 
+  // TODO: handle other player left action
   OTHER_PLAYER_LEFT: 'otherUserLeft'
 };

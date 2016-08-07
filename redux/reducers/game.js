@@ -1,24 +1,41 @@
 import types from '../actions/types';
 
-import gameTypes from '../../config/gameTypes.json';
+const gameActionType = [
+  types.IDLE,
+  types.CREATING_ROOM,
+  types.WAITING_IN_ROOM,
+  types.JOINING_ROOM,
+  types.OTHER_PLAYER_JOINED,
+  types.READYING,
+  types.READY,
+  types.OTHER_PLAYER_READY,
+  types.PUNCHING,
+  types.PUNCHED,
+  types.OTHER_PLAYER_PUNCHED
+];
 
-const gameReducers = (state = { type: gameTypes.IDLE }, action) => {
-  switch (action.type) {
-    // TODO: remove the first two lines after JOIN_ROOM action is created
-    case types.CREATING_ROOM:
-    case types.JOINING_ROOM:
-      return {
-        type: gameTypes.OTHER_PLAYER_JOINED
-      };
-    case types.JOIN_ROOM:
-      return {
-        type: action.otherUser ? gameTypes.OTHER_PLAYER_JOINED : gameTypes.WAITING,
-        otherUser: action.otherUser,
-        user: action.user
-      };
-    default:
-      return state;
+const gameReducers = (state = { type: types.IDLE }, action) => {
+  let newState;
+
+  if (gameActionType.indexOf(action.type) >= 0) {
+    const {
+    type,
+    room,
+    user,
+    otherUser,
+    punch } = action;
+
+    newState = Object.assign({}, state, {
+      type,
+      room,
+      user,
+      otherUser,
+      punch });
+  } else {
+    newState = state;
   }
+
+  return newState;
 };
 
 export default gameReducers;
