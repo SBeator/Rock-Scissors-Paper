@@ -5,9 +5,8 @@ import Cookie from './../Cookie.js';
 import Event, { CustomEvents } from './../Event.js';
 
 import GameConnect from '../GameConnect.js';
-import { messageType } from '../../../config/websocket.json';
 
-import gameTypes from '../../../redux/actions/types';
+import actionType from '../../../redux/actions/types';
 
 // import Status from './Status.jsx';
 // import Menu from './Menu.jsx';
@@ -62,10 +61,10 @@ class GameControl extends Component {
       this.currectGameType = gameState.type;
 
       switch (gameState.type) {
-        case gameTypes.CREATING_ROOM:
+        case actionType.CREATING_ROOM:
           this.createGame();
           break;
-        case gameTypes.JOINING_ROOM:
+        case actionType.JOINING_ROOM:
           this.joinGame(gameState.room);
           break;
         default:
@@ -240,28 +239,28 @@ class GameControl extends Component {
   }
 
   recieveConnectMessage(messageObject) {
-    const { room, user, hasOtherUser, punch } = messageObject;
+    // const { room, user, hasOtherUser, punch } = messageObject;
 
     this.props.dispatchGameAction(messageObject);
 
-    switch (messageObject.type) {
-      case messageType.joinRoom:
-        this.setRoom(room);
-        this.setUser(user);
-        this.multiPlayersGame(hasOtherUser);
-        break;
+    // switch (messageObject.type) {
+    //   case actionType.joinRoom:
+    //     this.setRoom(room);
+    //     this.setUser(user);
+    //     this.multiPlayersGame(hasOtherUser);
+    //     break;
 
-      case messageType.otherUserJoin:
-        this.otherPlayerIsJoined();
-        break;
+    //   case messageType.otherUserJoin:
+    //     this.otherPlayerIsJoined();
+    //     break;
 
-      case messageType.otherUserPunch:
-        this.waitMyselfPunch(punch);
-        break;
+    //   case messageType.otherUserPunch:
+    //     this.waitMyselfPunch(punch);
+    //     break;
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
   }
 
   render() {

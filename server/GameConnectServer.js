@@ -1,4 +1,4 @@
-import { messageType } from '../config/websocket.json';
+import actionType from '../redux/actions/types';
 import { createRoom, joinRoom } from './db.js';
 
 const gameConnectsInRoom = {};
@@ -18,7 +18,7 @@ class GameConnectServer {
     const { user, room, punch } = messageObject;
 
     switch (messageObject.type) {
-      case messageType.createRoom:
+      case actionType.CREATING_ROOM:
         createRoom({ user }, (err, data) => {
           if (err) {
             // Handle err;
@@ -27,11 +27,10 @@ class GameConnectServer {
           }
         });
         break;
-      case messageType.joinRoom:
+      case actionType.JOINING_ROOM:
         if (!room) {
           // Handle err;
         }
-
 
         console.log('Socket joinroom userAndRoomData:');
         console.log({ user, room });
@@ -42,18 +41,18 @@ class GameConnectServer {
             this.sendJoinRoomMessage(data.currentUser, data.room);
 
             this.sendMessageToOther(
-              messageType.otherUserJoin,
+              actionType.OTHER_PLAYER_JOINED,
               {
-                user: data.user
+                otherUser: data.user
               });
           }
         });
         break;
-      case messageType.punch:
+      case actionType.PUNCHING:
         this.sendMessageToOther(
-          messageType.otherUserPunch,
+          actionType.OTHER_PLAYER_PUNCHED,
           {
-            punch
+            punch: otherPunch
           });
         break;
       default:
@@ -62,7 +61,7 @@ class GameConnectServer {
   }
 
   disconnect() {
-    this.sendMessageToOther(messageType.otherUserLeft);
+    this.sendMessageToOther(actionType.OTHER_PLAYER_LEFT);
   }
 
   setRoom(room) {
@@ -109,14 +108,15 @@ class GameConnectServer {
 
     const otherUserConnect = this.getOtherUserConnectInRoom();
 
-    const hasOtherUser = !!otherUserConnect;
+    const otherUser = !!otherUserConnect && otherUserConnect.user;
 
+    const type = otherUser ? actionType.OTHER_PLAYER_JOINED : actionType.WAITING_IN_ROOM;
     this.sendMessage(
-      messageType.joinRoom,
+      type,
       {
         user,
         room,
-        hasOtherUser
+        otherUser
       });
   }
 

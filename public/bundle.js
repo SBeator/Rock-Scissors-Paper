@@ -192,7 +192,9 @@ var _ClientWebSocket = require('./ClientWebSocket.js');
 
 var _ClientWebSocket2 = _interopRequireDefault(_ClientWebSocket);
 
-var _websocket = require('../../config/websocket.json');
+var _types = require('../../redux/actions/types');
+
+var _types2 = _interopRequireDefault(_types);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -225,17 +227,17 @@ var GameConnect = function () {
   }, {
     key: 'createRoom',
     value: function createRoom(user, recieveMessageCallback) {
-      this.sendMessage(_websocket.messageType.createRoom, { user: user }, recieveMessageCallback);
+      this.sendMessage(_types2.default.CREATING_ROOM, { user: user }, recieveMessageCallback);
     }
   }, {
     key: 'joinRoom',
     value: function joinRoom(room, user, recieveMessageCallback) {
-      this.sendMessage(_websocket.messageType.joinRoom, { room: room, user: user }, recieveMessageCallback);
+      this.sendMessage(_types2.default.JOINING_ROOM, { room: room, user: user }, recieveMessageCallback);
     }
   }, {
     key: 'punch',
     value: function punch(_punch) {
-      this.sendMessage(_websocket.messageType.punch, { punch: _punch });
+      this.sendMessage(_types2.default.punch, { punch: _punch });
     }
   }, {
     key: 'createMessage',
@@ -280,7 +282,7 @@ var GameConnect = function () {
 
 exports.default = GameConnect;
 
-},{"../../config/websocket.json":20,"./ClientWebSocket.js":1,"babel-runtime/core-js/json/stringify":21,"babel-runtime/core-js/object/assign":22,"babel-runtime/core-js/promise":27,"babel-runtime/helpers/classCallCheck":30,"babel-runtime/helpers/createClass":31}],5:[function(require,module,exports){
+},{"../../redux/actions/types":318,"./ClientWebSocket.js":1,"babel-runtime/core-js/json/stringify":21,"babel-runtime/core-js/object/assign":22,"babel-runtime/core-js/promise":27,"babel-runtime/helpers/classCallCheck":30,"babel-runtime/helpers/createClass":31}],5:[function(require,module,exports){
 "use strict";
 
 },{}],6:[function(require,module,exports){
@@ -516,8 +518,6 @@ var _Event2 = _interopRequireDefault(_Event);
 var _GameConnect = require('../GameConnect.js');
 
 var _GameConnect2 = _interopRequireDefault(_GameConnect);
-
-var _websocket = require('../../../config/websocket.json');
 
 var _types = require('../../../redux/actions/types');
 
@@ -781,32 +781,28 @@ var GameControl = function (_Component) {
   }, {
     key: 'recieveConnectMessage',
     value: function recieveConnectMessage(messageObject) {
-      var room = messageObject.room;
-      var user = messageObject.user;
-      var hasOtherUser = messageObject.hasOtherUser;
-      var punch = messageObject.punch;
-
+      // const { room, user, hasOtherUser, punch } = messageObject;
 
       this.props.dispatchGameAction(messageObject);
 
-      switch (messageObject.type) {
-        case _websocket.messageType.joinRoom:
-          this.setRoom(room);
-          this.setUser(user);
-          this.multiPlayersGame(hasOtherUser);
-          break;
+      // switch (messageObject.type) {
+      //   case actionType.joinRoom:
+      //     this.setRoom(room);
+      //     this.setUser(user);
+      //     this.multiPlayersGame(hasOtherUser);
+      //     break;
 
-        case _websocket.messageType.otherUserJoin:
-          this.otherPlayerIsJoined();
-          break;
+      //   case messageType.otherUserJoin:
+      //     this.otherPlayerIsJoined();
+      //     break;
 
-        case _websocket.messageType.otherUserPunch:
-          this.waitMyselfPunch(punch);
-          break;
+      //   case messageType.otherUserPunch:
+      //     this.waitMyselfPunch(punch);
+      //     break;
 
-        default:
-          break;
-      }
+      //   default:
+      //     break;
+      // }
     }
   }, {
     key: 'render',
@@ -840,7 +836,7 @@ GameControl.propTypes = propTypes;
 
 exports.default = GameControl;
 
-},{"../../../config/websocket.json":20,"../../../redux/actions/types":318,"../GameConnect.js":4,"../container/ChooseContainer":13,"../container/MenuContainer":15,"../container/StatusContainer":16,"../container/WelcomeContainer":17,"./../Cookie.js":2,"./../Event.js":3,"babel-runtime/core-js/object/get-prototype-of":25,"babel-runtime/helpers/classCallCheck":30,"babel-runtime/helpers/createClass":31,"babel-runtime/helpers/defineProperty":32,"babel-runtime/helpers/inherits":33,"babel-runtime/helpers/possibleConstructorReturn":34,"jquery":159,"react":301}],9:[function(require,module,exports){
+},{"../../../redux/actions/types":318,"../GameConnect.js":4,"../container/ChooseContainer":13,"../container/MenuContainer":15,"../container/StatusContainer":16,"../container/WelcomeContainer":17,"./../Cookie.js":2,"./../Event.js":3,"babel-runtime/core-js/object/get-prototype-of":25,"babel-runtime/helpers/classCallCheck":30,"babel-runtime/helpers/createClass":31,"babel-runtime/helpers/defineProperty":32,"babel-runtime/helpers/inherits":33,"babel-runtime/helpers/possibleConstructorReturn":34,"jquery":159,"react":301}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

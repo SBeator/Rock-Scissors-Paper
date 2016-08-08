@@ -1,5 +1,5 @@
 import ClientWebSocket from './ClientWebSocket.js';
-import { messageType } from '../../config/websocket.json';
+import actionType from '../../redux/actions/types';
 
 class GameConnect {
 
@@ -24,15 +24,15 @@ class GameConnect {
   }
 
   createRoom(user, recieveMessageCallback) {
-    this.sendMessage(messageType.createRoom, { user }, recieveMessageCallback);
+    this.sendMessage(actionType.CREATING_ROOM, { user }, recieveMessageCallback);
   }
 
   joinRoom(room, user, recieveMessageCallback) {
-    this.sendMessage(messageType.joinRoom, { room, user }, recieveMessageCallback);
+    this.sendMessage(actionType.JOINING_ROOM, { room, user }, recieveMessageCallback);
   }
 
   punch(punch) {
-    this.sendMessage(messageType.punch, { punch });
+    this.sendMessage(actionType.punch, { punch });
   }
 
   createMessage(type, messageObject) {
