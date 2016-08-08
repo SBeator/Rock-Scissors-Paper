@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import actions from '../../../redux/actions';
 import Game from '../components/Game.jsx';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -6,8 +7,16 @@ const mapStateToProps = (state, ownProps) => ({
   game: state.game
 });
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  // Change punch to punching and punched
+  dispatchGameAction: (gameState) => {
+    dispatch(actions.gameAction(gameState));
+  }
+});
+
 const GameContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Game);
 
 export default GameContainer;

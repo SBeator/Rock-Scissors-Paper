@@ -2,9 +2,9 @@
   "port": 8888,
   "protocal": "echo-protocol",
   "messageType" : {
-    "createRoom" : "createRoom",
-    "joinRoom" : "joinRoom",
-    "otherUserJoin" : "otherUserJoin",
+    "createRoom" : "waitingInRoom",
+    "joinRoom" : "otherPlayerJoined",
+    "otherUserJoin" : "otherPlayerJoined",
     "punch" : "punch",
     "otherUserPunch" : "otherUserPunch",
     "otherUserLeft" : "otherUserLeft"

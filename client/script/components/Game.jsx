@@ -4,7 +4,8 @@ import GameControl from './GameControl.jsx';
 
 const propTypes = {
   hostname: PropTypes.string,
-  game: PropTypes.object
+  game: PropTypes.object,
+  dispatchGameAction: PropTypes.func
 };
 
 function Game(props) {

@@ -7,6 +7,8 @@ import Event, { CustomEvents } from './../Event.js';
 import GameConnect from '../GameConnect.js';
 import { messageType } from '../../../config/websocket.json';
 
+import gameTypes from '../../../redux/actions/types';
+
 // import Status from './Status.jsx';
 // import Menu from './Menu.jsx';
 // import Choose from './Choose.jsx';
@@ -18,7 +20,8 @@ import ChooseContainer from '../container/ChooseContainer';
 
 const propTypes = {
   hostname: PropTypes.string,
-  game: PropTypes.object
+  game: PropTypes.object,
+  dispatchGameAction: PropTypes.func
 };
 
 class GameControl extends Component {
@@ -45,9 +48,29 @@ class GameControl extends Component {
     Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
     this.gameConnect = new GameConnect(this.props.hostname);
 
-    // if (this.props.room) {
+    console.log(this.props.game);
+    // if (this.props.game.) {
     //   this.joinGame(this.props.room);
     // }
+
+    this.currectGameType = this.props.game.type;
+  }
+
+  componentWillUpdate(nextProps) {
+    const gameState = nextProps.game;
+    if (this.currectGameType !== gameState.type) {
+      this.currectGameType = gameState.type;
+
+      switch (gameState.type) {
+        case gameTypes.CREATING_ROOM:
+          this.createGame();
+          break;
+        case gameTypes.JOINING_ROOM:
+          this.joinGame(gameState.room);
+          break;
+        default:
+      }
+    }
   }
 
   onSubmitChoose(choose) {
@@ -218,6 +241,8 @@ class GameControl extends Component {
 
   recieveConnectMessage(messageObject) {
     const { room, user, hasOtherUser, punch } = messageObject;
+
+    this.props.dispatchGameAction(messageObject);
 
     switch (messageObject.type) {
       case messageType.joinRoom:

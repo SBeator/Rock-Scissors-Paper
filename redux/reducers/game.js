@@ -23,14 +23,16 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
     room,
     user,
     otherUser,
-    punch } = action;
+    punch,
+    otherPunch } = action;
 
     newState = Object.assign({}, state, {
       type,
       room,
       user,
       otherUser,
-      punch });
+      punch,
+      otherPunch });
   } else {
     newState = state;
   }

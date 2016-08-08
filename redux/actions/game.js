@@ -32,9 +32,18 @@ const punched = ({ punch }) => ({
   punch
 });
 
-const otherPlayerPunched = ({ punch }) => ({
+const otherPlayerPunched = ({ otherPunch }) => ({
   type: types.OTHER_PLAYER_PUNCHED,
-  punch
+  otherPunch
+});
+
+const gameAction = ({ type, room, user, otherUser, punch, otherPunch }) => ({
+  type,
+  room,
+  user,
+  otherUser,
+  punch,
+  otherPunch
 });
 
 export default {
@@ -44,5 +53,6 @@ export default {
   otherPlayerJoinedRoom,
   punching,
   punched,
-  otherPlayerPunched
+  otherPlayerPunched,
+  gameAction
 };

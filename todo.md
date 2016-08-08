@@ -4,6 +4,7 @@
 
 1. ~~Use server render instead of static html~~
 1. Use Redux
+  1. TODO: Change GameControl to redux
   1. TODO: remove the first two lines after JOIN_ROOM action is created
   1. TODO: Change punch to punching and punched
   1. TODO: handle ready actions
