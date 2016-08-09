@@ -6,6 +6,7 @@
 1. Use Redux
   1. TODO: Change GameControl to redux
   1. Change status message in different action
+  1. Make sure the action object is correct in game reducer
   1. TODO: remove the first two lines after JOIN_ROOM action is created
   1. TODO: Change punch to punching and punched
   1. TODO: handle ready actions
