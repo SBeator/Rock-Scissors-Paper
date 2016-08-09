@@ -6,7 +6,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     room: state.game.room,
-    messages: state.status.messages,
+    messages: state.game.messages,
     pageOrigin: status.pageOrigin
   };
 };

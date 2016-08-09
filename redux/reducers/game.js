@@ -1,30 +1,56 @@
 import types from '../actions/types';
 
-const gameActionType = [
-  types.IDLE,
-  types.CREATING_ROOM,
-  types.WAITING_IN_ROOM,
-  types.JOINING_ROOM,
-  types.OTHER_PLAYER_JOINED,
-  types.READYING,
-  types.READY,
-  types.OTHER_PLAYER_READY,
-  types.PUNCHING,
-  types.PUNCHED,
-  types.OTHER_PLAYER_PUNCHED
-];
+const gameActionTypes = {
+  [types.IDLE]: {
+    messages: []
+  },
+  [types.CREATING_ROOM]: {
+    messages: ['Creating room...']
+  },
+  [types.WAITING_IN_ROOM]: {
+    messages: ['Waiting other player join']
+  },
+  [types.JOINING_ROOM]: {
+    messages: ['Joining room']
+  },
+  [types.OTHER_PLAYER_JOINED]: {
+    messages: ['Please punch']
+  },
+  [types.READYING]: {
+    messages: []
+  },
+  [types.READY]: {
+    messages: []
+  },
+  [types.OTHER_PLAYER_READY]: {
+    messages: []
+  },
+  [types.PUNCHING]: {
+    messages: ['Punching']
+  },
+  [types.PUNCHED]: {
+    messages: ['Waiting other player punch']
+  },
+  [types.OTHER_PLAYER_PUNCHE]: {
+    messages: ['Other player is punched']
+  }
+};
 
 const gameReducers = (state = { type: types.IDLE }, action) => {
   let newState;
 
-  if (gameActionType.indexOf(action.type) >= 0) {
+  const gameActionObject = gameActionTypes[action.type];
+
+  if (gameActionObject) {
     const {
-    type,
-    room,
-    user,
-    otherUser,
-    punch,
-    otherPunch } = action;
+      type,
+      room,
+      user,
+      otherUser,
+      punch,
+      otherPunch } = action;
+
+    const { messages } = gameActionObject;
 
     newState = Object.assign({}, state, {
       type,
@@ -32,7 +58,9 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
       user,
       otherUser,
       punch,
-      otherPunch });
+      otherPunch,
+      messages
+    });
   } else {
     newState = state;
   }

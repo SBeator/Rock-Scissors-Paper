@@ -52,7 +52,7 @@ class GameConnectServer {
         this.sendMessageToOther(
           actionType.OTHER_PLAYER_PUNCHED,
           {
-            punch: otherPunch
+            otherPunch: punch
           });
         break;
       default:

@@ -1485,7 +1485,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 
   return {
     room: state.game.room,
-    messages: state.status.messages,
+    messages: state.game.messages,
     pageOrigin: status.pageOrigin
   };
 };
@@ -34453,13 +34453,41 @@ var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _gameActionTypes;
+
 var _types = require('../actions/types');
 
 var _types2 = _interopRequireDefault(_types);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var gameActionType = [_types2.default.IDLE, _types2.default.CREATING_ROOM, _types2.default.WAITING_IN_ROOM, _types2.default.JOINING_ROOM, _types2.default.OTHER_PLAYER_JOINED, _types2.default.READYING, _types2.default.READY, _types2.default.OTHER_PLAYER_READY, _types2.default.PUNCHING, _types2.default.PUNCHED, _types2.default.OTHER_PLAYER_PUNCHED];
+var gameActionTypes = (_gameActionTypes = {}, (0, _defineProperty3.default)(_gameActionTypes, _types2.default.IDLE, {
+  messages: []
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.CREATING_ROOM, {
+  messages: ['Creating room...']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.WAITING_IN_ROOM, {
+  messages: ['Waiting other player join']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.JOINING_ROOM, {
+  messages: ['Joining room']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_JOINED, {
+  messages: ['Please punch']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.READYING, {
+  messages: []
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.READY, {
+  messages: []
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_READY, {
+  messages: []
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.PUNCHING, {
+  messages: ['Punching']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.PUNCHED, {
+  messages: ['Waiting other player punch']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_PUNCHE, {
+  messages: ['Other player is punched']
+}), _gameActionTypes);
 
 var gameReducers = function gameReducers() {
   var state = arguments.length <= 0 || arguments[0] === undefined ? { type: _types2.default.IDLE } : arguments[0];
@@ -34467,13 +34495,16 @@ var gameReducers = function gameReducers() {
 
   var newState = void 0;
 
-  if (gameActionType.indexOf(action.type) >= 0) {
+  var gameActionObject = gameActionTypes[action.type];
+
+  if (gameActionObject) {
     var type = action.type;
     var room = action.room;
     var user = action.user;
     var otherUser = action.otherUser;
     var punch = action.punch;
     var otherPunch = action.otherPunch;
+    var messages = gameActionObject.messages;
 
 
     newState = (0, _assign2.default)({}, state, {
@@ -34482,7 +34513,9 @@ var gameReducers = function gameReducers() {
       user: user,
       otherUser: otherUser,
       punch: punch,
-      otherPunch: otherPunch });
+      otherPunch: otherPunch,
+      messages: messages
+    });
   } else {
     newState = state;
   }
@@ -34492,7 +34525,7 @@ var gameReducers = function gameReducers() {
 
 exports.default = gameReducers;
 
-},{"../actions/types":318,"babel-runtime/core-js/object/assign":22}],320:[function(require,module,exports){
+},{"../actions/types":318,"babel-runtime/core-js/object/assign":22,"babel-runtime/helpers/defineProperty":32}],320:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
