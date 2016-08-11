@@ -36,31 +36,36 @@ const gameActionTypes = {
   }
 };
 
+const gameProperties = [
+  'room',
+  'user',
+  'otherUser',
+  'punch',
+  'otherPunch'
+];
+
 const gameReducers = (state = { type: types.IDLE }, action) => {
   let newState;
 
   const gameActionObject = gameActionTypes[action.type];
 
   if (gameActionObject) {
-    const {
-      type,
-      room,
-      user,
-      otherUser,
-      punch,
-      otherPunch } = action;
-
+    newState = {};
+    const { type } = action;
     const { messages } = gameActionObject;
 
-    newState = Object.assign({}, state, {
+    Object.assign(newState, state, {
       type,
-      room,
-      user,
-      otherUser,
-      punch,
-      otherPunch,
       messages
     });
+
+    for (const property of gameProperties) {
+      if (action[property] !== undefined) {
+        Object.assign(newState, {
+          [property]: action[property]
+        });
+      }
+    }
   } else {
     newState = state;
   }

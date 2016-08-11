@@ -39,12 +39,7 @@ class GameConnectServer {
             // Handle err;
           } else {
             this.sendJoinRoomMessage(data.currentUser, data.room);
-
-            this.sendMessageToOther(
-              actionType.OTHER_PLAYER_JOINED,
-              {
-                otherUser: data.user
-              });
+            this.sendJoinRoomMessageToOther(data.currentUser, data.room);
           }
         });
         break;
@@ -119,6 +114,23 @@ class GameConnectServer {
         otherUser
       });
   }
+
+  sendJoinRoomMessageToOther(user, room) {
+    const otherUserConnect = this.getOtherUserConnectInRoom();
+
+    const otherUser = !!otherUserConnect && otherUserConnect.user;
+
+    if (otherUser) {
+      this.sendMessageToOther(
+      actionType.OTHER_PLAYER_JOINED,
+        {
+          otherUser: user,
+          room,
+          user: otherUser
+        });
+    }
+  }
+
 
   createMessageObject(type, messageObject) {
     return JSON.stringify(Object.assign({}, messageObject, { type }));
