@@ -45,6 +45,9 @@ class GameConnectServer {
             console.log('Websocket: err after joinroom room:');
             console.log(err);
           } else {
+            console.log('Websocket: recieve data after join room:');
+            console.log(data);
+
             this.sendJoinRoomMessage(data.currentUser, data.room);
             this.sendJoinRoomMessageToOther(data.currentUser, data.room);
           }

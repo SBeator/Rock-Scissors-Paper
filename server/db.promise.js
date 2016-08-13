@@ -157,6 +157,7 @@ function joinRoom(data, callback) {
 
   let users;
   let findData;
+  let currentUser;
 
   connect()
     .then(getCollection(dbCollectionName))
@@ -164,7 +165,8 @@ function joinRoom(data, callback) {
     .then(result(resultData => {
       findData = resultData[0];
       users = findData.users || [];
-      users.push(data.user || newUser());
+      currentUser = data.user || newUser();
+      users.push(currentUser);
     }))
     .then(update(roomData, { users }))
     .then((disConnect()))
@@ -176,7 +178,7 @@ function joinRoom(data, callback) {
         Object.assign(
           findData,
           {
-            currentUser: data.user
+            currentUser
           });
         callback(null, findData);
       } else {
