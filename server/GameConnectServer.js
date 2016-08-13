@@ -1,5 +1,5 @@
 import actionType from '../redux/actions/types';
-import { createRoom, joinRoom } from './db.js';
+import { createRoom, joinRoom } from './db.promise.js';
 
 const gameConnectsInRoom = {};
 
@@ -22,7 +22,12 @@ class GameConnectServer {
         createRoom({ user }, (err, data) => {
           if (err) {
             // Handle err;
+            console.log('Websocket: err after creatr room:');
+            console.log(err);
           } else {
+            console.log('Websocket: recieve data after create room:');
+            console.log(data);
+
             this.sendJoinRoomMessage(data.currentUser, data.room);
           }
         });
@@ -37,6 +42,8 @@ class GameConnectServer {
         joinRoom({ user, room }, (err, data) => {
           if (err) {
             // Handle err;
+            console.log('Websocket: err after joinroom room:');
+            console.log(err);
           } else {
             this.sendJoinRoomMessage(data.currentUser, data.room);
             this.sendJoinRoomMessageToOther(data.currentUser, data.room);
@@ -85,6 +92,8 @@ class GameConnectServer {
 
   sendMessage(type, messageObject) {
     const message = this.createMessageObject(type, messageObject);
+
+    console.log(`Websocket: send messageObject: ${message}`);
 
     this.connection.sendUTF(message);
   }

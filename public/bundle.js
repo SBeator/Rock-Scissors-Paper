@@ -603,6 +603,14 @@ var GameControl = function (_Component) {
           case _types2.default.JOINING_ROOM:
             this.joinGame(gameState.room);
             break;
+          case _types2.default.WAITING_IN_ROOM:
+            this.setUser(gameState.user);
+            this.setRoom(gameState.room);
+            break;
+          case _types2.default.OTHER_PLAYER_JOINED:
+            this.setUser(gameState.user);
+            this.setRoom(gameState.room);
+            break;
           default:
         }
       }
@@ -783,6 +791,8 @@ var GameControl = function (_Component) {
     value: function recieveConnectMessage(messageObject) {
       // const { room, user, hasOtherUser, punch } = messageObject;
 
+      console.log('messageObject:');
+      console.log(messageObject);
       this.props.dispatchGameAction(messageObject);
 
       // switch (messageObject.type) {

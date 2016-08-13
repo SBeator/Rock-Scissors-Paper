@@ -67,6 +67,14 @@ class GameControl extends Component {
         case actionType.JOINING_ROOM:
           this.joinGame(gameState.room);
           break;
+        case actionType.WAITING_IN_ROOM:
+          this.setUser(gameState.user);
+          this.setRoom(gameState.room);
+          break;
+        case actionType.OTHER_PLAYER_JOINED:
+          this.setUser(gameState.user);
+          this.setRoom(gameState.room);
+          break;
         default:
       }
     }
@@ -241,6 +249,8 @@ class GameControl extends Component {
   recieveConnectMessage(messageObject) {
     // const { room, user, hasOtherUser, punch } = messageObject;
 
+    console.log('messageObject:');
+    console.log(messageObject);
     this.props.dispatchGameAction(messageObject);
 
     // switch (messageObject.type) {

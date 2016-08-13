@@ -47,16 +47,11 @@ function list() {
 }
 
 function insert(data = {}) {
-  console.log('db.promise: insert outer');
-
-  return ([db, collection]) => {
-    console.log('db.promise: insert inner');
-    return Promise.all([
-      db,
-      collection,
-      collection.insertOne(data)
-    ]);
-  };
+  return ([db, collection]) => Promise.all([
+    db,
+    collection,
+    collection.insertOne(data)
+  ]);
 }
 
 function deleteData(data = {}) {
@@ -84,10 +79,7 @@ function drop() {
 }
 
 function result(callback) {
-  console.log('db.promise: result outer');
-
   return ([db, collection, resultData]) => {
-    console.log('db.promise: result inner');
     if (callback) {
       callback(resultData);
     }
@@ -177,7 +169,9 @@ function joinRoom(data, callback) {
     .then(update(roomData, { users }))
     .then((disConnect()))
     .then(result((resultData) => {
-      const { ok, nModified } = resultData;
+      console.log('db: update data result for join room:');
+      console.log(resultData.result);
+      const { ok, nModified } = resultData.result;
       if (ok && nModified) {
         Object.assign(
           findData,
