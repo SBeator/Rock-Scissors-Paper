@@ -1379,7 +1379,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    ready: state.game.type === _types2.default.WAITING_IN_ROOM || state.game.type === _types2.default.OTHER_PLAYER_JOINED
+    ready: state.game.type === _types2.default.OTHER_PLAYER_JOINED
   };
 };
 

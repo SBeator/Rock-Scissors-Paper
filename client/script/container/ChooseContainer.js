@@ -5,8 +5,7 @@ import Choose from '../components/Choose.jsx';
 import actionsTypes from '../../../redux/actions/types';
 
 const mapStateToProps = (state, ownProps) => ({
-  ready: state.game.type === actionsTypes.WAITING_IN_ROOM
-        || state.game.type === actionsTypes.OTHER_PLAYER_JOINED
+  ready: state.game.type === actionsTypes.OTHER_PLAYER_JOINED
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
