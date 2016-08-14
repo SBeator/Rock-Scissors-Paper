@@ -12,7 +12,7 @@ class GameConnectServer {
   }
 
   recieveMessage(message) {
-    const messageObject = this.parseMessageObject(message);
+    const messageObject = messageToAction(message);
 
     if (messageObject.error) {
       // Handle err;
@@ -174,23 +174,6 @@ class GameConnectServer {
     } else {
       this.sendActionMessage(actions.punched({ punch }));
     }
-  }
-
-  createMessageObject(type, messageObject) {
-    return JSON.stringify(Object.assign({}, messageObject, { type }));
-  }
-
-  parseMessageObject(message) {
-    let messageObject;
-    try {
-      messageObject = JSON.parse(message);
-    } catch (error) {
-      messageObject = {
-        error
-      };
-    }
-
-    return messageObject;
   }
 }
 

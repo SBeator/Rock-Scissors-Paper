@@ -1,5 +1,7 @@
 import ClientWebSocket from './ClientWebSocket.js';
-import actionType from '../../redux/actions/types';
+import actions from '../../redux/actions';
+import { actionToMessage, messageToAction } from '../../redux/actions/actionMessage';
+
 
 class GameConnect {
 
@@ -23,47 +25,30 @@ class GameConnect {
     });
   }
 
-  createRoom(user, recieveMessageCallback) {
-    this.sendMessage(actionType.CREATING_ROOM, { user }, recieveMessageCallback);
+  createRoom(user, recieveActionCallback) {
+    this.sendMessage(actions.creatingRoom({ user }), recieveActionCallback);
   }
 
-  joinRoom(room, user, recieveMessageCallback) {
-    this.sendMessage(actionType.JOINING_ROOM, { room, user }, recieveMessageCallback);
+  joinRoom(room, user, recieveActionCallback) {
+    this.sendMessage(actions.joiningRoom({ room, user }), recieveActionCallback);
   }
 
   punching(punch) {
-    this.sendMessage(actionType.PUNCHING, { punch });
+    this.sendMessage(actions.punching({ punch }));
   }
 
-  createMessage(type, messageObject) {
-    return JSON.stringify(Object.assign({}, messageObject, { type }));
-  }
-
-  parseMessageObject(message) {
-    let messageObject;
-    try {
-      messageObject = JSON.parse(message);
-    } catch (error) {
-      messageObject = {
-        error
-      };
-    }
-
-    return messageObject;
-  }
-
-  sendMessage(type, messageObject, recieveMessageCallback) {
+  sendMessage(action, recieveActionCallback) {
     return this.connectedSocket
       .then(() => {
-        const message = this.createMessage(type, messageObject);
+        const message = actionToMessage(action);
         this.webSocket.send(message);
       })
       .then(() => {
-        if (recieveMessageCallback) {
+        if (recieveActionCallback) {
           this.webSocket.on('message', (event) => {
-            const recieveMessageObject = this.parseMessageObject(event.data);
+            const recieveMessageObject = messageToAction(event.data);
 
-            recieveMessageCallback(recieveMessageObject);
+            recieveActionCallback(recieveMessageObject);
           });
         }
       });

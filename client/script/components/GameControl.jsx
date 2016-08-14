@@ -28,7 +28,7 @@ class GameControl extends Component {
 
     this.createGame = this.createGame.bind(this);
     this.joinGame = this.joinGame.bind(this);
-    this.recieveConnectMessage = this.recieveConnectMessage.bind(this);
+    this.recieveActionCallback = this.recieveActionCallback.bind(this);
 
     this.getUser = this.getUser.bind(this);
     this.getRoom = this.getRoom.bind(this);
@@ -230,12 +230,12 @@ class GameControl extends Component {
 
   createGame() {
     const user = this.getUser();
-    this.gameConnect.createRoom(user, this.recieveConnectMessage);
+    this.gameConnect.createRoom(user, this.recieveActionCallback);
   }
 
   joinGame(room) {
     const user = this.getUser();
-    this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
+    this.gameConnect.joinRoom(room, user, this.recieveActionCallback);
   }
 
   joinedGame({ room, user }) {
@@ -248,12 +248,12 @@ class GameControl extends Component {
     // this.waitOtherPlayPunch(choose);
   }
 
-  recieveConnectMessage(messageObject) {
+  recieveActionCallback(action) {
     // const { room, user, hasOtherUser, punch } = messageObject;
 
-    console.log('messageObject:');
-    console.log(messageObject);
-    this.props.dispatchGameAction(messageObject);
+    console.log('recieve action:');
+    console.log(action);
+    this.props.dispatchGameAction(action);
 
     // switch (messageObject.type) {
     //   case actionType.joinRoom:

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import actions from '../../../redux/actions';
 import Game from '../components/Game.jsx';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -9,8 +8,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   // Change punch to punching and punched
-  dispatchGameAction: (gameState) => {
-    dispatch(actions.gameAction(gameState));
+  dispatchGameAction: (action) => {
+    dispatch(action);
   }
 });
 

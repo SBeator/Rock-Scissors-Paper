@@ -10,7 +10,7 @@ const waitingInRoom = ({ room, user }) => ({
   user
 });
 
-const joiningRoom = (room) => ({
+const joiningRoom = ({ room }) => ({
   type: types.JOINING_ROOM,
   room
 });
@@ -47,15 +47,6 @@ const otherPlayerLeft = () => ({
   type: types.OTHER_PLAYER_LEFT
 });
 
-const gameAction = ({ type, room, user, otherUser, punch, otherPunch }) => ({
-  type,
-  room,
-  user,
-  otherUser,
-  punch,
-  otherPunch
-});
-
 export default {
   creatingRoom,
   waitingInRoom,
@@ -65,6 +56,5 @@ export default {
   punched,
   otherPlayerPunched,
   bothPlayerPunched,
-  gameAction,
   otherPlayerLeft
 };

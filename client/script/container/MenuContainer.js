@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(actions.creatingRoom());
   },
   joinGame: (room) => {
-    dispatch(actions.joiningRoom(room));
+    dispatch(actions.joiningRoom({ room }));
   }
 });
 

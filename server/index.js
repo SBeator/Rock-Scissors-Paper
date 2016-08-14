@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
   const store = createStore(reducer);
 
   if (room) {
-    store.dispatch(actions.joiningRoom(room));
+    store.dispatch(actions.joiningRoom({ room }));
   }
 
   const initialState = store.getState();
