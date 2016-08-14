@@ -588,6 +588,8 @@ var GameControl = function (_Component) {
       // }
 
       this.currectGameType = this.props.game.type;
+      var gameState = this.props.game;
+      this.handleGameState(gameState);
     }
   }, {
     key: 'componentWillUpdate',
@@ -596,23 +598,7 @@ var GameControl = function (_Component) {
       if (this.currectGameType !== gameState.type) {
         this.currectGameType = gameState.type;
 
-        switch (gameState.type) {
-          case _types2.default.CREATING_ROOM:
-            this.createGame();
-            break;
-          case _types2.default.JOINING_ROOM:
-            this.joinGame(gameState.room);
-            break;
-          case _types2.default.WAITING_IN_ROOM:
-            this.setUser(gameState.user);
-            this.setRoom(gameState.room);
-            break;
-          case _types2.default.OTHER_PLAYER_JOINED:
-            this.setUser(gameState.user);
-            this.setRoom(gameState.room);
-            break;
-          default:
-        }
+        this.handleGameState(gameState);
       }
     }
   }, {
@@ -773,6 +759,32 @@ var GameControl = function (_Component) {
       this.otherChoose = null;
     }
   }, {
+    key: 'handleGameState',
+    value: function handleGameState(gameState) {
+      var room = gameState.room;
+      var user = gameState.user;
+
+      switch (gameState.type) {
+        case _types2.default.CREATING_ROOM:
+          this.createGame();
+          break;
+        case _types2.default.JOINING_ROOM:
+          this.joinGame(gameState.room);
+          break;
+        case _types2.default.WAITING_IN_ROOM:
+          this.joinedGame({
+            room: room, user: user
+          });
+          break;
+        case _types2.default.OTHER_PLAYER_JOINED:
+          this.joinedGame({
+            room: room, user: user
+          });
+          break;
+        default:
+      }
+    }
+  }, {
     key: 'createGame',
     value: function createGame() {
       var user = this.getUser();
@@ -785,6 +797,15 @@ var GameControl = function (_Component) {
       var user = this.getUser();
 
       this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
+    }
+  }, {
+    key: 'joinedGame',
+    value: function joinedGame(_ref) {
+      var room = _ref.room;
+      var user = _ref.user;
+
+      this.setRoom(room);
+      this.setUser(user);
     }
   }, {
     key: 'recieveConnectMessage',

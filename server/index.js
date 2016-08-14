@@ -13,17 +13,19 @@ import Game from '../client/script/components/Game.jsx';
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  // const { room } = req.query;
+  const { room } = req.query;
 
   // const initialState = {
   //   room
   // };
 
-  // const html = renderToString(<Game />);
-
   console.log(res.__('createGame'));
 
   const store = createStore(reducer);
+
+  if (room) {
+    store.dispatch(actions.joiningRoom(room));
+  }
 
   const initialState = store.getState();
 

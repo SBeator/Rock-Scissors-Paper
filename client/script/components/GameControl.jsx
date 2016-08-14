@@ -53,6 +53,8 @@ class GameControl extends Component {
     // }
 
     this.currectGameType = this.props.game.type;
+    const gameState = this.props.game;
+    this.handleGameState(gameState);
   }
 
   componentWillUpdate(nextProps) {
@@ -60,23 +62,7 @@ class GameControl extends Component {
     if (this.currectGameType !== gameState.type) {
       this.currectGameType = gameState.type;
 
-      switch (gameState.type) {
-        case actionType.CREATING_ROOM:
-          this.createGame();
-          break;
-        case actionType.JOINING_ROOM:
-          this.joinGame(gameState.room);
-          break;
-        case actionType.WAITING_IN_ROOM:
-          this.setUser(gameState.user);
-          this.setRoom(gameState.room);
-          break;
-        case actionType.OTHER_PLAYER_JOINED:
-          this.setUser(gameState.user);
-          this.setRoom(gameState.room);
-          break;
-        default:
-      }
+      this.handleGameState(gameState);
     }
   }
 
@@ -234,6 +220,29 @@ class GameControl extends Component {
     this.otherChoose = null;
   }
 
+  handleGameState(gameState) {
+    const { room, user } = gameState;
+    switch (gameState.type) {
+      case actionType.CREATING_ROOM:
+        this.createGame();
+        break;
+      case actionType.JOINING_ROOM:
+        this.joinGame(gameState.room);
+        break;
+      case actionType.WAITING_IN_ROOM:
+        this.joinedGame({
+          room, user
+        });
+        break;
+      case actionType.OTHER_PLAYER_JOINED:
+        this.joinedGame({
+          room, user
+        });
+        break;
+      default:
+    }
+  }
+
   createGame() {
     const user = this.getUser();
 
@@ -244,6 +253,11 @@ class GameControl extends Component {
     const user = this.getUser();
 
     this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
+  }
+
+  joinedGame({ room, user }) {
+    this.setRoom(room);
+    this.setUser(user);
   }
 
   recieveConnectMessage(messageObject) {
