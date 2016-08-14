@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
   //   room
   // };
 
-  console.log(res.__('createGame'));
+  console.log(res.__('otherPunchFormat {{otherPunch}}', { otherPunch: res.__('chooseRock') }));
 
   const store = createStore(reducer);
 
