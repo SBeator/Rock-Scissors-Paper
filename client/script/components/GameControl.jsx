@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import $ from 'jquery';
 
 import Cookie from './../Cookie.js';
-import Event, { CustomEvents } from './../Event.js';
 
 import GameConnect from '../GameConnect.js';
 
@@ -36,15 +35,11 @@ class GameControl extends Component {
 
     this.state = {
       showMenu: true,
-      multiPlayer: false,
       gameType: 'ide'
     };
-
-    this.onSubmitChoose = this.onSubmitChoose.bind(this);
   }
 
   componentDidMount() {
-    Event.bindEvent(CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
     this.gameConnect = new GameConnect(this.props.hostname);
 
     console.log(this.props.game);
@@ -63,17 +58,6 @@ class GameControl extends Component {
       this.currectGameType = gameState.type;
 
       this.handleGameState(gameState);
-    }
-  }
-
-  onSubmitChoose(choose) {
-    if (!this.state.multiPlayer) {
-      const otherChoose = (Math.random() * 3) | 0;
-
-      this.setResultMessage(choose, otherChoose);
-    } else {
-      this.gameConnect.punch(choose);
-      this.waitOtherPlayPunch(choose);
     }
   }
 
@@ -133,7 +117,6 @@ class GameControl extends Component {
   multiPlayersGame(hasOtherUser) {
     this.setState({
       showMenu: false,
-      multiPlayer: true,
     });
 
     if (!hasOtherUser) {
@@ -148,7 +131,6 @@ class GameControl extends Component {
     } else {
       this.setState({
         showMenu: false,
-        multiPlayer: true,
       });
       this.otherPlayerIsJoined();
     }
@@ -221,7 +203,7 @@ class GameControl extends Component {
   }
 
   handleGameState(gameState) {
-    const { room, user } = gameState;
+    const { room, user, punch } = gameState;
     switch (gameState.type) {
       case actionType.CREATING_ROOM:
         this.createGame();
@@ -239,25 +221,31 @@ class GameControl extends Component {
           room, user
         });
         break;
+      case actionType.PUNCHING:
+        this.punching(punch);
+        break;
       default:
     }
   }
 
   createGame() {
     const user = this.getUser();
-
     this.gameConnect.createRoom(user, this.recieveConnectMessage);
   }
 
   joinGame(room) {
     const user = this.getUser();
-
     this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
   }
 
   joinedGame({ room, user }) {
     this.setRoom(room);
     this.setUser(user);
+  }
+
+  punching(choose) {
+    this.gameConnect.punching(choose);
+    // this.waitOtherPlayPunch(choose);
   }
 
   recieveConnectMessage(messageObject) {

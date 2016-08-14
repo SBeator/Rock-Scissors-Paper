@@ -235,9 +235,9 @@ var GameConnect = function () {
       this.sendMessage(_types2.default.JOINING_ROOM, { room: room, user: user }, recieveMessageCallback);
     }
   }, {
-    key: 'punch',
-    value: function punch(_punch) {
-      this.sendMessage(_types2.default.punch, { punch: _punch });
+    key: 'punching',
+    value: function punching(punch) {
+      this.sendMessage(_types2.default.PUNCHING, { punch: punch });
     }
   }, {
     key: 'createMessage',
@@ -322,7 +322,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var propTypes = {
   ready: _react.PropTypes.bool,
-  punch: _react.PropTypes.func
+  punching: _react.PropTypes.func
 };
 
 var Choose = function (_Component) {
@@ -360,7 +360,7 @@ var Choose = function (_Component) {
     value: function onSubmit(event) {
       event.preventDefault();
 
-      this.props.punch(this.refs.form.choose.value);
+      this.props.punching(this.refs.form.choose.value);
       // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
     }
   }, {
@@ -511,10 +511,6 @@ var _Cookie = require('./../Cookie.js');
 
 var _Cookie2 = _interopRequireDefault(_Cookie);
 
-var _Event = require('./../Event.js');
-
-var _Event2 = _interopRequireDefault(_Event);
-
 var _GameConnect = require('../GameConnect.js');
 
 var _GameConnect2 = _interopRequireDefault(_GameConnect);
@@ -568,18 +564,14 @@ var GameControl = function (_Component) {
 
     _this.state = {
       showMenu: true,
-      multiPlayer: false,
       gameType: 'ide'
     };
-
-    _this.onSubmitChoose = _this.onSubmitChoose.bind(_this);
     return _this;
   }
 
   (0, _createClass3.default)(GameControl, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _Event2.default.bindEvent(_Event.CustomEvents.SUBMIT_CHOOSE, this.onSubmitChoose);
       this.gameConnect = new _GameConnect2.default(this.props.hostname);
 
       console.log(this.props.game);
@@ -599,18 +591,6 @@ var GameControl = function (_Component) {
         this.currectGameType = gameState.type;
 
         this.handleGameState(gameState);
-      }
-    }
-  }, {
-    key: 'onSubmitChoose',
-    value: function onSubmitChoose(choose) {
-      if (!this.state.multiPlayer) {
-        var otherChoose = Math.random() * 3 | 0;
-
-        this.setResultMessage(choose, otherChoose);
-      } else {
-        this.gameConnect.punch(choose);
-        this.waitOtherPlayPunch(choose);
       }
     }
   }, {
@@ -673,8 +653,7 @@ var GameControl = function (_Component) {
     key: 'multiPlayersGame',
     value: function multiPlayersGame(hasOtherUser) {
       this.setState({
-        showMenu: false,
-        multiPlayer: true
+        showMenu: false
       });
 
       if (!hasOtherUser) {
@@ -686,8 +665,7 @@ var GameControl = function (_Component) {
         });
       } else {
         this.setState({
-          showMenu: false,
-          multiPlayer: true
+          showMenu: false
         });
         this.otherPlayerIsJoined();
       }
@@ -763,6 +741,7 @@ var GameControl = function (_Component) {
     value: function handleGameState(gameState) {
       var room = gameState.room;
       var user = gameState.user;
+      var punch = gameState.punch;
 
       switch (gameState.type) {
         case _types2.default.CREATING_ROOM:
@@ -781,6 +760,9 @@ var GameControl = function (_Component) {
             room: room, user: user
           });
           break;
+        case _types2.default.PUNCHING:
+          this.punching(punch);
+          break;
         default:
       }
     }
@@ -788,14 +770,12 @@ var GameControl = function (_Component) {
     key: 'createGame',
     value: function createGame() {
       var user = this.getUser();
-
       this.gameConnect.createRoom(user, this.recieveConnectMessage);
     }
   }, {
     key: 'joinGame',
     value: function joinGame(room) {
       var user = this.getUser();
-
       this.gameConnect.joinRoom(room, user, this.recieveConnectMessage);
     }
   }, {
@@ -806,6 +786,12 @@ var GameControl = function (_Component) {
 
       this.setRoom(room);
       this.setUser(user);
+    }
+  }, {
+    key: 'punching',
+    value: function punching(choose) {
+      this.gameConnect.punching(choose);
+      // this.waitOtherPlayPunch(choose);
     }
   }, {
     key: 'recieveConnectMessage',
@@ -867,7 +853,7 @@ GameControl.propTypes = propTypes;
 
 exports.default = GameControl;
 
-},{"../../../redux/actions/types":321,"../GameConnect.js":4,"../container/ChooseContainer":13,"../container/MenuContainer":15,"../container/StatusContainer":16,"../container/WelcomeContainer":17,"./../Cookie.js":2,"./../Event.js":3,"babel-runtime/core-js/object/get-prototype-of":26,"babel-runtime/helpers/classCallCheck":31,"babel-runtime/helpers/createClass":32,"babel-runtime/helpers/defineProperty":33,"babel-runtime/helpers/inherits":34,"babel-runtime/helpers/possibleConstructorReturn":35,"jquery":162,"react":304}],9:[function(require,module,exports){
+},{"../../../redux/actions/types":321,"../GameConnect.js":4,"../container/ChooseContainer":13,"../container/MenuContainer":15,"../container/StatusContainer":16,"../container/WelcomeContainer":17,"./../Cookie.js":2,"babel-runtime/core-js/object/get-prototype-of":26,"babel-runtime/helpers/classCallCheck":31,"babel-runtime/helpers/createClass":32,"babel-runtime/helpers/defineProperty":33,"babel-runtime/helpers/inherits":34,"babel-runtime/helpers/possibleConstructorReturn":35,"jquery":162,"react":304}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1400,15 +1386,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    ready: state.game.type === _types2.default.OTHER_PLAYER_JOINED
+    ready: state.game.type === _types2.default.OTHER_PLAYER_JOINED || state.game.type === _types2.default.OTHER_PLAYER_PUNCHED
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
   return {
     // Change punch to punching and punched
-    punch: function punch(value) {
-      dispatch(_actions2.default.punching(value));
+    punching: function punching(punch) {
+      dispatch(_actions2.default.punching({ punch: punch }));
     }
   };
 };
@@ -34356,7 +34342,7 @@ var punching = function punching(_ref3) {
 var punched = function punched(_ref4) {
   var punch = _ref4.punch;
   return {
-    type: _types2.default.PUNCH,
+    type: _types2.default.PUNCHED,
     punch: punch
   };
 };
@@ -34369,13 +34355,23 @@ var otherPlayerPunched = function otherPlayerPunched(_ref5) {
   };
 };
 
-var gameAction = function gameAction(_ref6) {
-  var type = _ref6.type;
-  var room = _ref6.room;
-  var user = _ref6.user;
-  var otherUser = _ref6.otherUser;
+var bothPlayerPunched = function bothPlayerPunched(_ref6) {
   var punch = _ref6.punch;
   var otherPunch = _ref6.otherPunch;
+  return {
+    type: _types2.default.BOTH_PLAYER_PUNCHED,
+    punch: punch,
+    otherPunch: otherPunch
+  };
+};
+
+var gameAction = function gameAction(_ref7) {
+  var type = _ref7.type;
+  var room = _ref7.room;
+  var user = _ref7.user;
+  var otherUser = _ref7.otherUser;
+  var punch = _ref7.punch;
+  var otherPunch = _ref7.otherPunch;
   return {
     type: type,
     room: room,
@@ -34394,6 +34390,7 @@ exports.default = {
   punching: punching,
   punched: punched,
   otherPlayerPunched: otherPlayerPunched,
+  bothPlayerPunched: bothPlayerPunched,
   gameAction: gameAction
 };
 
@@ -34482,6 +34479,7 @@ exports.default = {
   PUNCHING: 'punching',
   PUNCHED: 'punched',
   OTHER_PLAYER_PUNCHED: 'otherPlayerPunched',
+  BOTH_PLAYER_PUNCHED: 'bothPlayerPunched',
 
   // TODO: handle other player left action
   OTHER_PLAYER_LEFT: 'otherUserLeft'
@@ -34534,8 +34532,10 @@ var gameActionTypes = (_gameActionTypes = {}, (0, _defineProperty3.default)(_gam
   messages: ['Punching']
 }), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.PUNCHED, {
   messages: ['Waiting other player punch']
-}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_PUNCHE, {
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_PUNCHED, {
   messages: ['Other player is punched']
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.BOTH_PLAYER_PUNCHED, {
+  messages: ['Both player is punched']
 }), _gameActionTypes);
 
 var gameProperties = ['room', 'user', 'otherUser', 'punch', 'otherPunch'];

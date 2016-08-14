@@ -31,8 +31,11 @@ const gameActionTypes = {
   [types.PUNCHED]: {
     messages: ['Waiting other player punch']
   },
-  [types.OTHER_PLAYER_PUNCHE]: {
+  [types.OTHER_PLAYER_PUNCHED]: {
     messages: ['Other player is punched']
+  },
+  [types.BOTH_PLAYER_PUNCHED]: {
+    messages: ['Both player is punched']
   }
 };
 

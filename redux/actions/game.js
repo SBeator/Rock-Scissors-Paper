@@ -28,12 +28,18 @@ const punching = ({ punch }) => ({
 });
 
 const punched = ({ punch }) => ({
-  type: types.PUNCH,
+  type: types.PUNCHED,
   punch
 });
 
 const otherPlayerPunched = ({ otherPunch }) => ({
   type: types.OTHER_PLAYER_PUNCHED,
+  otherPunch
+});
+
+const bothPlayerPunched = ({ punch, otherPunch }) => ({
+  type: types.BOTH_PLAYER_PUNCHED,
+  punch,
   otherPunch
 });
 
@@ -54,5 +60,6 @@ export default {
   punching,
   punched,
   otherPlayerPunched,
+  bothPlayerPunched,
   gameAction
 };

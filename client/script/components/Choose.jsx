@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 
 const propTypes = {
   ready: PropTypes.bool,
-  punch: PropTypes.func
+  punching: PropTypes.func
 };
 
 class Choose extends Component {
@@ -32,7 +32,7 @@ class Choose extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    this.props.punch(this.refs.form.choose.value);
+    this.props.punching(this.refs.form.choose.value);
     // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
   }
 

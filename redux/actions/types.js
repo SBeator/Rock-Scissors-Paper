@@ -23,6 +23,7 @@ export default {
   PUNCHING: 'punching',
   PUNCHED: 'punched',
   OTHER_PLAYER_PUNCHED: 'otherPlayerPunched',
+  BOTH_PLAYER_PUNCHED: 'bothPlayerPunched',
 
   // TODO: handle other player left action
   OTHER_PLAYER_LEFT: 'otherUserLeft'

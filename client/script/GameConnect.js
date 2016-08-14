@@ -31,8 +31,8 @@ class GameConnect {
     this.sendMessage(actionType.JOINING_ROOM, { room, user }, recieveMessageCallback);
   }
 
-  punch(punch) {
-    this.sendMessage(actionType.punch, { punch });
+  punching(punch) {
+    this.sendMessage(actionType.PUNCHING, { punch });
   }
 
   createMessage(type, messageObject) {

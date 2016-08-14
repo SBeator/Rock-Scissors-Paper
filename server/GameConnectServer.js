@@ -1,4 +1,7 @@
+import actions from '../redux/actions';
 import actionType from '../redux/actions/types';
+import { actionToMessage, messageToAction } from '../redux/actions/actionMessage';
+
 import { createRoom, joinRoom } from './db.promise.js';
 
 const gameConnectsInRoom = {};
@@ -54,11 +57,7 @@ class GameConnectServer {
         });
         break;
       case actionType.PUNCHING:
-        this.sendMessageToOther(
-          actionType.OTHER_PLAYER_PUNCHED,
-          {
-            otherPunch: punch
-          });
+        this.sendPunchMessages(punch);
         break;
       default:
         break;
@@ -81,6 +80,14 @@ class GameConnectServer {
 
   setUser(user) {
     this.user = user;
+  }
+
+  setPunch(punch) {
+    this.punch = punch;
+  }
+
+  getPunch(punch) {
+    return this.punch;
   }
 
   getOtherUserConnectInRoom() {
@@ -106,6 +113,25 @@ class GameConnectServer {
 
     if (otherUserConnect) {
       otherUserConnect.sendMessage(type, messageObject);
+    }
+  }
+
+  sendActionMessage(action) {
+    console.log('Websocket: action to be send:');
+    console.log(action);
+
+    const message = actionToMessage(action);
+
+    console.log(`Websocket: send messageObject: ${message}`);
+
+    this.connection.sendUTF(message);
+  }
+
+  sendActionMessageToOther(action) {
+    const otherUserConnect = this.getOtherUserConnectInRoom();
+
+    if (otherUserConnect) {
+      otherUserConnect.sendActionMessage(action);
     }
   }
 
@@ -143,6 +169,30 @@ class GameConnectServer {
     }
   }
 
+  sendPunchMessages(punch) {
+    this.setPunch(punch);
+
+    const otherGameConnect = this.getOtherUserConnectInRoom();
+
+    if (otherGameConnect) {
+      const otherPunch = otherGameConnect.getPunch();
+
+      if (otherPunch) {
+        this.sendActionMessage(actions.bothPlayerPunched({
+          punch
+        }));
+        this.sendActionMessageToOther(actions.bothPlayerPunched({
+          otherPunch: punch,
+          punch: otherPunch
+        }));
+      } else {
+        this.sendActionMessage(actions.punched({ punch }));
+        this.sendActionMessageToOther(actions.otherPlayerPunched({ otherPunch: punch }));
+      }
+    } else {
+      this.sendActionMessage(actions.punched({ punch }));
+    }
+  }
 
   createMessageObject(type, messageObject) {
     return JSON.stringify(Object.assign({}, messageObject, { type }));
