@@ -34365,6 +34365,12 @@ var bothPlayerPunched = function bothPlayerPunched(_ref6) {
   };
 };
 
+var otherPlayerLeft = function otherPlayerLeft() {
+  return {
+    type: _types2.default.OTHER_PLAYER_LEFT
+  };
+};
+
 var gameAction = function gameAction(_ref7) {
   var type = _ref7.type;
   var room = _ref7.room;
@@ -34391,7 +34397,8 @@ exports.default = {
   punched: punched,
   otherPlayerPunched: otherPlayerPunched,
   bothPlayerPunched: bothPlayerPunched,
-  gameAction: gameAction
+  gameAction: gameAction,
+  otherPlayerLeft: otherPlayerLeft
 };
 
 },{"./types":321}],319:[function(require,module,exports){

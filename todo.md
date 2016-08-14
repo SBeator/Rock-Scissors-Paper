@@ -4,14 +4,15 @@
 
 1. ~~Use server render instead of static html~~
 1. Use Redux
-  1. TODO: Change GameControl to redux
+  1. ~~TODO: Change GameControl to redux~~
   1. ~~Make sure player can join room correctly~~
-  1. Change status message in different action
+  1. ~~Change status message in different action~~
   1. Make sure the action object is correct in game reducer
   1. TODO: remove the first two lines after JOIN_ROOM action is created
-  1. TODO: Change punch to punching and punched
+  1. ~~TODO: Change punch to punching and punched~~
   1. TODO: handle ready actions
   1. TODO: handle other player left action
+  1. Use action message to connect socket
 
 1. Add more game socket handler
   1. Other player is disconnected

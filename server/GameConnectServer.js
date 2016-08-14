@@ -65,7 +65,7 @@ class GameConnectServer {
   }
 
   disconnect() {
-    this.sendMessageToOther(actionType.OTHER_PLAYER_LEFT);
+    this.sendActionMessage(actions.otherPlayerLeft());
   }
 
   setRoom(room) {
@@ -80,6 +80,10 @@ class GameConnectServer {
 
   setUser(user) {
     this.user = user;
+  }
+
+  getUser() {
+    return this.user;
   }
 
   setPunch(punch) {
@@ -98,22 +102,6 @@ class GameConnectServer {
     }
 
     return otherGameConnect;
-  }
-
-  sendMessage(type, messageObject) {
-    const message = this.createMessageObject(type, messageObject);
-
-    console.log(`Websocket: send messageObject: ${message}`);
-
-    this.connection.sendUTF(message);
-  }
-
-  sendMessageToOther(type, messageObject) {
-    const otherUserConnect = this.getOtherUserConnectInRoom();
-
-    if (otherUserConnect) {
-      otherUserConnect.sendMessage(type, messageObject);
-    }
   }
 
   sendActionMessage(action) {
@@ -140,17 +128,13 @@ class GameConnectServer {
     this.setUser(user);
 
     const otherUserConnect = this.getOtherUserConnectInRoom();
+    const otherUser = !!otherUserConnect && otherUserConnect.getUser();
 
-    const otherUser = !!otherUserConnect && otherUserConnect.user;
-
-    const type = otherUser ? actionType.OTHER_PLAYER_JOINED : actionType.WAITING_IN_ROOM;
-    this.sendMessage(
-      type,
-      {
-        user,
-        room,
-        otherUser
-      });
+    if (otherUser) {
+      this.sendActionMessage(actions.otherPlayerJoinedRoom({ otherUser, user, room }));
+    } else {
+      this.sendActionMessage(actions.waitingInRoom({ user, room }));
+    }
   }
 
   sendJoinRoomMessageToOther(user, room) {
@@ -159,13 +143,11 @@ class GameConnectServer {
     const otherUser = !!otherUserConnect && otherUserConnect.user;
 
     if (otherUser) {
-      this.sendMessageToOther(
-      actionType.OTHER_PLAYER_JOINED,
-        {
+      this.sendActionMessageToOther(
+        actions.otherPlayerJoinedRoom({
           otherUser: user,
-          room,
-          user: otherUser
-        });
+          user: otherUser,
+          room }));
     }
   }
 

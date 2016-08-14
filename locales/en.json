@@ -9,5 +9,6 @@
 	"chooseRock": "Rock",
 	"chooseScissors": "Scissors",
 	"choosePaper": "Paper",
-	"punch": "Punch"
+	"punch": "Punch",
+	"otherPunchFormat": "otherPunchFormat"
 }
