@@ -22,6 +22,22 @@ const otherPlayerJoinedRoom = ({ room, user, otherUser }) => ({
   otherUser
 });
 
+const readying = () => ({
+  type: types.READYING
+});
+
+const ready = () => ({
+  type: types.READY
+});
+
+const otherPlayerReady = () => ({
+  type: types.OTHER_PLAYER_READY
+});
+
+const bothPlayerReady = () => ({
+  type: types.BOTH_PLAYER_READY
+});
+
 const punching = ({ punch }) => ({
   type: types.PUNCHING,
   punch
@@ -52,6 +68,10 @@ export default {
   waitingInRoom,
   joiningRoom,
   otherPlayerJoinedRoom,
+  readying,
+  ready,
+  otherPlayerReady,
+  bothPlayerReady,
   punching,
   punched,
   otherPlayerPunched,

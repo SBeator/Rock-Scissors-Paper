@@ -14,16 +14,19 @@ const gameActionTypes = {
     messages: ['Joining room']
   },
   [types.OTHER_PLAYER_JOINED]: {
-    messages: ['Please punch']
+    messages: ['Please get ready']
   },
   [types.READYING]: {
-    messages: []
+    messages: ['Readying']
   },
   [types.READY]: {
-    messages: []
+    messages: ['You are ready, wait other player ready']
   },
   [types.OTHER_PLAYER_READY]: {
-    messages: []
+    messages: ['The other player is ready, please get ready']
+  },
+  [types.BOTH_PLAYER_READY]: {
+    messages: ['Please punch']
   },
   [types.PUNCHING]: {
     messages: ['Punching']

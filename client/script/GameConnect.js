@@ -37,6 +37,10 @@ class GameConnect {
     this.sendMessage(actions.punching({ punch }));
   }
 
+  readying() {
+    this.sendMessage(actions.readying());
+  }
+
   sendMessage(action, recieveActionCallback) {
     return this.connectedSocket
       .then(() => {

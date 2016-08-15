@@ -18,7 +18,8 @@ export default {
   // TODO: handle ready actions
   READYING: 'readying',
   READY: 'ready',
-  OTHER_PLAYER_READY: 'ready',
+  OTHER_PLAYER_READY: 'otherPlayerReady',
+  BOTH_PLAYER_READY: 'bothPlayerReady',
 
   PUNCHING: 'punching',
   PUNCHED: 'punched',

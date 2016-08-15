@@ -59,6 +59,9 @@ class GameConnectServer {
       case actionType.PUNCHING:
         this.sendPunchMessages(punch);
         break;
+      case actionType.READYING:
+        this.sendReadyMessages(punch);
+        break;
       default:
         break;
     }
@@ -92,6 +95,14 @@ class GameConnectServer {
 
   getPunch(punch) {
     return this.punch;
+  }
+
+  setReady(ready) {
+    this.ready = ready;
+  }
+
+  getReady() {
+    return this.ready;
   }
 
   getOtherUserConnectInRoom() {
@@ -167,12 +178,38 @@ class GameConnectServer {
           otherPunch: punch,
           punch: otherPunch
         }));
+
+        this.setPunch(undefined);
+        otherGameConnect.setPunch(undefined);
       } else {
         this.sendActionMessage(actions.punched({ punch }));
         this.sendActionMessageToOther(actions.otherPlayerPunched({ otherPunch: punch }));
       }
     } else {
       this.sendActionMessage(actions.punched({ punch }));
+    }
+  }
+
+  sendReadyMessages() {
+    this.setReady(true);
+
+    const otherGameConnect = this.getOtherUserConnectInRoom();
+
+    if (otherGameConnect) {
+      const otherReady = otherGameConnect.getReady();
+
+      if (otherReady) {
+        this.sendActionMessage(actions.bothPlayerReady());
+        this.sendActionMessageToOther(actions.bothPlayerReady());
+
+        this.setReady(false);
+        otherGameConnect.setReady(false);
+      } else {
+        this.sendActionMessage(actions.ready());
+        this.sendActionMessageToOther(actions.otherPlayerReady());
+      }
+    } else {
+      this.sendActionMessage(actions.ready());
     }
   }
 }

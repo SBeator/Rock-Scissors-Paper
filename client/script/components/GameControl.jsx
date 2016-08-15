@@ -15,6 +15,8 @@ import StatusContainer from '../container/StatusContainer';
 import MenuContainer from '../container/MenuContainer';
 import WelcomeContainer from '../container/WelcomeContainer';
 import ChooseContainer from '../container/ChooseContainer';
+import ReadyContainer from '../container/ReadyContainer';
+
 
 const propTypes = {
   hostname: PropTypes.string,
@@ -224,6 +226,9 @@ class GameControl extends Component {
       case actionType.PUNCHING:
         this.punching(punch);
         break;
+      case actionType.READYING:
+        this.gameConnect.readying();
+        break;
       default:
     }
   }
@@ -295,6 +300,8 @@ class GameControl extends Component {
           pageOrigin={this.props.pageOrigin}
         />
         */ }
+
+        <ReadyContainer />
 
         <MenuContainer />
         { /*
