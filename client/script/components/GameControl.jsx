@@ -6,6 +6,7 @@ import Cookie from './../Cookie.js';
 import GameConnect from '../GameConnect.js';
 
 import actionType from '../../../redux/actions/types';
+import actions from '../../../redux/actions';
 
 // import Status from './Status.jsx';
 // import Menu from './Menu.jsx';
@@ -17,6 +18,14 @@ import WelcomeContainer from '../container/WelcomeContainer';
 import ChooseContainer from '../container/ChooseContainer';
 import ReadyContainer from '../container/ReadyContainer';
 
+const sendMessageGameTypes = [
+  actionType.CREATING_ROOM,
+  actionType.JOINING_ROOM,
+  actionType.WAITING_IN_ROOM,
+  actionType.OTHER_PLAYER_JOINED,
+  actionType.PUNCHING,
+  actionType.READYING
+];
 
 const propTypes = {
   hostname: PropTypes.string,
@@ -42,7 +51,7 @@ class GameControl extends Component {
   }
 
   componentDidMount() {
-    this.gameConnect = new GameConnect(this.props.hostname);
+    this.gameConnect = new GameConnect(this.props.hostname, this.recieveActionCallback);
 
     console.log(this.props.game);
     // if (this.props.game.) {
@@ -206,41 +215,26 @@ class GameControl extends Component {
 
   handleGameState(gameState) {
     const { room, user, punch } = gameState;
-    switch (gameState.type) {
-      case actionType.CREATING_ROOM:
-        this.createGame();
-        break;
-      case actionType.JOINING_ROOM:
-        this.joinGame(gameState.room);
-        break;
-      case actionType.WAITING_IN_ROOM:
-        this.joinedGame({
-          room, user
-        });
-        break;
-      case actionType.OTHER_PLAYER_JOINED:
-        this.joinedGame({
-          room, user
-        });
-        break;
-      case actionType.PUNCHING:
-        this.punching(punch);
-        break;
-      case actionType.READYING:
-        this.gameConnect.readying();
-        break;
-      default:
+
+    if (sendMessageGameTypes.indexOf(gameState.type) >= 0) {
+      const action = actions.createGameAction({
+        type: gameState.type,
+        room,
+        user,
+        punch
+      });
+      this.gameConnect.sendMessage(action);
     }
   }
 
   createGame() {
     const user = this.getUser();
-    this.gameConnect.createRoom(user, this.recieveActionCallback);
+    this.gameConnect.createRoom(user);
   }
 
   joinGame(room) {
     const user = this.getUser();
-    this.gameConnect.joinRoom(room, user, this.recieveActionCallback);
+    this.gameConnect.joinRoom(room, user);
   }
 
   joinedGame({ room, user }) {

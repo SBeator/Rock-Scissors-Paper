@@ -63,6 +63,15 @@ const otherPlayerLeft = () => ({
   type: types.OTHER_PLAYER_LEFT
 });
 
+const createGameAction = ({ type, room, user, otherUser, punch, otherPunch }) => ({
+  type,
+  room,
+  user,
+  otherUser,
+  punch,
+  otherPunch
+});
+
 export default {
   creatingRoom,
   waitingInRoom,
@@ -76,5 +85,6 @@ export default {
   punched,
   otherPlayerPunched,
   bothPlayerPunched,
-  otherPlayerLeft
+  otherPlayerLeft,
+  createGameAction
 };

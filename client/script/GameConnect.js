@@ -5,15 +5,21 @@ import { actionToMessage, messageToAction } from '../../redux/actions/actionMess
 
 class GameConnect {
 
-  constructor(hostname) {
+  constructor(hostname, recieveActionCallback) {
     this.hostname = hostname;
-    this.connectedSocket = this.connect();
+    this.connectedSocket = this.connect()
+      .then(() => {
+        this.webSocket.on('message', (event) => {
+          const recieveMessageObject = messageToAction(event.data);
+          recieveActionCallback(recieveMessageObject);
+        });
+      });
   }
 
   connect() {
     this.webSocket = new ClientWebSocket(this.hostname);
 
-    return new Promise((resolve, reject) => {
+    const connectPromise = new Promise((resolve, reject) => {
       this.webSocket.on('open', () => {
         resolve();
       });
@@ -23,14 +29,16 @@ class GameConnect {
         reject();
       });
     });
+
+    return connectPromise;
   }
 
-  createRoom(user, recieveActionCallback) {
-    this.sendMessage(actions.creatingRoom({ user }), recieveActionCallback);
+  createRoom(user) {
+    this.sendMessage(actions.creatingRoom({ user }));
   }
 
-  joinRoom(room, user, recieveActionCallback) {
-    this.sendMessage(actions.joiningRoom({ room, user }), recieveActionCallback);
+  joinRoom(room, user) {
+    this.sendMessage(actions.joiningRoom({ room, user }));
   }
 
   punching(punch) {
@@ -41,20 +49,11 @@ class GameConnect {
     this.sendMessage(actions.readying());
   }
 
-  sendMessage(action, recieveActionCallback) {
+  sendMessage(action) {
     return this.connectedSocket
       .then(() => {
         const message = actionToMessage(action);
         this.webSocket.send(message);
-      })
-      .then(() => {
-        if (recieveActionCallback) {
-          this.webSocket.on('message', (event) => {
-            const recieveMessageObject = messageToAction(event.data);
-
-            recieveActionCallback(recieveMessageObject);
-          });
-        }
       });
   }
 }

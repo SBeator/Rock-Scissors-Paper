@@ -193,40 +193,49 @@ var _actionMessage = require('../../redux/actions/actionMessage');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var GameConnect = function () {
-  function GameConnect(hostname) {
+  function GameConnect(hostname, recieveActionCallback) {
+    var _this = this;
+
     (0, _classCallCheck3.default)(this, GameConnect);
 
     this.hostname = hostname;
-    this.connectedSocket = this.connect();
+    this.connectedSocket = this.connect().then(function () {
+      _this.webSocket.on('message', function (event) {
+        var recieveMessageObject = (0, _actionMessage.messageToAction)(event.data);
+        recieveActionCallback(recieveMessageObject);
+      });
+    });
   }
 
   (0, _createClass3.default)(GameConnect, [{
     key: 'connect',
     value: function connect() {
-      var _this = this;
+      var _this2 = this;
 
       this.webSocket = new _ClientWebSocket2.default(this.hostname);
 
-      return new _promise2.default(function (resolve, reject) {
-        _this.webSocket.on('open', function () {
+      var connectPromise = new _promise2.default(function (resolve, reject) {
+        _this2.webSocket.on('open', function () {
           resolve();
         });
 
-        _this.webSocket.on('error', function () {
+        _this2.webSocket.on('error', function () {
           // TODO: Add reject handle logic
           reject();
         });
       });
+
+      return connectPromise;
     }
   }, {
     key: 'createRoom',
-    value: function createRoom(user, recieveActionCallback) {
-      this.sendMessage(_actions2.default.creatingRoom({ user: user }), recieveActionCallback);
+    value: function createRoom(user) {
+      this.sendMessage(_actions2.default.creatingRoom({ user: user }));
     }
   }, {
     key: 'joinRoom',
-    value: function joinRoom(room, user, recieveActionCallback) {
-      this.sendMessage(_actions2.default.joiningRoom({ room: room, user: user }), recieveActionCallback);
+    value: function joinRoom(room, user) {
+      this.sendMessage(_actions2.default.joiningRoom({ room: room, user: user }));
     }
   }, {
     key: 'punching',
@@ -240,20 +249,12 @@ var GameConnect = function () {
     }
   }, {
     key: 'sendMessage',
-    value: function sendMessage(action, recieveActionCallback) {
-      var _this2 = this;
+    value: function sendMessage(action) {
+      var _this3 = this;
 
       return this.connectedSocket.then(function () {
         var message = (0, _actionMessage.actionToMessage)(action);
-        _this2.webSocket.send(message);
-      }).then(function () {
-        if (recieveActionCallback) {
-          _this2.webSocket.on('message', function (event) {
-            var recieveMessageObject = (0, _actionMessage.messageToAction)(event.data);
-
-            recieveActionCallback(recieveMessageObject);
-          });
-        }
+        _this3.webSocket.send(message);
       });
     }
   }]);
@@ -499,6 +500,10 @@ var _types = require('../../../redux/actions/types');
 
 var _types2 = _interopRequireDefault(_types);
 
+var _actions = require('../../../redux/actions');
+
+var _actions2 = _interopRequireDefault(_actions);
+
 var _StatusContainer = require('../container/StatusContainer');
 
 var _StatusContainer2 = _interopRequireDefault(_StatusContainer);
@@ -521,15 +526,17 @@ var _ReadyContainer2 = _interopRequireDefault(_ReadyContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var sendMessageGameTypes = [_types2.default.CREATING_ROOM, _types2.default.JOINING_ROOM, _types2.default.WAITING_IN_ROOM, _types2.default.OTHER_PLAYER_JOINED, _types2.default.PUNCHING, _types2.default.READYING];
+
+// import Status from './Status.jsx';
+// import Menu from './Menu.jsx';
+// import Choose from './Choose.jsx';
+
 var propTypes = {
   hostname: _react.PropTypes.string,
   game: _react.PropTypes.object,
   dispatchGameAction: _react.PropTypes.func
 };
-
-// import Status from './Status.jsx';
-// import Menu from './Menu.jsx';
-// import Choose from './Choose.jsx';
 
 var GameControl = function (_Component) {
   (0, _inherits3.default)(GameControl, _Component);
@@ -556,7 +563,7 @@ var GameControl = function (_Component) {
   (0, _createClass3.default)(GameControl, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.gameConnect = new _GameConnect2.default(this.props.hostname);
+      this.gameConnect = new _GameConnect2.default(this.props.hostname, this.recieveActionCallback);
 
       console.log(this.props.game);
       // if (this.props.game.) {
@@ -727,43 +734,28 @@ var GameControl = function (_Component) {
       var user = gameState.user;
       var punch = gameState.punch;
 
-      switch (gameState.type) {
-        case _types2.default.CREATING_ROOM:
-          this.createGame();
-          break;
-        case _types2.default.JOINING_ROOM:
-          this.joinGame(gameState.room);
-          break;
-        case _types2.default.WAITING_IN_ROOM:
-          this.joinedGame({
-            room: room, user: user
-          });
-          break;
-        case _types2.default.OTHER_PLAYER_JOINED:
-          this.joinedGame({
-            room: room, user: user
-          });
-          break;
-        case _types2.default.PUNCHING:
-          this.punching(punch);
-          break;
-        case _types2.default.READYING:
-          this.gameConnect.readying();
-          break;
-        default:
+
+      if (sendMessageGameTypes.indexOf(gameState.type) >= 0) {
+        var action = _actions2.default.createGameAction({
+          type: gameState.type,
+          room: room,
+          user: user,
+          punch: punch
+        });
+        this.gameConnect.sendMessage(action);
       }
     }
   }, {
     key: 'createGame',
     value: function createGame() {
       var user = this.getUser();
-      this.gameConnect.createRoom(user, this.recieveActionCallback);
+      this.gameConnect.createRoom(user);
     }
   }, {
     key: 'joinGame',
     value: function joinGame(room) {
       var user = this.getUser();
-      this.gameConnect.joinRoom(room, user, this.recieveActionCallback);
+      this.gameConnect.joinRoom(room, user);
     }
   }, {
     key: 'joinedGame',
@@ -841,7 +833,7 @@ GameControl.propTypes = propTypes;
 
 exports.default = GameControl;
 
-},{"../../../redux/actions/types":324,"../GameConnect.js":4,"../container/ChooseContainer":14,"../container/MenuContainer":16,"../container/ReadyContainer":17,"../container/StatusContainer":18,"../container/WelcomeContainer":19,"./../Cookie.js":2,"babel-runtime/core-js/object/get-prototype-of":28,"babel-runtime/helpers/classCallCheck":33,"babel-runtime/helpers/createClass":34,"babel-runtime/helpers/defineProperty":35,"babel-runtime/helpers/inherits":36,"babel-runtime/helpers/possibleConstructorReturn":37,"jquery":164,"react":306}],9:[function(require,module,exports){
+},{"../../../redux/actions":322,"../../../redux/actions/types":324,"../GameConnect.js":4,"../container/ChooseContainer":14,"../container/MenuContainer":16,"../container/ReadyContainer":17,"../container/StatusContainer":18,"../container/WelcomeContainer":19,"./../Cookie.js":2,"babel-runtime/core-js/object/get-prototype-of":28,"babel-runtime/helpers/classCallCheck":33,"babel-runtime/helpers/createClass":34,"babel-runtime/helpers/defineProperty":35,"babel-runtime/helpers/inherits":36,"babel-runtime/helpers/possibleConstructorReturn":37,"jquery":164,"react":306}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34547,6 +34539,23 @@ var otherPlayerLeft = function otherPlayerLeft() {
   };
 };
 
+var createGameAction = function createGameAction(_ref8) {
+  var type = _ref8.type;
+  var room = _ref8.room;
+  var user = _ref8.user;
+  var otherUser = _ref8.otherUser;
+  var punch = _ref8.punch;
+  var otherPunch = _ref8.otherPunch;
+  return {
+    type: type,
+    room: room,
+    user: user,
+    otherUser: otherUser,
+    punch: punch,
+    otherPunch: otherPunch
+  };
+};
+
 exports.default = {
   creatingRoom: creatingRoom,
   waitingInRoom: waitingInRoom,
@@ -34560,7 +34569,8 @@ exports.default = {
   punched: punched,
   otherPlayerPunched: otherPlayerPunched,
   bothPlayerPunched: bothPlayerPunched,
-  otherPlayerLeft: otherPlayerLeft
+  otherPlayerLeft: otherPlayerLeft,
+  createGameAction: createGameAction
 };
 
 },{"./types":324}],322:[function(require,module,exports){
