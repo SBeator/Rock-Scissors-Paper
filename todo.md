@@ -5,7 +5,7 @@
 1. ~~Use server render instead of static html~~
 1. Use Redux
   1. Show game result
-  1. Send action to socket directly in game control
+  1. ~~Send action to socket directly in game control~~
   1. The ready button can be "restart"
   1. ~~TODO: Change GameControl to redux~~
   1. ~~Make sure player can join room correctly~~
@@ -24,6 +24,7 @@
 1. Use i18n strings
 1. Add animation and more icons to make game beautiful
 1. Add testing
+1. Add log level
 
 ### Done
 - ~~Add multiple player support for Game~~
