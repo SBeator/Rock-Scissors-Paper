@@ -54,7 +54,7 @@
     - Can't join room if there are more than 2 users in room.
   - db.js: Don't need find room if room doesn't exist
   - Only return nessecery data
-
+- Don't use eval in code
 
 ### Done
 - ~~Join room will create room itself.~~
