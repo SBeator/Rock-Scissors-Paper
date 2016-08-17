@@ -34717,8 +34717,25 @@ var gameActionTypes = (_gameActionTypes = {}, (0, _defineProperty3.default)(_gam
 }), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_PLAYER_PUNCHED, {
   messages: ['Other player is punched']
 }), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.BOTH_PLAYER_PUNCHED, {
-  messages: ['Both player is punched']
+  messages: ['Other player is punched: {{punchNameMap[otherPunch]}}', '{{resultMap[(punch - otherPunch + 3) % 3]}}']
 }), _gameActionTypes);
+
+var punchNameMap = {
+  0: 'rock',
+  1: 'scissors',
+  2: 'paper'
+};
+
+var resultMap = {
+  0: 'resultDraw',
+  1: 'resultLose',
+  2: 'resultWin'
+};
+
+// const stringHelper = {
+//   punchNameMap,
+//   resultMap
+// };
 
 var gameProperties = ['room', 'user', 'otherUser', 'punch', 'otherPunch'];
 
@@ -34734,7 +34751,15 @@ var gameReducers = function gameReducers() {
     newState = {};
     var type = action.type;
     var messages = gameActionObject.messages;
+    var punch = action.punch;
+    var otherPunch = action.otherPunch;
 
+
+    messages.map(function (message) {
+      return message.replace(/{{([^{}]*)}}/, function (match, parameter) {
+        return eval(parameter);
+      });
+    });
 
     (0, _assign2.default)(newState, state, {
       type: type,

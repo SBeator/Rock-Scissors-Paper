@@ -2,13 +2,13 @@
 	"createGame": "Create game",
 	"joinGame": "Join game",
 	"roomTitle": "Room: {{room}}",
-	"otherPunchFormat {{otherPunch}}": "His punsh is: {{otherPunch}}",
+	"otherPunchFormat": "His punsh is: {{otherPunch}}",
 	"resultWin": "You win!",
 	"resultLose": "You lose!",
 	"resultDraw": "It draw",
-	"chooseRock": "Rock",
-	"chooseScissors": "Scissors",
-	"choosePaper": "Paper",
+	"rock": "Rock",
+	"scissors": "Scissors",
+	"paper": "Paper",
 	"punch": "Punch",
-	"otherPunchFormat": "otherPunchFormat"
+	"chooseRock": "chooseRock"
 }

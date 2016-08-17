@@ -1,13 +1,14 @@
 {
-  "createGame": "创建游戏",
-  "joinGame": "加入游戏",
-  "roomTitle": "房间号：{{room}}",
-  "otherPunchFormat": "对手出的是：{{otherPunch}}",
-  "resultWin": "你赢了",
-  "resultLose": "你输了",
-  "resultDraw": "打平了",
-  "chooseRock": "石头",
-  "chooseScissors": "剪子",
-  "choosePaper": "布",
-  "punch": "出拳"
+	"createGame": "创建游戏",
+	"joinGame": "加入游戏",
+	"roomTitle": "房间号：{{room}}",
+	"otherPunchFormat": "对手出的是：{{otherPunch}}",
+	"resultWin": "你赢了",
+	"resultLose": "你输了",
+	"resultDraw": "打平了",
+	"rock": "石头",
+	"scissors": "剪子",
+	"paper": "布",
+	"punch": "出拳",
+	"chooseRock": "chooseRock"
 }
