@@ -4,17 +4,16 @@
 
 1. ~~Use server render instead of static html~~
 1. Use Redux
+  1. The ready button can be "restart"
+  1. ~~TODO: remove the first two lines after JOIN_ROOM action is created~~
   1. ~~Show game result~~
   1. ~~Send action to socket directly in game control~~
-  1. The ready button can be "restart"
   1. ~~TODO: Change GameControl to redux~~
   1. ~~Make sure player can join room correctly~~
   1. ~~Change status message in different action~~
   1. ~~Make sure the action object is correct in game reducer~~
-  1. TODO: remove the first two lines after JOIN_ROOM action is created
   1. ~~TODO: Change punch to punching and punched~~
   1. ~~TODO: handle ready actions~~
-  1. TODO: handle other player left action
   1. ~~Use action message to connect socket~~
 
 1. Add more game socket handler
@@ -25,6 +24,7 @@
 1. Add animation and more icons to make game beautiful
 1. Add testing
 1. Add log level
+1. TODO: handle other player left action
 
 ### Done
 - ~~Add multiple player support for Game~~
@@ -54,7 +54,7 @@
     - Can't join room if there are more than 2 users in room.
   - db.js: Don't need find room if room doesn't exist
   - Only return nessecery data
-- Don't use eval in code
+- ~~Don't use eval in code~~
 
 ### Done
 - ~~Join room will create room itself.~~

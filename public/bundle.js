@@ -34888,15 +34888,6 @@ var statusReducers = function statusReducers() {
   var newState = {};
 
   switch (action.type) {
-    // TODO: remove the first two lines after JOIN_ROOM action is created
-    case _types2.default.CREATING_ROOM:
-    case _types2.default.JOINING_ROOM:
-    case _types2.default.JOIN_ROOM:
-      (0, _assign2.default)(newState, state, {
-        messages: ['Please wait for other player joining']
-      });
-      return newState;
-
     case _types2.default.CLIENT_SIDE_INIT:
       (0, _assign2.default)(newState, state, {
         hostname: action.hostname,
