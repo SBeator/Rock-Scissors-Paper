@@ -15,7 +15,6 @@ export default {
   JOINING_ROOM: 'joiningRoom',
   OTHER_PLAYER_JOINED: 'otherPlayerJoined',
 
-  // TODO: handle ready actions
   READYING: 'readying',
   READY: 'ready',
   OTHER_PLAYER_READY: 'otherPlayerReady',
