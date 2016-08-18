@@ -172,7 +172,8 @@ class GameConnectServer {
 
       if (otherPunch) {
         this.sendActionMessage(actions.bothPlayerPunched({
-          punch
+          punch,
+          otherPunch
         }));
         this.sendActionMessageToOther(actions.bothPlayerPunched({
           otherPunch: punch,

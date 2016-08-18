@@ -38,8 +38,8 @@ const gameActionTypes = {
     messages: ['Other player is punched']
   },
   [types.BOTH_PLAYER_PUNCHED]: {
-    messages: ['Other player is punched: {{punchNameMap[otherPunch]}}',
-               '{{resultMap[(punch - otherPunch + 3) % 3]}}']
+    messages: ['Other player is punched: {{punchNameResolver}}',
+               '{{punchResultResolver}}']
   }
 };
 
@@ -55,10 +55,10 @@ const resultMap = {
   2: 'resultWin',
 };
 
-// const stringHelper = {
-//   punchNameMap,
-//   resultMap
-// };
+const stringHelper = {
+  punchNameResolver: ({ otherPunch }) => punchNameMap[otherPunch],
+  punchResultResolver: ({ punch, otherPunch }) => resultMap[(punch - otherPunch + 3) % 3]
+};
 
 const gameProperties = [
   'room',
@@ -76,12 +76,10 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
   if (gameActionObject) {
     newState = {};
     const { type } = action;
-    const { messages } = gameActionObject;
+    let { messages } = gameActionObject;
 
-    const { punch, otherPunch } = action;
-
-    messages.map((message) => message.replace(/{{([^{}]*)}}/, (match, parameter) => {
-      return eval(parameter);
+    messages = messages.map((message) => message.replace(/{{([^{}]*)}}/, (match, parameter) => {
+      return stringHelper[parameter](action);
     }));
 
     Object.assign(newState, state, {
