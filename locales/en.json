@@ -10,5 +10,17 @@
 	"scissors": "Scissors",
 	"paper": "Paper",
 	"punch": "Punch",
-	"chooseRock": "chooseRock"
+  "Creating room...": "Creating room...",
+  "Waiting other player join": "Waiting other player join",
+  "Joining room": "Joining room",  
+  "Please get ready": "Please get ready",
+  "Readying": "Readying",  
+  "You are ready, wait other player ready": "You are ready, wait other player ready",
+  "The other player is ready, please get ready": "The other player is ready, please get ready",  
+  "Please punch": "Please punch",
+  "Punching": "Punching",  
+  "Waiting other player punch": "Waiting other player punch",
+  "Other player is punched": "Other player is punched",  
+  "Other player is punched: {{punchNameResolver}}": "Other player is punched: {{punchNameResolver}}",
+  "{{punchResultResolver}}": "{{punchResultResolver}}"
 }

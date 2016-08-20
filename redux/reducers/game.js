@@ -57,8 +57,12 @@ const resultMap = {
 };
 
 const stringHelper = {
-  punchNameResolver: ({ otherPunch }) => punchNameMap[otherPunch],
-  punchResultResolver: ({ punch, otherPunch }) => resultMap[(punch - otherPunch + 3) % 3]
+  punchNameResolver: ({ otherPunch }, locString) => (
+    locString(punchNameMap[otherPunch])
+  ),
+  punchResultResolver: ({ punch, otherPunch }, locString) => (
+    locString(resultMap[(punch - otherPunch + 3) % 3])
+  )
 };
 
 const gameProperties = [
@@ -80,9 +84,11 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
     let { messages } = gameActionObject;
     const { appendMessage } = gameActionObject;
 
+    const { locale: locString } = state;
+
     messages = messages.map((message) => message.replace(
       /{{([^{}]*)}}/,
-      (match, parameter) => stringHelper[parameter](action)));
+      (match, parameter) => stringHelper[parameter](action, locString)));
 
     if (appendMessage) {
       const oldMessages = state.messages || [];

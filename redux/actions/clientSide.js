@@ -6,6 +6,12 @@ const clientSideInit = (hostname, pageOrigin) => ({
   pageOrigin
 });
 
+const setLocale = (locale) => ({
+  type: types.SET_LOCALE,
+  locale
+});
+
 export default {
-  clientSideInit
+  clientSideInit,
+  setLocale
 };

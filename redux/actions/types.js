@@ -1,10 +1,12 @@
 export default {
 
+
   // menu action
   CLICK_MULTI_GAME: 'clickMultiGame',
 
   // client side init
   CLIENT_SIDE_INIT: 'clientSideInit',
+  SET_LOCALE: 'setLocale',
 
   // game related
   IDLE: 'idle',
