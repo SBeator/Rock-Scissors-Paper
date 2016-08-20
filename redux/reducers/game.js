@@ -1,48 +1,5 @@
 import types from '../actions/types';
-
-const gameActionTypes = {
-  [types.IDLE]: {
-    messages: []
-  },
-  [types.CREATING_ROOM]: {
-    messages: ['Creating room...']
-  },
-  [types.WAITING_IN_ROOM]: {
-    messages: ['Waiting other player join']
-  },
-  [types.JOINING_ROOM]: {
-    messages: ['Joining room']
-  },
-  [types.OTHER_PLAYER_JOINED]: {
-    messages: ['Please get ready']
-  },
-  [types.READYING]: {
-    messages: ['Readying']
-  },
-  [types.READY]: {
-    messages: ['You are ready, wait other player ready']
-  },
-  [types.OTHER_PLAYER_READY]: {
-    appendMessage: true,
-    messages: ['The other player is ready, please get ready']
-  },
-  [types.BOTH_PLAYER_READY]: {
-    messages: ['Please punch']
-  },
-  [types.PUNCHING]: {
-    messages: ['Punching']
-  },
-  [types.PUNCHED]: {
-    messages: ['Waiting other player punch']
-  },
-  [types.OTHER_PLAYER_PUNCHED]: {
-    messages: ['Other player is punched']
-  },
-  [types.BOTH_PLAYER_PUNCHED]: {
-    messages: ['Other player is punched: {{punchNameResolver}}',
-               '{{punchResultResolver}}']
-  }
-};
+import { locString } from '../../locales';
 
 const punchNameMap = {
   0: 'rock',
@@ -56,13 +13,82 @@ const resultMap = {
   2: 'resultWin',
 };
 
-const stringHelper = {
-  punchNameResolver: ({ otherPunch }, locString) => (
-    locString(punchNameMap[otherPunch])
-  ),
-  punchResultResolver: ({ punch, otherPunch }, locString) => (
-    locString(resultMap[(punch - otherPunch + 3) % 3])
-  )
+const gameActionTypes = {
+  [types.IDLE]: {
+    messageInfos: [{
+      message: ''
+    }]
+  },
+  [types.CREATING_ROOM]:
+  {
+    messageInfos: [{
+      message: 'Creating room...'
+    }]
+  },
+  [types.WAITING_IN_ROOM]: {
+    messageInfos: [{
+      message: 'Waiting other player join'
+    }]
+  },
+  [types.JOINING_ROOM]: {
+    messageInfos: [{
+      message: 'Joining room'
+    }]
+  },
+  [types.OTHER_PLAYER_JOINED]: {
+    messageInfos: [{
+      message: 'Please get ready'
+    }]
+  },
+  [types.READYING]: {
+    messageInfos: [{
+      message: 'Readying'
+    }]
+  },
+  [types.READY]: {
+    messageInfos: [{
+      message: 'You are ready, wait other player ready'
+    }]
+  },
+  [types.OTHER_PLAYER_READY]: {
+    appendMessage: true,
+    messageInfos: [{
+      message: 'The other player is ready, please get ready'
+    }]
+  },
+  [types.BOTH_PLAYER_READY]: {
+    messageInfos: [{
+      message: 'Please punch'
+    }]
+  },
+  [types.PUNCHING]: {
+    messageInfos: [{
+      message: 'Punching'
+    }]
+  },
+  [types.PUNCHED]: {
+    messageInfos: [{
+      message: 'Waiting other player punch'
+    }]
+  },
+  [types.OTHER_PLAYER_PUNCHED]: {
+    messageInfos: [{
+      message: 'Other player is punched'
+    }]
+  },
+  [types.BOTH_PLAYER_PUNCHED]: {
+    messageInfos: [{
+      message: 'Other player punch result format',
+      valueResolver: ({ otherPunch }) => ({
+        punchName: locString(punchNameMap[otherPunch])
+      })
+    }, {
+      message: 'Punch result',
+      valueResolver: ({ punch, otherPunch }) => ({
+        punchResult: locString(resultMap[(punch - otherPunch + 3) % 3])
+      })
+    }]
+  }
 };
 
 const gameProperties = [
@@ -81,17 +107,12 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
   if (gameActionObject) {
     newState = {};
     const { type } = action;
-    let { messages } = gameActionObject;
-    const { appendMessage } = gameActionObject;
+    const { messageInfos, appendMessage } = gameActionObject;
 
-    const { locale: {
-      locString
-    } } = state;
-
-    messages = messages.map((message) => locString(
-      message.replace(
-        /{{([^{}]*)}}/,
-        (match, parameter) => stringHelper[parameter](action, locString))));
+    let messages = messageInfos.map(({ message, valueResolver }) => locString(
+        message,
+        valueResolver && valueResolver(action)
+      ));
 
     if (appendMessage) {
       const oldMessages = state.messages || [];

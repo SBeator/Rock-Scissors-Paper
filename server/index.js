@@ -21,11 +21,10 @@ router.get('/', (req, res, next) => {
 
   // console.log(res.__('otherPunchFormat', { otherPunch: res.__('resultRock') }));
 
-  const locale = res.getCatalog(res.getLocale());
+  const locales = res.getCatalog(res.getLocale());
 
-  const store = createStore(reducer);
+  const store = createStore(reducer, { locales });
 
-  store.dispatch(actions.setLocale(locale));
   if (room) {
     store.dispatch(actions.joiningRoom({ room }));
   }

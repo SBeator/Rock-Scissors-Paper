@@ -21,6 +21,6 @@
   "Punching": "Punching",  
   "Waiting other player punch": "Waiting other player punch",
   "Other player is punched": "Other player is punched",  
-  "Other player is punched: {{punchNameResolver}}": "Other player is punched: {{punchNameResolver}}",
-  "{{punchResultResolver}}": "{{punchResultResolver}}"
+  "Other player punch result format": "zh Other player is punched: {{punchName}}",
+  "Punch result": "zh {{punchResult}}"
 }

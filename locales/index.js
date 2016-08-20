@@ -1,15 +1,15 @@
-class I18n {
-  i18n(locale) {
-    this.locale = locale;
+let locales;
 
-    this.translate = this.translate.bind();
-  }
+const initLocales = (loc) => {
+  locales = loc;
+};
 
-  locString(wordFormat, valueObj) {
-    const word = this.locale[wordFormat];
-    return word.replace(/{{([^{}]*)}}/, (match, parameter) => valueObj[parameter]);
-  }
+const locString = (wordFormat, valueObj) => {
+  const locStringFormet = locales && locales[wordFormat] ? locales[wordFormat] : wordFormat;
+  return locStringFormet.replace(/{{([^{}]*)}}/, (match, parameter) => valueObj[parameter]);
+};
 
-}
-
-export default I18n;
+export {
+  initLocales,
+  locString
+};
