@@ -23,6 +23,7 @@ const gameActionTypes = {
     messages: ['You are ready, wait other player ready']
   },
   [types.OTHER_PLAYER_READY]: {
+    appendMessage: true,
     messages: ['The other player is ready, please get ready']
   },
   [types.BOTH_PLAYER_READY]: {
@@ -77,10 +78,16 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
     newState = {};
     const { type } = action;
     let { messages } = gameActionObject;
+    const { appendMessage } = gameActionObject;
 
     messages = messages.map((message) => message.replace(
       /{{([^{}]*)}}/,
       (match, parameter) => stringHelper[parameter](action)));
+
+    if (appendMessage) {
+      const oldMessages = state.messages || [];
+      messages = [...oldMessages, ...messages];
+    }
 
     Object.assign(newState, state, {
       type,
