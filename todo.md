@@ -3,8 +3,8 @@
 ## To do
 
 1. ~~Use server render instead of static html~~
-1. Use Redux
-  1. The ready button can be "restart"
+1. ~~Use Redux~~
+  1. ~~The ready button can be "restart"~~
   1. ~~TODO: remove the first two lines after JOIN_ROOM action is created~~
   1. ~~Show game result~~
   1. ~~Send action to socket directly in game control~~
@@ -16,11 +16,11 @@
   1. ~~TODO: handle ready actions~~
   1. ~~Use action message to connect socket~~
 
+1. Use i18n strings
 1. Add more game socket handler
   1. Other player is disconnected
   1. Get ready for game
   1. Re-join game if disconnect or refresh
-1. Use i18n strings
 1. Add animation and more icons to make game beautiful
 1. Add testing
 1. Add log level
