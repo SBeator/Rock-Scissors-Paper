@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
 
   const locale = res.getCatalog(res.getLocale());
 
-  const store = createStore(reducer, { locale });
+  const store = createStore(reducer);
 
   store.dispatch(actions.setLocale(locale));
   if (room) {

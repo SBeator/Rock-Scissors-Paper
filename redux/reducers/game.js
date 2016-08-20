@@ -84,11 +84,14 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
     let { messages } = gameActionObject;
     const { appendMessage } = gameActionObject;
 
-    const { locale: locString } = state;
+    const { locale: {
+      locString
+    } } = state;
 
-    messages = messages.map((message) => message.replace(
-      /{{([^{}]*)}}/,
-      (match, parameter) => stringHelper[parameter](action, locString)));
+    messages = messages.map((message) => locString(
+      message.replace(
+        /{{([^{}]*)}}/,
+        (match, parameter) => stringHelper[parameter](action, locString))));
 
     if (appendMessage) {
       const oldMessages = state.messages || [];
