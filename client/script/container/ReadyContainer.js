@@ -3,14 +3,15 @@ import actions from '../../../redux/actions';
 import actionTypes from '../../../redux/actions/types';
 import Ready from '../components/Ready.jsx';
 
-const menuTextMap = {
-  [actionTypes.OTHER_PLAYER_JOINED]: 'Ready',
-  [actionTypes.BOTH_PLAYER_PUNCHED]: 'Ready',
-  [actionTypes.OTHER_PLAYER_READY]: 'Ready'
-};
+const showMenuActions = [
+  actionTypes.OTHER_PLAYER_JOINED,
+  actionTypes.BOTH_PLAYER_PUNCHED,
+  actionTypes.OTHER_PLAYER_READY
+];
 
 const mapStateToProps = (state, ownProps) => ({
-  menuText: menuTextMap[state.game.type]
+  menuText: state.status.readyMenuText,
+  show: showMenuActions.indexOf(state.game.type) >= 0
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -78,9 +78,9 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
     const { type } = action;
     let { messages } = gameActionObject;
 
-    messages = messages.map((message) => message.replace(/{{([^{}]*)}}/, (match, parameter) => {
-      return stringHelper[parameter](action);
-    }));
+    messages = messages.map((message) => message.replace(
+      /{{([^{}]*)}}/,
+      (match, parameter) => stringHelper[parameter](action)));
 
     Object.assign(newState, state, {
       type,

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 const propTypes = {
+  show: PropTypes.bool,
   menuText: PropTypes.string,
   readying: PropTypes.func,
 };
@@ -17,7 +18,7 @@ class Ready extends Component {
   }
 
   getClasses() {
-    return `ready ${this.props.menuText ? '' : 'hide'}`;
+    return `ready ${this.props.show ? '' : 'hide'}`;
   }
 
   render() {

@@ -1013,6 +1013,7 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
+  show: _react.PropTypes.bool,
   menuText: _react.PropTypes.string,
   readying: _react.PropTypes.func
 };
@@ -1037,7 +1038,7 @@ var Ready = function (_Component) {
   }, {
     key: 'getClasses',
     value: function getClasses() {
-      return 'ready ' + (this.props.menuText ? '' : 'hide');
+      return 'ready ' + (this.props.show ? '' : 'hide');
     }
   }, {
     key: 'render',
@@ -1550,12 +1551,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _menuTextMap;
-
 var _reactRedux = require('react-redux');
 
 var _actions = require('../../../redux/actions');
@@ -1572,11 +1567,12 @@ var _Ready2 = _interopRequireDefault(_Ready);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var menuTextMap = (_menuTextMap = {}, (0, _defineProperty3.default)(_menuTextMap, _types2.default.OTHER_PLAYER_JOINED, 'Ready'), (0, _defineProperty3.default)(_menuTextMap, _types2.default.BOTH_PLAYER_PUNCHED, 'Ready'), (0, _defineProperty3.default)(_menuTextMap, _types2.default.OTHER_PLAYER_READY, 'Ready'), _menuTextMap);
+var showMenuActions = [_types2.default.OTHER_PLAYER_JOINED, _types2.default.BOTH_PLAYER_PUNCHED, _types2.default.OTHER_PLAYER_READY];
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    menuText: menuTextMap[state.game.type]
+    menuText: state.status.readyMenuText,
+    show: showMenuActions.indexOf(state.game.type) >= 0
   };
 };
 
@@ -1592,7 +1588,7 @@ var MenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps
 
 exports.default = MenuContainer;
 
-},{"../../../redux/actions":322,"../../../redux/actions/types":324,"../components/Ready.jsx":10,"babel-runtime/helpers/defineProperty":35,"react-redux":173}],18:[function(require,module,exports){
+},{"../../../redux/actions":322,"../../../redux/actions/types":324,"../components/Ready.jsx":10,"react-redux":173}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34885,19 +34881,29 @@ var statusReducers = function statusReducers() {
   var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
   var action = arguments[1];
 
-  var newState = {};
+  var newState = (0, _assign2.default)({}, state);
 
   switch (action.type) {
     case _types2.default.CLIENT_SIDE_INIT:
-      (0, _assign2.default)(newState, state, {
+      (0, _assign2.default)(newState, {
         hostname: action.hostname,
         pageOrigin: action.pageOrigin
       });
-      return newState;
-
+      break;
+    case _types2.default.OTHER_PLAYER_JOINED:
+      (0, _assign2.default)(newState, {
+        readyMenuText: 'Ready'
+      });
+      break;
+    case _types2.default.BOTH_PLAYER_PUNCHED:
+      (0, _assign2.default)(newState, {
+        readyMenuText: 'Restart'
+      });
+      break;
     default:
-      return state;
   }
+
+  return newState;
 };
 
 exports.default = statusReducers;
