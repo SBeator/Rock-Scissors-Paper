@@ -11,7 +11,7 @@
 	"paper": "Paper",
 	"punch": "Punch",
   "Creating room...": "Creating room...",
-  "Waiting other player join": "Waiting other player join####",
+  "Waiting other player join": "Waiting other player join",
   "Joining room": "Joining room",  
   "Please get ready": "Please get ready",
   "Readying": "Readying",  
@@ -21,6 +21,6 @@
   "Punching": "Punching",  
   "Waiting other player punch": "Waiting other player punch",
   "Other player is punched": "Other player is punched",  
-  "Other player punch result format": "en Other player is punched: {{punchName}}",
-  "Punch result": "en {{punchResult}}"
+  "Other player punch result format": "Other player is punched: {{punchName}}",
+  "Punch result": "{{punchResult}}"
 }
