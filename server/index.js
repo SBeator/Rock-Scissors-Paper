@@ -8,7 +8,7 @@ import reducer from '../redux/reducers';
 import actions from '../redux/actions';
 
 import Game from '../client/script/components/Game.jsx';
-
+import { initLocales } from '../locales';
 
 const router = express.Router();
 
@@ -24,6 +24,8 @@ router.get('/', (req, res, next) => {
   const locales = res.getCatalog(res.getLocale());
 
   const store = createStore(reducer, { locales });
+
+  initLocales(locales);
 
   if (room) {
     store.dispatch(actions.joiningRoom({ room }));

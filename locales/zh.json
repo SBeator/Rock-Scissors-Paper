@@ -22,5 +22,8 @@
   "Waiting other player punch": "等待你的对手出拳",
   "Other player is punched": "你的对手已经出拳",  
   "Other player punch result format": "你的对手出的是: {{punchName}}",
-  "Punch result": "{{punchResult}}"
+  "Punch result": "{{punchResult}}",
+	"Game title": "石头 剪刀 布",
+	"Start game": "开始游戏",
+	"Author": "曾星鑫"
 }

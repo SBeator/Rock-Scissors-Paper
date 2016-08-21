@@ -6,7 +6,15 @@ const initLocales = (loc) => {
 
 const locString = (wordFormat, valueObj) => {
   const locStringFormet = locales && locales[wordFormat] ? locales[wordFormat] : wordFormat;
-  return locStringFormet.replace(/{{([^{}]*)}}/, (match, parameter) => valueObj[parameter]);
+
+  if (locStringFormet) {
+    return locStringFormet.replace(/{{([^{}]*)}}/, (match, parameter) => valueObj[parameter]);
+  }
+
+  console.log('locStringFormet is undefined: locales: ');
+  console.log(locales);
+  console.log(`wordFormat: ${wordFormat}, valueObj: ${valueObj}`);
+  return '';
 };
 
 export {

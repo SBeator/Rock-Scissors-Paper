@@ -1,6 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
+import { locString } from '../../../locales';
+
+
 const propTypes = {
+  locales: PropTypes.object,
   show: PropTypes.bool,
   clickMultiGame: PropTypes.func,
 };
@@ -23,11 +27,16 @@ class Welcome extends Component {
   render() {
     return (
       <div className={this.getClasses()}>
-        <div className="welcome__title">石头，剪子，布</div>
+        <div className="welcome__title">{locString(this.props.locales['Game title'])}</div>
         <div className="welcome__menu">
-          <button className="btn" onClick={this.onClickMultiGame}>开始游戏</button>
+          <button
+            className="btn"
+            onClick={this.onClickMultiGame}
+          >
+              {locString(this.props.locales['Start game'])}
+          </button>
         </div>
-        <div className="welcome__copy_right">Xingxin Zeng</div>
+        <div className="welcome__copy_right">{locString(this.props.locales.Author)}</div>
       </div>);
   }
 }

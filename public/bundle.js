@@ -1363,9 +1363,12 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _locales = require('../../../locales');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
+  locales: _react.PropTypes.object,
   show: _react.PropTypes.bool,
   clickMultiGame: _react.PropTypes.func
 };
@@ -1401,21 +1404,24 @@ var Welcome = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'welcome__title' },
-          '石头，剪子，布'
+          (0, _locales.locString)(this.props.locales['Game title'])
         ),
         _react2.default.createElement(
           'div',
           { className: 'welcome__menu' },
           _react2.default.createElement(
             'button',
-            { className: 'btn', onClick: this.onClickMultiGame },
-            '开始游戏'
+            {
+              className: 'btn',
+              onClick: this.onClickMultiGame
+            },
+            (0, _locales.locString)(this.props.locales['Start game'])
           )
         ),
         _react2.default.createElement(
           'div',
           { className: 'welcome__copy_right' },
-          'Xingxin Zeng'
+          (0, _locales.locString)(this.props.locales.Author)
         )
       );
     }
@@ -1427,7 +1433,7 @@ Welcome.propTypes = propTypes;
 
 exports.default = Welcome;
 
-},{"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],14:[function(require,module,exports){
+},{"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1638,6 +1644,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
+    locales: state.locales,
     show: state.layout === 'welcome'
   };
 };
@@ -1742,7 +1749,7 @@ module.exports={
   }
 }
 },{}],23:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1755,9 +1762,17 @@ var initLocales = function initLocales(loc) {
 
 var locString = function locString(wordFormat, valueObj) {
   var locStringFormet = locales && locales[wordFormat] ? locales[wordFormat] : wordFormat;
-  return locStringFormet.replace(/{{([^{}]*)}}/, function (match, parameter) {
-    return valueObj[parameter];
-  });
+
+  if (locStringFormet) {
+    return locStringFormet.replace(/{{([^{}]*)}}/, function (match, parameter) {
+      return valueObj[parameter];
+    });
+  }
+
+  console.log('locStringFormet is undefined: locales: ');
+  console.log(locales);
+  console.log('wordFormat: ' + wordFormat + ', valueObj: ' + valueObj);
+  return '';
 };
 
 exports.initLocales = initLocales;

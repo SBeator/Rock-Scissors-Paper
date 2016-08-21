@@ -22,5 +22,8 @@
   "Waiting other player punch": "Waiting other player punch",
   "Other player is punched": "Other player is punched",  
   "Other player punch result format": "Other player is punched: {{punchName}}",
-  "Punch result": "{{punchResult}}"
+  "Punch result": "{{punchResult}}",
+	"Game title": "Rock Scissors Papers",
+	"Start game": "Start game",
+	"Author": "Xingxin Zeng"
 }
