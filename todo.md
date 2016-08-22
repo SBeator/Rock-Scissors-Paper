@@ -18,14 +18,13 @@
 
 1. ~~Use i18n strings~~
     1. ~~Make sure all the strings works correctly in both en and zh~~
+1. Add animation and more icons to make game beautiful
+1. Add testing
+1. Add log level
 1. Add more game socket handler
     1. Other player is disconnected
     1. Get ready for game
     1. Re-join game if disconnect or refresh
-1. Add animation and more icons to make game beautiful
-1. Add testing
-1. Add log level
-1. TODO: handle other player left action
 
 ### Done
 - ~~Add multiple player support for Game~~
