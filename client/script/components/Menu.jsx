@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import $ from 'jquery';
 
+import { locString } from '../../../locales';
+
 const propTypes = {
   show: PropTypes.bool,
   createGame: PropTypes.func,
@@ -58,10 +60,22 @@ class Menu extends Component {
     return (
       <div className={this.getClasses()} >
         <div className="menu__block">
-          <button className="btn" onClick={this.onClick} data-menu="create">Create Game</button>
-          <button className="btn" onClick={this.onClick} data-menu="join">Join Game</button>
+          <button
+            className="btn"
+            onClick={this.onClick}
+            data-menu="create"
+          >
+            {locString('createGame')}
+          </button>
+          <button
+            className="btn"
+            onClick={this.onClick}
+            data-menu="join"
+          >
+            {locString('joinGame')}
+          </button>
           <form className="menu--join-form hide" ref="form" onSubmit={this.onJoinRoomSubmit}>
-            <label htmlFor="room-number">Room:</label>
+            <label htmlFor="room-number">{locString('roomTitle')}</label>
             <input type="text" id="room-number" ref="room" onChange={this.onRoomChange} />
             <input
               type="submit"

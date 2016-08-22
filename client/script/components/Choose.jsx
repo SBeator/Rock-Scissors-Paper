@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-// import Event, { CustomEvents } from './../Event.js';
+import { locString } from '../../../locales';
 
 const propTypes = {
   ready: PropTypes.bool,
@@ -40,7 +40,7 @@ class Choose extends Component {
     return (
       <div className="choose">
         <form onSubmit={this.onSubmit} ref="form" >
-          <label htmlFor="rock">石头: </label>
+          <label htmlFor="rock">{locString('rock')}</label>
           <input
             type="radio"
             name="choose"
@@ -49,7 +49,7 @@ class Choose extends Component {
             value="0"
             onChange={this.onChooseChange}
           />
-          <label htmlFor="scissors">剪刀: </label>
+          <label htmlFor="scissors">{locString('scissors')}</label>
           <input
             type="radio"
             name="choose"
@@ -58,7 +58,7 @@ class Choose extends Component {
             value="1"
             onChange={this.onChooseChange}
           />
-          <label htmlFor="paper">布: </label>
+          <label htmlFor="paper">{locString('paper')}</label>
           <input
             type="radio"
             name="choose"

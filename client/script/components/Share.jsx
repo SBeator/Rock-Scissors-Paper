@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import { locString } from '../../../locales';
+
 import {
   path,
   textPara
@@ -40,10 +42,10 @@ class Share extends Component {
         <div className="share__bg_hover" onClick={this.onClickCloseShare}></div>
         <div className="share__block">
           <div className="share__close" onClick={this.onClickCloseShare}>×</div>
-          <p>Please Share this link to your friend</p>
+          <p>{locString('Share message')}</p>
           <p>{this.props.link}</p>
-          <p>Or you can ask your find to scan the qrcode:</p>
-          <img className="share__qrcode" alt="Share link QR code" src={this.getQRcodeLink()} />
+          <p>{locString('Qrcode message')}</p>
+          <img className="share__qrcode" alt={locString('QRcode alt')} src={this.getQRcodeLink()} />
         </div>
       </div>);
   }

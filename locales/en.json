@@ -1,7 +1,7 @@
 {
 	"createGame": "Create game",
 	"joinGame": "Join game",
-	"roomTitle": "Room: {{room}}",
+	"roomTitleFormat": "Room:{{room}}",
 	"otherPunchFormat": "His punsh is: {{otherPunch}}",
 	"resultWin": "You win!",
 	"resultLose": "You lose!",
@@ -25,5 +25,10 @@
   "Punch result": "{{punchResult}}",
 	"Game title": "Rock Scissors Papers",
 	"Start game": "Start game",
-	"Author": "Xingxin Zeng"
+	"Author": "Xingxin Zeng",
+	"Share message": "Please Share this link to your friend",
+	"Qrcode message": "Or you can ask your find to scan the qrcode:",
+	"QRcode alt": "Share link QR code",
+	"Ready": "Ready",
+	"Restart": "Restart"
 }

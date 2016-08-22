@@ -1,5 +1,7 @@
 import types from '../actions/types';
 
+import { locString } from '../../locales';
+
 const statusReducers = (state = {}, action) => {
   const newState = Object.assign({}, state);
 
@@ -12,12 +14,12 @@ const statusReducers = (state = {}, action) => {
       break;
     case types.OTHER_PLAYER_JOINED:
       Object.assign(newState, {
-        readyMenuText: 'Ready',
+        readyMenuText: locString('Ready'),
       });
       break;
     case types.BOTH_PLAYER_PUNCHED:
       Object.assign(newState, {
-        readyMenuText: 'Restart',
+        readyMenuText: locString('Restart'),
       });
       break;
     default:

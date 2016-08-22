@@ -267,39 +267,39 @@ exports.default = GameConnect;
 "use strict";
 
 },{}],6:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _getPrototypeOf = require("babel-runtime/core-js/object/get-prototype-of");
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require("babel-runtime/helpers/createClass");
+var _createClass2 = require('babel-runtime/helpers/createClass');
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
 
 var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-var _inherits2 = require("babel-runtime/helpers/inherits");
+var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _locales = require('../../../locales');
 
-// import Event, { CustomEvents } from './../Event.js';
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
   ready: _react.PropTypes.bool,
@@ -320,24 +320,24 @@ var Choose = function (_Component) {
   }
 
   (0, _createClass3.default)(Choose, [{
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       this.refs.submit.disabled = !this.props.ready;
     }
   }, {
-    key: "componentDidUpdate",
+    key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       this.refs.submit.disabled = !this.props.ready;
     }
   }, {
-    key: "onChooseChange",
+    key: 'onChooseChange',
     value: function onChooseChange() {
       if (this.props.ready) {
         this.refs.submit.disabled = false;
       }
     }
   }, {
-    key: "onSubmit",
+    key: 'onSubmit',
     value: function onSubmit(event) {
       event.preventDefault();
 
@@ -345,59 +345,59 @@ var Choose = function (_Component) {
       // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
-        { className: "choose" },
+        'div',
+        { className: 'choose' },
         _react2.default.createElement(
-          "form",
-          { onSubmit: this.onSubmit, ref: "form" },
+          'form',
+          { onSubmit: this.onSubmit, ref: 'form' },
           _react2.default.createElement(
-            "label",
-            { htmlFor: "rock" },
-            "石头: "
+            'label',
+            { htmlFor: 'rock' },
+            (0, _locales.locString)('rock')
           ),
-          _react2.default.createElement("input", {
-            type: "radio",
-            name: "choose",
-            id: "rock",
-            className: "choose__radio",
-            value: "0",
+          _react2.default.createElement('input', {
+            type: 'radio',
+            name: 'choose',
+            id: 'rock',
+            className: 'choose__radio',
+            value: '0',
             onChange: this.onChooseChange
           }),
           _react2.default.createElement(
-            "label",
-            { htmlFor: "scissors" },
-            "剪刀: "
+            'label',
+            { htmlFor: 'scissors' },
+            (0, _locales.locString)('scissors')
           ),
-          _react2.default.createElement("input", {
-            type: "radio",
-            name: "choose",
-            id: "scissors",
-            className: "choose__radio",
-            value: "1",
+          _react2.default.createElement('input', {
+            type: 'radio',
+            name: 'choose',
+            id: 'scissors',
+            className: 'choose__radio',
+            value: '1',
             onChange: this.onChooseChange
           }),
           _react2.default.createElement(
-            "label",
-            { htmlFor: "paper" },
-            "布: "
+            'label',
+            { htmlFor: 'paper' },
+            (0, _locales.locString)('paper')
           ),
-          _react2.default.createElement("input", {
-            type: "radio",
-            name: "choose",
-            id: "paper",
-            className: "choose__radio",
-            value: "2",
+          _react2.default.createElement('input', {
+            type: 'radio',
+            name: 'choose',
+            id: 'paper',
+            className: 'choose__radio',
+            value: '2',
             onChange: this.onChooseChange
           }),
-          _react2.default.createElement("input", {
-            type: "submit",
-            className: "btn choose__submit",
-            value: "出拳",
-            disabled: "disabled",
-            ref: "submit"
+          _react2.default.createElement('input', {
+            type: 'submit',
+            className: 'btn choose__submit',
+            value: '出拳',
+            disabled: 'disabled',
+            ref: 'submit'
           })
         )
       );
@@ -410,7 +410,7 @@ Choose.propTypes = propTypes;
 
 exports.default = Choose;
 
-},{"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],7:[function(require,module,exports){
+},{"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -868,6 +868,8 @@ var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
+var _locales = require('../../../locales');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
@@ -943,13 +945,21 @@ var Menu = function (_Component) {
           { className: 'menu__block' },
           _react2.default.createElement(
             'button',
-            { className: 'btn', onClick: this.onClick, 'data-menu': 'create' },
-            'Create Game'
+            {
+              className: 'btn',
+              onClick: this.onClick,
+              'data-menu': 'create'
+            },
+            (0, _locales.locString)('createGame')
           ),
           _react2.default.createElement(
             'button',
-            { className: 'btn', onClick: this.onClick, 'data-menu': 'join' },
-            'Join Game'
+            {
+              className: 'btn',
+              onClick: this.onClick,
+              'data-menu': 'join'
+            },
+            (0, _locales.locString)('joinGame')
           ),
           _react2.default.createElement(
             'form',
@@ -957,7 +967,7 @@ var Menu = function (_Component) {
             _react2.default.createElement(
               'label',
               { htmlFor: 'room-number' },
-              'Room:'
+              (0, _locales.locString)('roomTitle')
             ),
             _react2.default.createElement('input', { type: 'text', id: 'room-number', ref: 'room', onChange: this.onRoomChange }),
             _react2.default.createElement('input', {
@@ -979,7 +989,7 @@ Menu.propTypes = propTypes;
 
 exports.default = Menu;
 
-},{"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"jquery":170,"react":312}],10:[function(require,module,exports){
+},{"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"jquery":170,"react":312}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1096,6 +1106,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _locales = require('../../../locales');
+
 var _qrcode = require('../../../config/qrcode.json');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1156,7 +1168,7 @@ var Share = function (_Component) {
           _react2.default.createElement(
             'p',
             null,
-            'Please Share this link to your friend'
+            (0, _locales.locString)('Share message')
           ),
           _react2.default.createElement(
             'p',
@@ -1166,9 +1178,9 @@ var Share = function (_Component) {
           _react2.default.createElement(
             'p',
             null,
-            'Or you can ask your find to scan the qrcode:'
+            (0, _locales.locString)('Qrcode message')
           ),
-          _react2.default.createElement('img', { className: 'share__qrcode', alt: 'Share link QR code', src: this.getQRcodeLink() })
+          _react2.default.createElement('img', { className: 'share__qrcode', alt: (0, _locales.locString)('QRcode alt'), src: this.getQRcodeLink() })
         )
       );
     }
@@ -1180,7 +1192,7 @@ Share.propTypes = propTypes;
 
 exports.default = Share;
 
-},{"../../../config/qrcode.json":21,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],12:[function(require,module,exports){
+},{"../../../config/qrcode.json":21,"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1214,6 +1226,8 @@ var _react2 = _interopRequireDefault(_react);
 var _Share = require('./Share.jsx');
 
 var _Share2 = _interopRequireDefault(_Share);
+
+var _locales = require('../../../locales');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1293,8 +1307,7 @@ var Status = function (_Component) {
             className: 'status__room btn',
             onClick: this.onClickRoom
           },
-          'Room: ',
-          this.props.room
+          (0, _locales.locString)('roomTitleFormat', { room: this.props.room })
         );
       } else {
         roomInfo = '';
@@ -1332,7 +1345,7 @@ Status.propTypes = propTypes;
 
 exports.default = Status;
 
-},{"./Share.jsx":11,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],13:[function(require,module,exports){
+},{"../../../locales":23,"./Share.jsx":11,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1368,7 +1381,6 @@ var _locales = require('../../../locales');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
-  locales: _react.PropTypes.object,
   show: _react.PropTypes.bool,
   clickMultiGame: _react.PropTypes.func
 };
@@ -1404,7 +1416,7 @@ var Welcome = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'welcome__title' },
-          (0, _locales.locString)(this.props.locales['Game title'])
+          (0, _locales.locString)('Game title')
         ),
         _react2.default.createElement(
           'div',
@@ -1415,13 +1427,13 @@ var Welcome = function (_Component) {
               className: 'btn',
               onClick: this.onClickMultiGame
             },
-            (0, _locales.locString)(this.props.locales['Start game'])
+            (0, _locales.locString)('Start game')
           )
         ),
         _react2.default.createElement(
           'div',
           { className: 'welcome__copy_right' },
-          (0, _locales.locString)(this.props.locales.Author)
+          (0, _locales.locString)('Author')
         )
       );
     }
@@ -1644,7 +1656,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    locales: state.locales,
     show: state.layout === 'welcome'
   };
 };
@@ -35064,6 +35075,8 @@ var _types = require('../actions/types');
 
 var _types2 = _interopRequireDefault(_types);
 
+var _locales = require('../../locales');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var statusReducers = function statusReducers() {
@@ -35081,12 +35094,12 @@ var statusReducers = function statusReducers() {
       break;
     case _types2.default.OTHER_PLAYER_JOINED:
       (0, _assign2.default)(newState, {
-        readyMenuText: 'Ready'
+        readyMenuText: (0, _locales.locString)('Ready')
       });
       break;
     case _types2.default.BOTH_PLAYER_PUNCHED:
       (0, _assign2.default)(newState, {
-        readyMenuText: 'Restart'
+        readyMenuText: (0, _locales.locString)('Restart')
       });
       break;
     default:
@@ -35097,4 +35110,4 @@ var statusReducers = function statusReducers() {
 
 exports.default = statusReducers;
 
-},{"../actions/types":330,"babel-runtime/core-js/object/assign":27}]},{},[1,2,3,4,14,15,16,17,18,19,20,5,6,7,8,9,10,11,12,13,325,326,327,328,329,330,331,332,333,334,335]);
+},{"../../locales":23,"../actions/types":330,"babel-runtime/core-js/object/assign":27}]},{},[1,2,3,4,14,15,16,17,18,19,20,5,6,7,8,9,10,11,12,13,325,326,327,328,329,330,331,332,333,334,335]);

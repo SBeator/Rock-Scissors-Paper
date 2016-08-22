@@ -3,7 +3,6 @@ import actions from '../../../redux/actions';
 import Welcome from '../components/Welcome.jsx';
 
 const mapStateToProps = (state, ownProps) => ({
-  locales: state.locales,
   show: state.layout === 'welcome'
 });
 

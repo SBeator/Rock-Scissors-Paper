@@ -16,8 +16,8 @@
     1. ~~TODO: handle ready actions~~
     1. ~~Use action message to connect socket~~
 
-1. Use i18n strings
-    1. Make sure all the strings works correctly in both en and zh
+1. ~~Use i18n strings~~
+    1. ~~Make sure all the strings works correctly in both en and zh~~
 1. Add more game socket handler
     1. Other player is disconnected
     1. Get ready for game

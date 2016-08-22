@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import Share from './Share.jsx';
 
+import { locString } from '../../../locales';
+
 const propTypes = {
   otherChoose: PropTypes.string,
   result: PropTypes.number,
@@ -66,7 +68,7 @@ class Status extends Component {
           className="status__room btn"
           onClick={this.onClickRoom}
         >
-          Room: {this.props.room}
+          {locString('roomTitleFormat', { room: this.props.room })}
         </div>);
     } else {
       roomInfo = '';
