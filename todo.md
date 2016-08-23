@@ -23,6 +23,11 @@
     1. ~~Get ready for game~~
     1. Re-join game if disconnect or refresh
 1. Add animation and more icons to make game beautiful
+    1. ~~Use icons for choose~~
+    1. Use swap animation to choose
+    1. Can see other play choosing
+    1. punching animation
+    1. choosed animation
 1. Add log level
 1. Add testing
 
