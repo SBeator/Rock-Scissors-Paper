@@ -297,6 +297,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
 var _locales = require('../../../locales');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -316,6 +320,7 @@ var Choose = function (_Component) {
 
     _this.onChooseChange = _this.onChooseChange.bind(_this);
     _this.onSubmit = _this.onSubmit.bind(_this);
+    _this.onClickChoose = _this.onClickChoose.bind(_this);
     return _this;
   }
 
@@ -328,6 +333,15 @@ var Choose = function (_Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       this.refs.submit.disabled = !this.props.ready;
+    }
+  }, {
+    key: 'onClickChoose',
+    value: function onClickChoose(event) {
+      var allIcons = (0, _jquery2.default)(this.refs.icons).find('.icon');
+      allIcons.removeClass('active');
+      (0, _jquery2.default)(event.target).addClass('active');
+
+      this.refs.form.choose.value = allIcons.index(event.target);
     }
   }, {
     key: 'onChooseChange',
@@ -350,6 +364,13 @@ var Choose = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'choose' },
+        _react2.default.createElement(
+          'div',
+          { className: 'choose_icons', ref: 'icons', onClick: this.onClickChoose },
+          _react2.default.createElement('div', { className: 'icon icon_rock' }),
+          _react2.default.createElement('div', { className: 'icon icon_scissors' }),
+          _react2.default.createElement('div', { className: 'icon icon_paper' })
+        ),
         _react2.default.createElement(
           'form',
           { onSubmit: this.onSubmit, ref: 'form' },
@@ -410,7 +431,7 @@ Choose.propTypes = propTypes;
 
 exports.default = Choose;
 
-},{"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"react":312}],7:[function(require,module,exports){
+},{"../../../locales":23,"babel-runtime/core-js/object/get-prototype-of":30,"babel-runtime/helpers/classCallCheck":35,"babel-runtime/helpers/createClass":36,"babel-runtime/helpers/inherits":38,"babel-runtime/helpers/possibleConstructorReturn":39,"jquery":170,"react":312}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

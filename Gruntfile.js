@@ -43,7 +43,8 @@ module.exports = function (grunt) {
         dest: 'public/fonts',
         destCss: 'client/style/global',
         options: {
-          stylesheet: 'scss'
+          stylesheet: 'scss',
+          relativeFontPath: 'fonts/'
         }
       }
     },

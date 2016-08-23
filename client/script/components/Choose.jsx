@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import $ from 'jquery';
+
 import { locString } from '../../../locales';
 
 const propTypes = {
@@ -13,6 +15,7 @@ class Choose extends Component {
 
     this.onChooseChange = this.onChooseChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onClickChoose = this.onClickChoose.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +24,14 @@ class Choose extends Component {
 
   componentDidUpdate() {
     this.refs.submit.disabled = !this.props.ready;
+  }
+
+  onClickChoose(event) {
+    const allIcons = $(this.refs.icons).find('.icon');
+    allIcons.removeClass('active');
+    $(event.target).addClass('active');
+
+    this.refs.form.choose.value = allIcons.index(event.target);
   }
 
   onChooseChange() {
@@ -39,6 +50,11 @@ class Choose extends Component {
   render() {
     return (
       <div className="choose">
+        <div className="choose_icons" ref="icons" onClick={this.onClickChoose}>
+          <div className="icon icon_rock"></div>
+          <div className="icon icon_scissors"></div>
+          <div className="icon icon_paper"></div>
+        </div>
         <form onSubmit={this.onSubmit} ref="form" >
           <label htmlFor="rock">{locString('rock')}</label>
           <input

@@ -13,8 +13,37 @@
     margin-right: 20px;
   }
 
+  form {
+    label, input[type="radio"] {
+      display: none;
+    }
+  } 
+
   .choose__submit {
     display: block;
     margin: 30px auto;
+  }
+
+  .choose_icons {
+    line-height: 120px;
+    font-size: 120px;
+    color: $hands-color;
+
+    .icon {
+      position: relative;
+      transition: all 0.3s;
+      cursor: pointer;
+      top: 0;
+
+      &:hover {
+        color: $hands-active-color;
+      }
+
+      &.active {
+        transform: scale(1.5);
+        top: -40px;
+        color: $hands-active-color;
+      }
+    }
   }
 }
