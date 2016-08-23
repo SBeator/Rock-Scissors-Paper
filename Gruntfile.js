@@ -37,6 +37,17 @@ module.exports = function (grunt) {
       }
     },
 
+    webfont: {
+      icons: {
+        src: 'webfont/svg/*.svg',
+        dest: 'public/fonts',
+        destCss: 'client/style/global',
+        options: {
+          stylesheet: 'scss'
+        }
+      }
+    },
+
     watch: {
       script: {
         files: '<%= paths.js %>',
@@ -54,6 +65,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-webfont');
 
   grunt.registerTask('default', ['eslint', 'browserify', 'sass', 'watch']);
 };
