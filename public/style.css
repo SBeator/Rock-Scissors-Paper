@@ -31,8 +31,8 @@ input[type="text"] {
 
 @font-face {
   font-family: "icons";
-  src: url("fonts/icons.eot?2fee45958093c9d2d92b552488ae2628");
-  src: url("fonts/icons.eot?#iefix") format("embedded-opentype"), url("fonts/icons.woff?2fee45958093c9d2d92b552488ae2628") format("woff"), url("fonts/icons.ttf?2fee45958093c9d2d92b552488ae2628") format("truetype");
+  src: url("fonts/icons.eot?b8cc49949b8f121d6c4be199070dc509");
+  src: url("fonts/icons.eot?#iefix") format("embedded-opentype"), url("fonts/icons.woff?b8cc49949b8f121d6c4be199070dc509") format("woff"), url("fonts/icons.ttf?b8cc49949b8f121d6c4be199070dc509") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -63,6 +63,10 @@ input[type="text"] {
   content: "\f103";
 }
 
+.icon_share:before {
+  content: "\f104";
+}
+
 .game {
   width: 100vw;
   height: 100vh;
@@ -87,6 +91,29 @@ input[type="text"] {
   left: 0;
   top: 0;
   margin: 0;
+}
+.status .status__room .icon {
+  position: relative;
+  display: inline-block;
+  top: -2px;
+  transition: all 0.3s;
+}
+.status .status__room p {
+  position: relative;
+  display: inline-block;
+  top: 2px;
+  transition: all 0.3s;
+  opacity: 0;
+  margin: 0;
+  max-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-left: 0;
+}
+.status .status__room:hover p, .status .status__room.active p {
+  opacity: 1;
+  max-width: 200px;
+  margin-left: 10px;
 }
 .status .status__message {
   text-align: center;

@@ -63,12 +63,14 @@ class Status extends Component {
     let roomInfo;
 
     if (this.props.room) {
+      const className = `status__room btn ${this.state.showShareBlock ? 'active' : ''}`; 
       roomInfo = (
         <div
-          className="status__room btn"
+          className={className}
           onClick={this.onClickRoom}
         >
-          {locString('roomTitleFormat', { room: this.props.room })}
+          <div className="icon icon_share"></div>
+          <p>{locString('roomTitleFormat', { room: this.props.room })}</p>
         </div>);
     } else {
       roomInfo = '';

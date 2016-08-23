@@ -1322,13 +1322,19 @@ var Status = function (_Component) {
       var roomInfo = void 0;
 
       if (this.props.room) {
+        var className = 'status__room btn ' + (this.state.showShareBlock ? 'active' : '');
         roomInfo = _react2.default.createElement(
           'div',
           {
-            className: 'status__room btn',
+            className: className,
             onClick: this.onClickRoom
           },
-          (0, _locales.locString)('roomTitleFormat', { room: this.props.room })
+          _react2.default.createElement('div', { className: 'icon icon_share' }),
+          _react2.default.createElement(
+            'p',
+            null,
+            (0, _locales.locString)('roomTitleFormat', { room: this.props.room })
+          )
         );
       } else {
         roomInfo = '';

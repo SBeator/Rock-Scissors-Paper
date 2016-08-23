@@ -3,10 +3,10 @@
 
 @font-face {
 	font-family:"icons";
-	src:url("fonts/icons.eot?2fee45958093c9d2d92b552488ae2628");
+	src:url("fonts/icons.eot?b8cc49949b8f121d6c4be199070dc509");
 	src:url("fonts/icons.eot?#iefix") format("embedded-opentype"),
-		url("fonts/icons.woff?2fee45958093c9d2d92b552488ae2628") format("woff"),
-		url("fonts/icons.ttf?2fee45958093c9d2d92b552488ae2628") format("truetype");
+		url("fonts/icons.woff?b8cc49949b8f121d6c4be199070dc509") format("woff"),
+		url("fonts/icons.ttf?b8cc49949b8f121d6c4be199070dc509") format("truetype");
 	font-weight:normal;
 	font-style:normal;
 }
@@ -44,4 +44,9 @@
 
 .icon_scissors:before {
 	content:"\f103";
+}
+
+
+.icon_share:before {
+	content:"\f104";
 }
