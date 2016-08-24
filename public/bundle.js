@@ -340,6 +340,10 @@ var Choose = function (_Component) {
   }, {
     key: 'onClickChoose',
     value: function onClickChoose(event) {
+      if (this.props.stylePunching || this.props.stylePunched || this.props.styleBothPunched) {
+        return;
+      }
+
       var allIcons = (0, _jquery2.default)(this.refs.icons).find('.icon');
       allIcons.removeClass('active');
       (0, _jquery2.default)(event.target).addClass('active');
@@ -363,7 +367,7 @@ var Choose = function (_Component) {
   }, {
     key: 'getClasses',
     value: function getClasses() {
-      return 'choose' + (' ' + (this.props.stylePunching ? 'punching' : '')) + (' ' + (this.props.stylePunched ? 'punched' : '')) + (' ' + (this.props.styleBothPunched ? 'both-punched' : ''));
+      return 'choose' + (' ' + (this.props.stylePunching ? 'punching' : '')) + (' ' + (this.props.stylePunched ? 'punched' : '')) + (' ' + (this.props.styleBothPunched ? 'both-punched' : '')) + (' ' + (this.props.ready ? '' : 'not-ready'));
     }
   }, {
     key: 'render',

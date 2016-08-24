@@ -20,6 +20,8 @@
     label, input[type="radio"] {
       display: none;
     }
+
+    
   } 
 
   .choose__submit {
@@ -51,6 +53,12 @@
     }
   }
 
+  &.not-ready {
+    input {
+      visibility: hidden;
+    }
+  }
+
   &.punching .icon {
     opacity: 0;
 
@@ -59,14 +67,16 @@
     }
   }
 
-  &.punched {
-    .icon, form {
-      opacity: 0;
-    }
+  &.punched .icon{
+    opacity: 0;
   }
 
-  &.both-punched .icon.active{
-    opacity: 1;
-    top: -100px;
+  &.both-punched .icon{
+    opacity: 0;
+    
+    &.active {
+      opacity: 1;
+      top: -100px;
+    }
   }
 }

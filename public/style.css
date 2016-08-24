@@ -163,13 +163,19 @@ input[type="text"] {
   top: -40px;
   color: #6666FF;
 }
+.choose.not-ready input {
+  visibility: hidden;
+}
 .choose.punching .icon {
   opacity: 0;
 }
 .choose.punching .icon.active {
   opacity: 1;
 }
-.choose.punched .icon, .choose.punched form {
+.choose.punched .icon {
+  opacity: 0;
+}
+.choose.both-punched .icon {
   opacity: 0;
 }
 .choose.both-punched .icon.active {
@@ -270,7 +276,8 @@ input[type="text"] {
 
 .ready {
   position: absolute;
-  top: 45%;
+  bottom: 20px;
   width: 100%;
   text-align: center;
+  margin-bottom: 20px;
 }

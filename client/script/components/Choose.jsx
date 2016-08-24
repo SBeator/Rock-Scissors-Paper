@@ -30,6 +30,10 @@ class Choose extends Component {
   }
 
   onClickChoose(event) {
+    if (this.props.stylePunching || this.props.stylePunched || this.props.styleBothPunched) {
+      return;
+    }
+
     const allIcons = $(this.refs.icons).find('.icon');
     allIcons.removeClass('active');
     $(event.target).addClass('active');
@@ -53,7 +57,8 @@ class Choose extends Component {
     return 'choose'
       + ` ${this.props.stylePunching ? 'punching' : ''}`
       + ` ${this.props.stylePunched ? 'punched' : ''}`
-      + ` ${this.props.styleBothPunched ? 'both-punched' : ''}`;
+      + ` ${this.props.styleBothPunched ? 'both-punched' : ''}`
+      + ` ${this.props.ready ? '' : 'not-ready'}`;
   }
 
   render() {
