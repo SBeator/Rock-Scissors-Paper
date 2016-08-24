@@ -307,6 +307,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var propTypes = {
   ready: _react.PropTypes.bool,
+  stylePunching: _react.PropTypes.bool,
+  stylePunched: _react.PropTypes.bool,
+  styleBothPunched: _react.PropTypes.bool,
   punching: _react.PropTypes.func
 };
 
@@ -356,14 +359,18 @@ var Choose = function (_Component) {
       event.preventDefault();
 
       this.props.punching(this.refs.form.choose.value);
-      // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
+    }
+  }, {
+    key: 'getClasses',
+    value: function getClasses() {
+      return 'choose' + (' ' + (this.props.stylePunching ? 'punching' : '')) + (' ' + (this.props.stylePunched ? 'punched' : '')) + (' ' + (this.props.styleBothPunched ? 'both-punched' : ''));
     }
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { className: 'choose' },
+        { className: this.getClasses() },
         _react2.default.createElement(
           'div',
           { className: 'choose_icons', ref: 'icons', onClick: this.onClickChoose },
@@ -1497,7 +1504,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    ready: state.game.type === _types2.default.BOTH_PLAYER_READY || state.game.type === _types2.default.OTHER_PLAYER_PUNCHED
+    ready: state.game.type === _types2.default.BOTH_PLAYER_READY || state.game.type === _types2.default.OTHER_PLAYER_PUNCHED,
+    stylePunching: state.game.type === _types2.default.PUNCHING,
+    stylePunched: state.game.type === _types2.default.PUNCHED,
+    styleBothPunched: state.game.type === _types2.default.BOTH_PLAYER_PUNCHED
   };
 };
 

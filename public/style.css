@@ -132,6 +132,10 @@ input[type="text"] {
 .choose .choose__radio:not(:last-of-type) {
   margin-right: 20px;
 }
+.choose form {
+  transition: all 0.3s;
+  opacity: 1;
+}
 .choose form label, .choose form input[type="radio"] {
   display: none;
 }
@@ -149,6 +153,7 @@ input[type="text"] {
   transition: all 0.3s;
   cursor: pointer;
   top: 0;
+  opacity: 1;
 }
 .choose .choose_icons .icon:hover {
   color: #6666FF;
@@ -157,6 +162,19 @@ input[type="text"] {
   transform: scale(1.5);
   top: -40px;
   color: #6666FF;
+}
+.choose.punching .icon {
+  opacity: 0;
+}
+.choose.punching .icon.active {
+  opacity: 1;
+}
+.choose.punched .icon, .choose.punched form {
+  opacity: 0;
+}
+.choose.both-punched .icon.active {
+  opacity: 1;
+  top: -100px;
 }
 
 .menu {

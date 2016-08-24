@@ -6,6 +6,9 @@ import { locString } from '../../../locales';
 
 const propTypes = {
   ready: PropTypes.bool,
+  stylePunching: PropTypes.bool,
+  stylePunched: PropTypes.bool,
+  styleBothPunched: PropTypes.bool,
   punching: PropTypes.func
 };
 
@@ -44,12 +47,18 @@ class Choose extends Component {
     event.preventDefault();
 
     this.props.punching(this.refs.form.choose.value);
-    // Event.fireEvent(CustomEvents.SUBMIT_CHOOSE, this.refs.form.choose.value);
+  }
+
+  getClasses() {
+    return 'choose'
+      + ` ${this.props.stylePunching ? 'punching' : ''}`
+      + ` ${this.props.stylePunched ? 'punched' : ''}`
+      + ` ${this.props.styleBothPunched ? 'both-punched' : ''}`;
   }
 
   render() {
     return (
-      <div className="choose">
+      <div className={this.getClasses()}>
         <div className="choose_icons" ref="icons" onClick={this.onClickChoose}>
           <div className="icon icon_rock"></div>
           <div className="icon icon_scissors"></div>

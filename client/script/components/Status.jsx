@@ -63,7 +63,7 @@ class Status extends Component {
     let roomInfo;
 
     if (this.props.room) {
-      const className = `status__room btn ${this.state.showShareBlock ? 'active' : ''}`; 
+      const className = `status__room btn ${this.state.showShareBlock ? 'active' : ''}`;
       roomInfo = (
         <div
           className={className}
