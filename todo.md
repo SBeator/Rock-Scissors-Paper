@@ -26,8 +26,8 @@
     1. ~~Use icons for choose~~
     1. Use swap animation to choose
     1. Can see other play choosing
-    1. punching animation
-    1. choosed animation
+    1. ~~punching animation~~
+    1. ~~choosed animation~~
 1. Add log level
 1. Add testing
 
