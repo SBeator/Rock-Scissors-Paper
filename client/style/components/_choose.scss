@@ -1,6 +1,6 @@
 .choose {
   position: absolute;
-  bottom: 20px;
+  bottom: 0;
   width: 100%;
   text-align: center;
 
@@ -20,13 +20,11 @@
     label, input[type="radio"] {
       display: none;
     }
-
-    
   } 
 
   .choose__submit {
     display: block;
-    margin: 30px auto;
+    margin: 10px auto;
   }
 
   .choose_icons {
@@ -53,13 +51,13 @@
     }
   }
 
-  &.not-ready {
+  &.choose--not-ready {
     input {
       visibility: hidden;
     }
   }
 
-  &.punching .icon {
+  &.choose--punching .icon {
     opacity: 0;
 
     &.active {
@@ -67,16 +65,26 @@
     }
   }
 
-  &.punched .icon{
+  &.choose--punched .icon{
     opacity: 0;
   }
 
-  &.both-punched .icon{
+  &.choose--both-punched .icon{
     opacity: 0;
-    
+
     &.active {
       opacity: 1;
       top: -100px;
+    }
+  }
+
+  &.choose--other-player {
+    transform: rotateZ(180deg);
+    top: 0;
+    bottom: inherit;
+
+    form {
+      display: none;
     }
   }
 }

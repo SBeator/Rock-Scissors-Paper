@@ -15,6 +15,7 @@ import actions from '../../../redux/actions';
 import StatusContainer from '../container/StatusContainer';
 import MenuContainer from '../container/MenuContainer';
 import WelcomeContainer from '../container/WelcomeContainer';
+import OtherPlayerChooseContainer from '../container/OtherPlayerChooseContainer';
 import ChooseContainer from '../container/ChooseContainer';
 import ReadyContainer from '../container/ReadyContainer';
 
@@ -278,6 +279,7 @@ class GameControl extends Component {
     return (
       <div className="game-control">
 
+        <OtherPlayerChooseContainer />
         <ChooseContainer />
         { /*
         <Choose

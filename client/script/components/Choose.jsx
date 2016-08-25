@@ -9,7 +9,9 @@ const propTypes = {
   stylePunching: PropTypes.bool,
   stylePunched: PropTypes.bool,
   styleBothPunched: PropTypes.bool,
-  punching: PropTypes.func
+  isOtherPlayer: PropTypes.bool,
+  activePunch: PropTypes.number,
+  punching: PropTypes.func,
 };
 
 class Choose extends Component {
@@ -27,6 +29,12 @@ class Choose extends Component {
 
   componentDidUpdate() {
     this.refs.submit.disabled = !this.props.ready;
+
+    if (this.props.activePunch >= 0) {
+      const $allIcons = $(this.refs.icons).find('.icon');
+      $allIcons.removeClass('active');
+      $allIcons.eq(this.props.activePunch).addClass('active');
+    }
   }
 
   onClickChoose(event) {
@@ -55,10 +63,11 @@ class Choose extends Component {
 
   getClasses() {
     return 'choose'
-      + ` ${this.props.stylePunching ? 'punching' : ''}`
-      + ` ${this.props.stylePunched ? 'punched' : ''}`
-      + ` ${this.props.styleBothPunched ? 'both-punched' : ''}`
-      + ` ${this.props.ready ? '' : 'not-ready'}`;
+      + ` ${this.props.stylePunching ? 'choose--punching' : ''}`
+      + ` ${this.props.stylePunched ? 'choose--punched' : ''}`
+      + ` ${this.props.styleBothPunched ? 'choose--both-punched' : ''}`
+      + ` ${this.props.ready ? '' : 'choose--not-ready'}`
+      + ` ${this.props.isOtherPlayer ? 'choose--other-player' : ''}`;
   }
 
   render() {
