@@ -8,7 +8,8 @@ const mapStateToProps = (state, ownProps) => ({
   stylePunching: false,
   stylePunched: state.game.type === actionsTypes.OTHER_PLAYER_PUNCHED,
   styleBothPunched: state.game.type === actionsTypes.BOTH_PLAYER_PUNCHED,
-  isOtherPlayer: true
+  isOtherPlayer: true,
+  activePunch: state.game.otherPunch
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

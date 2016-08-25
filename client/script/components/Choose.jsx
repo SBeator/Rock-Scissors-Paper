@@ -24,13 +24,18 @@ class Choose extends Component {
   }
 
   componentDidMount() {
-    this.refs.submit.disabled = !this.props.ready;
+    this.onUpdate();
   }
 
   componentDidUpdate() {
-    this.refs.submit.disabled = !this.props.ready;
+    this.onUpdate();
+  }
 
-    if (this.props.activePunch >= 0) {
+  onUpdate() {
+    this.refs.submit.disabled = !this.props.ready
+                              && !$(this.refs.icons).find('.icon.active').length;
+
+    if (this.props.activePunch !== undefined) {
       const $allIcons = $(this.refs.icons).find('.icon');
       $allIcons.removeClass('active');
       $allIcons.eq(this.props.activePunch).addClass('active');

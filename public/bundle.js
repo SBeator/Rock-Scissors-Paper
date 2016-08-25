@@ -332,14 +332,19 @@ var Choose = function (_Component) {
   (0, _createClass3.default)(Choose, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.refs.submit.disabled = !this.props.ready;
+      this.onUpdate();
     }
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      this.refs.submit.disabled = !this.props.ready;
+      this.onUpdate();
+    }
+  }, {
+    key: 'onUpdate',
+    value: function onUpdate() {
+      this.refs.submit.disabled = !this.props.ready && !(0, _jquery2.default)(this.refs.icons).find('.icon.active').length;
 
-      if (this.props.activePunch >= 0) {
+      if (this.props.activePunch !== undefined) {
         var $allIcons = (0, _jquery2.default)(this.refs.icons).find('.icon');
         $allIcons.removeClass('active');
         $allIcons.eq(this.props.activePunch).addClass('active');
@@ -1641,7 +1646,8 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
     stylePunching: false,
     stylePunched: state.game.type === _types2.default.OTHER_PLAYER_PUNCHED,
     styleBothPunched: state.game.type === _types2.default.BOTH_PLAYER_PUNCHED,
-    isOtherPlayer: true
+    isOtherPlayer: true,
+    activePunch: state.game.otherPunch
   };
 };
 
