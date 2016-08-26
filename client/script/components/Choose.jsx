@@ -5,6 +5,7 @@ import $ from 'jquery';
 import { locString } from '../../../locales';
 
 const propTypes = {
+  hide: PropTypes.bool,
   ready: PropTypes.bool,
   stylePunching: PropTypes.bool,
   stylePunched: PropTypes.bool,
@@ -33,7 +34,7 @@ class Choose extends Component {
 
   onUpdate() {
     this.refs.submit.disabled = !this.props.ready
-                              && !$(this.refs.icons).find('.icon.active').length;
+                              || !$(this.refs.icons).find('.icon.active').length;
 
     if (this.props.activePunch !== undefined) {
       const $allIcons = $(this.refs.icons).find('.icon');
@@ -50,6 +51,8 @@ class Choose extends Component {
     const allIcons = $(this.refs.icons).find('.icon');
     allIcons.removeClass('active');
     $(event.target).addClass('active');
+
+    this.refs.submit.disabled = false;
 
     this.refs.form.choose.value = allIcons.index(event.target);
   }
@@ -72,7 +75,8 @@ class Choose extends Component {
       + ` ${this.props.stylePunched ? 'choose--punched' : ''}`
       + ` ${this.props.styleBothPunched ? 'choose--both-punched' : ''}`
       + ` ${this.props.ready ? '' : 'choose--not-ready'}`
-      + ` ${this.props.isOtherPlayer ? 'choose--other-player' : ''}`;
+      + ` ${this.props.isOtherPlayer ? 'choose--other-player' : ''}`
+      + ` ${this.props.hide ? 'hide' : ''}`;
   }
 
   render() {

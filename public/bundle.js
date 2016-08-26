@@ -306,6 +306,7 @@ var _locales = require('../../../locales');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var propTypes = {
+  hide: _react.PropTypes.bool,
   ready: _react.PropTypes.bool,
   stylePunching: _react.PropTypes.bool,
   stylePunched: _react.PropTypes.bool,
@@ -342,7 +343,7 @@ var Choose = function (_Component) {
   }, {
     key: 'onUpdate',
     value: function onUpdate() {
-      this.refs.submit.disabled = !this.props.ready && !(0, _jquery2.default)(this.refs.icons).find('.icon.active').length;
+      this.refs.submit.disabled = !this.props.ready || !(0, _jquery2.default)(this.refs.icons).find('.icon.active').length;
 
       if (this.props.activePunch !== undefined) {
         var $allIcons = (0, _jquery2.default)(this.refs.icons).find('.icon');
@@ -360,6 +361,8 @@ var Choose = function (_Component) {
       var allIcons = (0, _jquery2.default)(this.refs.icons).find('.icon');
       allIcons.removeClass('active');
       (0, _jquery2.default)(event.target).addClass('active');
+
+      this.refs.submit.disabled = false;
 
       this.refs.form.choose.value = allIcons.index(event.target);
     }
@@ -380,7 +383,7 @@ var Choose = function (_Component) {
   }, {
     key: 'getClasses',
     value: function getClasses() {
-      return 'choose' + (' ' + (this.props.stylePunching ? 'choose--punching' : '')) + (' ' + (this.props.stylePunched ? 'choose--punched' : '')) + (' ' + (this.props.styleBothPunched ? 'choose--both-punched' : '')) + (' ' + (this.props.ready ? '' : 'choose--not-ready')) + (' ' + (this.props.isOtherPlayer ? 'choose--other-player' : ''));
+      return 'choose' + (' ' + (this.props.stylePunching ? 'choose--punching' : '')) + (' ' + (this.props.stylePunched ? 'choose--punched' : '')) + (' ' + (this.props.styleBothPunched ? 'choose--both-punched' : '')) + (' ' + (this.props.ready ? '' : 'choose--not-ready')) + (' ' + (this.props.isOtherPlayer ? 'choose--other-player' : '')) + (' ' + (this.props.hide ? 'hide' : ''));
     }
   }, {
     key: 'render',
@@ -1526,6 +1529,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
+    hide: false,
     ready: state.game.type === _types2.default.BOTH_PLAYER_READY || state.game.type === _types2.default.OTHER_PLAYER_PUNCHED,
     stylePunching: state.game.type === _types2.default.PUNCHING,
     stylePunched: state.game.type === _types2.default.PUNCHED,
@@ -1642,6 +1646,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
+    hide: !state.game.otherUser,
     ready: false,
     stylePunching: false,
     stylePunched: state.game.type === _types2.default.OTHER_PLAYER_PUNCHED,

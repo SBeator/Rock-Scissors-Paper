@@ -5,6 +5,7 @@ import Choose from '../components/Choose.jsx';
 import actionsTypes from '../../../redux/actions/types';
 
 const mapStateToProps = (state, ownProps) => ({
+  hide: false,
   ready: state.game.type === actionsTypes.BOTH_PLAYER_READY ||
     state.game.type === actionsTypes.OTHER_PLAYER_PUNCHED,
   stylePunching: state.game.type === actionsTypes.PUNCHING,
