@@ -313,7 +313,8 @@ var propTypes = {
   styleBothPunched: _react.PropTypes.bool,
   isOtherPlayer: _react.PropTypes.bool,
   activePunch: _react.PropTypes.number,
-  punching: _react.PropTypes.func
+  punching: _react.PropTypes.func,
+  changingPunch: _react.PropTypes.func
 };
 
 var Choose = function (_Component) {
@@ -365,6 +366,8 @@ var Choose = function (_Component) {
       this.refs.submit.disabled = false;
 
       this.refs.form.choose.value = allIcons.index(event.target);
+
+      this.props.changingPunch();
     }
   }, {
     key: 'onChooseChange',
@@ -582,7 +585,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import Menu from './Menu.jsx';
 // import Choose from './Choose.jsx';
 
-var sendMessageGameTypes = [_types2.default.CREATING_ROOM, _types2.default.JOINING_ROOM, _types2.default.WAITING_IN_ROOM, _types2.default.OTHER_PLAYER_JOINED, _types2.default.PUNCHING, _types2.default.READYING];
+var sendMessageGameTypes = [_types2.default.CREATING_ROOM, _types2.default.JOINING_ROOM, _types2.default.WAITING_IN_ROOM, _types2.default.OTHER_PLAYER_JOINED, _types2.default.CHANGING_PUNCH, _types2.default.PUNCHING, _types2.default.READYING];
 
 var propTypes = {
   hostname: _react.PropTypes.string,
@@ -630,11 +633,8 @@ var GameControl = function (_Component) {
     key: 'componentWillUpdate',
     value: function componentWillUpdate(nextProps) {
       var gameState = nextProps.game;
-      if (this.currectGameType !== gameState.type) {
-        this.currectGameType = gameState.type;
-
-        this.handleGameState(gameState);
-      }
+      this.currectGameType = gameState.type;
+      this.handleGameState(gameState);
     }
   }, {
     key: 'getInfoFromCookie',
@@ -1542,6 +1542,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
     // Change punch to punching and punched
     punching: function punching(punch) {
       dispatch(_actions2.default.punching({ punch: punch }));
+    },
+    changingPunch: function changingPunch() {
+      dispatch(_actions2.default.changingPunch());
     }
   };
 };
@@ -1645,25 +1648,24 @@ var _types2 = _interopRequireDefault(_types);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
+  var game = state.game;
+  var otherPunch = void 0;
+  if (game.type === _types2.default.OTHER_CHANGING_PUNCH) {
+    otherPunch = Math.random() * 3 | 0;
+  }
+
   return {
-    hide: !state.game.otherUser,
+    hide: !game.otherUser,
     ready: false,
     stylePunching: false,
-    stylePunched: state.game.type === _types2.default.OTHER_PLAYER_PUNCHED,
-    styleBothPunched: state.game.type === _types2.default.BOTH_PLAYER_PUNCHED,
+    stylePunched: game.type === _types2.default.OTHER_PLAYER_PUNCHED,
+    styleBothPunched: game.type === _types2.default.BOTH_PLAYER_PUNCHED,
     isOtherPlayer: true,
-    activePunch: state.game.otherPunch
+    activePunch: game.otherPunch || otherPunch
   };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    // Change punch to punching and punched
-    punching: function punching(punch) {}
-  };
-};
-
-var OtherPlayerChooseContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Choose2.default);
+var OtherPlayerChooseContainer = (0, _reactRedux.connect)(mapStateToProps)(_Choose2.default);
 
 exports.default = OtherPlayerChooseContainer;
 
@@ -34724,6 +34726,18 @@ var bothPlayerReady = function bothPlayerReady() {
   };
 };
 
+var changingPunch = function changingPunch() {
+  return {
+    type: _types2.default.CHANGING_PUNCH
+  };
+};
+
+var otherChangingPunch = function otherChangingPunch() {
+  return {
+    type: _types2.default.OTHER_CHANGING_PUNCH
+  };
+};
+
 var punching = function punching(_ref4) {
   var punch = _ref4.punch;
   return {
@@ -34790,6 +34804,8 @@ exports.default = {
   ready: ready,
   otherPlayerReady: otherPlayerReady,
   bothPlayerReady: bothPlayerReady,
+  otherChangingPunch: otherChangingPunch,
+  changingPunch: changingPunch,
   punching: punching,
   punched: punched,
   otherPlayerPunched: otherPlayerPunched,
@@ -34880,6 +34896,9 @@ exports.default = {
   READY: 'ready',
   OTHER_PLAYER_READY: 'otherPlayerReady',
   BOTH_PLAYER_READY: 'bothPlayerReady',
+
+  CHANGING_PUNCH: 'changingPunch',
+  OTHER_CHANGING_PUNCH: 'otherChangingPunch',
 
   PUNCHING: 'punching',
   PUNCHED: 'punched',
@@ -34972,6 +34991,10 @@ var gameActionTypes = (_gameActionTypes = {}, (0, _defineProperty3.default)(_gam
   messageInfos: [{
     message: 'Please punch'
   }]
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.OTHER_CHANGING_PUNCH, {
+  keepMessage: true
+}), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.CHANGING_PUNCH, {
+  keepMessage: true
 }), (0, _defineProperty3.default)(_gameActionTypes, _types2.default.PUNCHING, {
   messageInfos: [{
     message: 'Punching'
@@ -35020,17 +35043,24 @@ var gameReducers = function gameReducers() {
     var type = action.type;
     var messageInfos = gameActionObject.messageInfos;
     var appendMessage = gameActionObject.appendMessage;
+    var keepMessage = gameActionObject.keepMessage;
 
 
-    var messages = messageInfos.map(function (_ref3) {
-      var message = _ref3.message;
-      var valueResolver = _ref3.valueResolver;
-      return (0, _locales.locString)(message, valueResolver && valueResolver(action));
-    });
+    var messages = void 0;
+    if (!keepMessage) {
+      messages = messageInfos.map(function (_ref3) {
+        var message = _ref3.message;
+        var valueResolver = _ref3.valueResolver;
+        return (0, _locales.locString)(message, valueResolver && valueResolver(action));
+      });
 
-    if (appendMessage) {
-      var oldMessages = state.messages || [];
-      messages = [].concat((0, _toConsumableArray3.default)(oldMessages), (0, _toConsumableArray3.default)(messages));
+      if (appendMessage) {
+        var oldMessages = state.messages || [];
+        messages = [].concat((0, _toConsumableArray3.default)(oldMessages), (0, _toConsumableArray3.default)(messages));
+      }
+    } else {
+      var _oldMessages = state.messages || [];
+      messages = [].concat((0, _toConsumableArray3.default)(_oldMessages));
     }
 
     (0, _assign2.default)(newState, state, {

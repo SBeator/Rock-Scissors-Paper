@@ -13,6 +13,7 @@ const propTypes = {
   isOtherPlayer: PropTypes.bool,
   activePunch: PropTypes.number,
   punching: PropTypes.func,
+  changingPunch: PropTypes.func
 };
 
 class Choose extends Component {
@@ -55,6 +56,8 @@ class Choose extends Component {
     this.refs.submit.disabled = false;
 
     this.refs.form.choose.value = allIcons.index(event.target);
+
+    this.props.changingPunch();
   }
 
   onChooseChange() {

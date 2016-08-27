@@ -24,6 +24,7 @@ const sendMessageGameTypes = [
   actionType.JOINING_ROOM,
   actionType.WAITING_IN_ROOM,
   actionType.OTHER_PLAYER_JOINED,
+  actionType.CHANGING_PUNCH,
   actionType.PUNCHING,
   actionType.READYING
 ];
@@ -66,11 +67,8 @@ class GameControl extends Component {
 
   componentWillUpdate(nextProps) {
     const gameState = nextProps.game;
-    if (this.currectGameType !== gameState.type) {
-      this.currectGameType = gameState.type;
-
-      this.handleGameState(gameState);
-    }
+    this.currectGameType = gameState.type;
+    this.handleGameState(gameState);
   }
 
   getInfoFromCookie(name) {

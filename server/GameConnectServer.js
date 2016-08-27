@@ -56,6 +56,9 @@ class GameConnectServer {
           }
         });
         break;
+      case actionType.CHANGING_PUNCH:
+        this.sendActionMessageToOther(actions.otherChangingPunch());
+        break;
       case actionType.PUNCHING:
         this.sendPunchMessages(punch);
         break;

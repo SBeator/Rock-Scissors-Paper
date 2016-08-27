@@ -61,6 +61,12 @@ const gameActionTypes = {
       message: 'Please punch'
     }]
   },
+  [types.OTHER_CHANGING_PUNCH]: {
+    keepMessage: true,
+  },
+  [types.CHANGING_PUNCH]: {
+    keepMessage: true,
+  },
   [types.PUNCHING]: {
     messageInfos: [{
       message: 'Punching'
@@ -107,16 +113,22 @@ const gameReducers = (state = { type: types.IDLE }, action) => {
   if (gameActionObject) {
     newState = {};
     const { type } = action;
-    const { messageInfos, appendMessage } = gameActionObject;
+    const { messageInfos, appendMessage, keepMessage } = gameActionObject;
 
-    let messages = messageInfos.map(({ message, valueResolver }) => locString(
+    let messages;
+    if (!keepMessage) {
+      messages = messageInfos.map(({ message, valueResolver }) => locString(
         message,
         valueResolver && valueResolver(action)
       ));
 
-    if (appendMessage) {
+      if (appendMessage) {
+        const oldMessages = state.messages || [];
+        messages = [...oldMessages, ...messages];
+      }
+    } else {
       const oldMessages = state.messages || [];
-      messages = [...oldMessages, ...messages];
+      messages = [...oldMessages];
     }
 
     Object.assign(newState, state, {

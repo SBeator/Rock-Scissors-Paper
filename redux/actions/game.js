@@ -38,6 +38,14 @@ const bothPlayerReady = () => ({
   type: types.BOTH_PLAYER_READY
 });
 
+const changingPunch = () => ({
+  type: types.CHANGING_PUNCH
+});
+
+const otherChangingPunch = () => ({
+  type: types.OTHER_CHANGING_PUNCH
+});
+
 const punching = ({ punch }) => ({
   type: types.PUNCHING,
   punch
@@ -81,6 +89,8 @@ export default {
   ready,
   otherPlayerReady,
   bothPlayerReady,
+  otherChangingPunch,
+  changingPunch,
   punching,
   punched,
   otherPlayerPunched,

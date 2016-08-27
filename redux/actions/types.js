@@ -22,6 +22,9 @@ export default {
   OTHER_PLAYER_READY: 'otherPlayerReady',
   BOTH_PLAYER_READY: 'bothPlayerReady',
 
+  CHANGING_PUNCH: 'changingPunch',
+  OTHER_CHANGING_PUNCH: 'otherChangingPunch',
+  
   PUNCHING: 'punching',
   PUNCHED: 'punched',
   OTHER_PLAYER_PUNCHED: 'otherPlayerPunched',

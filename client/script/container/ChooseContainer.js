@@ -17,6 +17,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   // Change punch to punching and punched
   punching: (punch) => {
     dispatch(actions.punching({ punch }));
+  },
+  changingPunch: () => {
+    dispatch(actions.changingPunch());
   }
 });
 
